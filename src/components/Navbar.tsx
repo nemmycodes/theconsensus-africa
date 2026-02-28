@@ -13,7 +13,7 @@ const navLinks = [
   { label: "Events", href: "#" },
   { label: "Blog", href: "#" },
   { label: "Donate", href: "#" },
-  { label: "Contact Us", href: "#" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 const Navbar = () => {
