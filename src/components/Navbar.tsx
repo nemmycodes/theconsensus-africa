@@ -2,9 +2,18 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const navLinks = [
-  "Home", "About", "Join Us", "Discuss", "Situation Room", "Events", "Blog", "Donate", "Contact Us"
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Join Us", href: "#" },
+  { label: "Discuss", href: "#" },
+  { label: "Situation Room", href: "#" },
+  { label: "Events", href: "#" },
+  { label: "Blog", href: "#" },
+  { label: "Donate", href: "#" },
+  { label: "Contact Us", href: "#" },
 ];
 
 const Navbar = () => {
@@ -30,13 +39,13 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-6">
           {navLinks.map((link) => (
-            <a
-              key={link}
-              href="#"
+            <Link
+              key={link.label}
+              to={link.href}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              {link}
-            </a>
+              {link.label}
+            </Link>
           ))}
         </div>
 
@@ -66,16 +75,20 @@ const Navbar = () => {
             className="lg:hidden bg-background border-b border-border px-4 pb-4 overflow-hidden"
           >
             {navLinks.map((link, i) => (
-              <motion.a
-                key={link}
-                href="#"
+              <motion.div
+                key={link.label}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.04 }}
-                className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                {link}
-              </motion.a>
+                <Link
+                  to={link.href}
+                  className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              </motion.div>
             ))}
             <div className="flex gap-3 mt-4">
               <Button size="sm" variant="default">Join Us</Button>
