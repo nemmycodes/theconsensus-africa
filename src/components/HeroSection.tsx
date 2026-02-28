@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import heroBg from "@/assets/hero-bg.jpg";
-import mentorImg from "@/assets/mentor-portrait.jpg";
+import mentorImg from "@/assets/mentor-portrait.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
