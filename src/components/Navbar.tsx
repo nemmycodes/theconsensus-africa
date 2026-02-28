@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   "Home", "About", "Join Us", "Discuss", "Situation Room", "Events", "Blog", "Donate", "Contact Us"
@@ -10,7 +11,12 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
+    <motion.nav
+      initial={{ y: -80 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
+    >
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -50,24 +56,35 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="lg:hidden bg-background border-b border-border px-4 pb-4">
-          {navLinks.map((link) => (
-            <a
-              key={link}
-              href="#"
-              className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link}
-            </a>
-          ))}
-          <div className="flex gap-3 mt-4">
-            <Button size="sm" variant="default">Join Us</Button>
-            <Button size="sm" variant="outline">Login</Button>
-          </div>
-        </div>
-      )}
-    </nav>
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden bg-background border-b border-border px-4 pb-4 overflow-hidden"
+          >
+            {navLinks.map((link, i) => (
+              <motion.a
+                key={link}
+                href="#"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.04 }}
+                className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link}
+              </motion.a>
+            ))}
+            <div className="flex gap-3 mt-4">
+              <Button size="sm" variant="default">Join Us</Button>
+              <Button size="sm" variant="outline">Login</Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 };
 
