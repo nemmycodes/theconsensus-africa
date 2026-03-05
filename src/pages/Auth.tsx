@@ -74,6 +74,13 @@ const Auth = () => {
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? "Signing in..." : "Sign In"}
                 </Button>
+                <button
+                  type="button"
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors w-full text-right"
+                >
+                  Forgot password?
+                </button>
               </form>
               <div className="mt-6 text-center">
                 <button
