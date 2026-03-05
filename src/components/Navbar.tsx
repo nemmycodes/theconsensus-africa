@@ -11,7 +11,7 @@ const navLinks = [
   { label: "Situation Room", href: "/situation-room" },
   { label: "Blog", href: "/blog" },
   { label: "Events", href: "#" },
-  { label: "Donate", href: "#" },
+  { label: "Donate", href: "/donate" },
   { label: "Contact Us", href: "/contact" },
 ];
 
@@ -29,11 +29,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <div className="flex flex-col leading-none">
-            <span className="text-xs font-bold tracking-widest text-accent uppercase">The</span>
-            <span className="text-xs font-bold tracking-widest text-accent uppercase">Plateau</span>
-            <span className="text-sm font-black tracking-wider text-foreground uppercase">Consensus</span>
-          </div>
+          <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-10 w-auto" />
         </Link>
 
         <div className="hidden lg:flex items-center gap-6">
@@ -56,7 +52,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button size="sm" variant="default" onClick={() => navigate("/auth")}>Join Us</Button>
+              <Button size="sm" variant="default" onClick={() => navigate("/join")}>Join Us</Button>
               <Button size="sm" variant="outline" onClick={() => navigate("/auth")}>Login</Button>
             </>
           )}
@@ -100,7 +96,7 @@ const Navbar = () => {
                 <Button size="sm" variant="outline" onClick={() => { signOut(); setMobileOpen(false); }}>Logout</Button>
               ) : (
                 <>
-                  <Button size="sm" variant="default" onClick={() => { navigate("/auth"); setMobileOpen(false); }}>Join Us</Button>
+                  <Button size="sm" variant="default" onClick={() => { navigate("/join"); setMobileOpen(false); }}>Join Us</Button>
                   <Button size="sm" variant="outline" onClick={() => { navigate("/auth"); setMobileOpen(false); }}>Login</Button>
                 </>
               )}
