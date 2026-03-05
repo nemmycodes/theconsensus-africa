@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
+import Onboarding from "./pages/Onboarding";
+import Donate from "./pages/Donate";
 import SituationRoom from "./pages/SituationRoom";
 import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
@@ -26,6 +28,8 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/join" element={<Onboarding />} />
+            <Route path="/donate" element={<Donate />} />
             <Route path="/situation-room" element={<SituationRoom />} />
             <Route path="/blog" element={<Blog />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

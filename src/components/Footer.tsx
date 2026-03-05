@@ -27,11 +27,7 @@ const Footer = () => {
         >
           {/* Brand */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex flex-col leading-none">
-              <span className="text-xs font-bold tracking-widest text-accent uppercase">The</span>
-              <span className="text-xs font-bold tracking-widest text-accent uppercase">Plateau</span>
-              <span className="text-lg font-black tracking-wider text-foreground uppercase">Consensus</span>
-            </div>
+            <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-12 w-auto" />
             <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
               A non-partisan civic and economic empowerment movement organizing Nigeria's youth for a new era of leadership defined by competence, integrity, and shared prosperity.
             </p>
