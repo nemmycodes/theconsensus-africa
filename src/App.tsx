@@ -12,6 +12,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Onboarding from "./pages/Onboarding";
 import Donate from "./pages/Donate";
+import ElectionForm from "./pages/ElectionForm";
 import SituationRoom from "./pages/SituationRoom";
 import Blog from "./pages/Blog";
 import NotFound from "./pages/NotFound";
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/join" element={<Onboarding />} />
             <Route path="/donate" element={<Donate />} />
+            <Route path="/election-form" element={<ElectionForm />} />
             <Route path="/situation-room" element={<SituationRoom />} />
             <Route path="/blog" element={<Blog />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const CtaBanner = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-16 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
@@ -20,12 +23,13 @@ const CtaBanner = () => {
               Ready to Lead the Change?
             </h2>
             <p className="text-primary-foreground/80 text-base md:text-lg">
-              Join over 2 million Nigerians who have chosen a better path for our nation's future. It starts with you.
+              Join over 2 million Nigerians who have chosen a better path for our nation's future. Register as a member or become an agent to report from the field.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Button
                 size="lg"
                 className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold px-8"
+                onClick={() => navigate("/join")}
               >
                 Register as a Member
               </Button>
@@ -33,6 +37,7 @@ const CtaBanner = () => {
                 size="lg"
                 variant="outline"
                 className="border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 font-semibold px-8"
+                onClick={() => navigate("/election-form")}
               >
                 Become an Agent
               </Button>
