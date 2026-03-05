@@ -8,6 +8,8 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Onboarding from "./pages/Onboarding";
 import Donate from "./pages/Donate";
 import SituationRoom from "./pages/SituationRoom";
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/join" element={<Onboarding />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/situation-room" element={<SituationRoom />} />
