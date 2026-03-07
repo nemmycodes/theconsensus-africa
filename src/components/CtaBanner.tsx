@@ -15,7 +15,6 @@ const CtaBanner = () => {
           transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] as const }}
           className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/80 px-8 py-16 md:py-20 text-center"
         >
-          {/* Subtle radial glow */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_hsla(145,80%,60%,0.25)_0%,_transparent_60%)]" />
 
           <div className="relative z-10 max-w-2xl mx-auto space-y-6">
@@ -23,7 +22,7 @@ const CtaBanner = () => {
               Ready to Lead the Change?
             </h2>
             <p className="text-primary-foreground/80 text-base md:text-lg">
-              Join over 2 million Nigerians who have chosen a better path for our nation's future. Register as a member or become an agent to report from the field.
+              Join over 2 million Nigerians who have chosen a better path for our nation's future. It starts with you.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Button

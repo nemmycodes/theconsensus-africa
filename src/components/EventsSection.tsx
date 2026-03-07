@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Calendar, MapPin, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import eventTownhall from "@/assets/event-townhall.jpg";
 import eventWorkshop from "@/assets/event-workshop.jpg";
 import eventRally from "@/assets/event-rally.jpg";
@@ -16,36 +16,36 @@ const fadeInUp = {
 
 const staggerContainer = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.15 },
-  },
+  visible: { transition: { staggerChildren: 0.15 } },
 };
 
 const events = [
   {
     image: eventTownhall,
-    title: "Youth Town Hall — Central Zone",
-    date: "March 15, 2026",
-    location: "Jos, Plateau State",
-    description: "An open forum for young people to discuss economic challenges and propose community-driven solutions.",
+    tag: "STRATEGY",
+    tagColor: "bg-primary/20 text-primary",
+    title: "Leadership Retreat",
+    description: "Developing the next generation of strategic thinkers and policy makers in Abuja.",
   },
   {
     image: eventWorkshop,
-    title: "Digital Skills Bootcamp",
-    date: "April 5, 2026",
-    location: "University of Jos Campus",
-    description: "A two-day intensive training on digital entrepreneurship, freelancing, and tech skills for economic freedom.",
+    tag: "EMPOWERMENT",
+    tagColor: "bg-primary/20 text-primary",
+    title: "Youth Summit",
+    description: "Lagos mega-gathering focusing on vocational skills and entrepreneurial grants.",
   },
   {
     image: eventRally,
-    title: "Civic Engagement Rally",
-    date: "April 20, 2026",
-    location: "Plateau State Capital",
-    description: "A peaceful rally to advocate for youth inclusion in governance and transparent leadership across the state.",
+    tag: "UNITY",
+    tagColor: "bg-primary/20 text-primary",
+    title: "Unity Rally",
+    description: "Bringing together diverse ethnic groups under the umbrella of progress.",
   },
 ];
 
 const EventsSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-24 bg-card relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -56,19 +56,17 @@ const EventsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] as const }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4"
+          className="text-center mb-16"
         >
-          <div>
-            <span className="text-sm font-semibold tracking-widest text-primary uppercase">
-              Upcoming Events
-            </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mt-4 leading-tight">
-              Get <span className="text-primary">Involved</span>
-            </h2>
-          </div>
-          <Button variant="outline" className="gap-2 self-start md:self-auto">
-            View All Events <ArrowRight size={16} />
-          </Button>
+          <span className="text-sm font-semibold tracking-widest text-primary uppercase">
+            Movement Highlights
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mt-4 leading-tight">
+            Shaping the Narrative Together
+          </h2>
+          <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
+            Join us in these cornerstone initiatives that are redefining political engagement across the nation.
+          </p>
         </motion.div>
 
         <motion.div
@@ -90,25 +88,23 @@ const EventsSection = () => {
                   alt={event.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-secondary to-transparent" />
               </div>
               <div className="p-6 space-y-3">
+                <span className={`inline-block text-xs font-bold tracking-wider px-2 py-1 rounded ${event.tagColor}`}>
+                  {event.tag}
+                </span>
                 <h3 className="text-lg font-bold group-hover:text-primary transition-colors">
                   {event.title}
                 </h3>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <Calendar size={14} className="text-primary" />
-                    {event.date}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <MapPin size={14} className="text-primary" />
-                    {event.location}
-                  </span>
-                </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {event.description}
                 </p>
+                <button
+                  onClick={() => navigate("/events")}
+                  className="text-primary text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all"
+                >
+                  Learn more <ArrowRight size={14} />
+                </button>
               </div>
             </motion.div>
           ))}

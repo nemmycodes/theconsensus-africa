@@ -8,9 +8,11 @@ import { useAuth } from "@/hooks/useAuth";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
+  { label: "Join Us", href: "/join" },
+  { label: "Discuss", href: "/discuss" },
   { label: "Situation Room", href: "/situation-room" },
+  { label: "Events", href: "/events" },
   { label: "Blog", href: "/blog" },
-  { label: "Events", href: "#" },
   { label: "Donate", href: "/donate" },
   { label: "Contact Us", href: "/contact" },
 ];
@@ -32,7 +34,7 @@ const Navbar = () => {
           <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-10 w-auto" />
         </Link>
 
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-5">
           {navLinks.map((link) => (
             <Link
               key={link.label}

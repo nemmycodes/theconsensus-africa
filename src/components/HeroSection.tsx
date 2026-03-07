@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 import mentorImg from "@/assets/mentor-portrait.png";
 
@@ -23,9 +24,10 @@ const scaleIn = {
 };
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
-      {/* Background Image with overlay */}
       <div className="absolute inset-0">
         <motion.img
           src={heroBg}
@@ -40,9 +42,7 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
           <div className="space-y-8">
-            {/* Badge */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -51,12 +51,9 @@ const HeroSection = () => {
               className="inline-flex items-center gap-2 border border-primary/40 rounded-full px-4 py-1.5"
             >
               <span className="w-2 h-2 rounded-full bg-primary" />
-              <span className="text-sm font-medium text-primary tracking-wide">
-                YOUR FUTURE IS TODAY
-              </span>
+              <span className="text-sm font-medium text-primary tracking-wide">YOUR FUTURE IS TODAY</span>
             </motion.div>
 
-            {/* Heading */}
             <motion.h1
               variants={fadeUp}
               initial="hidden"
@@ -68,7 +65,6 @@ const HeroSection = () => {
               <span className="text-primary">YOUTH</span> FOR A NEW ERA OF LEADERSHIP
             </motion.h1>
 
-            {/* Description */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -84,7 +80,6 @@ const HeroSection = () => {
               </p>
             </motion.div>
 
-            {/* Mentor */}
             <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}>
               <p className="text-foreground">
                 <span className="font-bold">Lead Mentor:</span> Chief Kefas Ropshik Wungak
@@ -94,7 +89,6 @@ const HeroSection = () => {
               </p>
             </motion.div>
 
-            {/* CTA Buttons */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -102,22 +96,15 @@ const HeroSection = () => {
               custom={4}
               className="flex flex-wrap gap-3"
             >
-              <Button size="lg" className="gap-2 font-semibold">
+              <Button size="lg" className="gap-2 font-semibold" onClick={() => navigate("/join")}>
                 JOIN US <ArrowRight size={18} />
               </Button>
-              <Button size="lg" variant="secondary">
-                Discuss
-              </Button>
-              <Button size="lg" variant="secondary">
-                Situation Room
-              </Button>
-              <Button size="lg" variant="secondary">
-                Donate
-              </Button>
+              <Button size="lg" variant="secondary" onClick={() => navigate("/discuss")}>Discuss</Button>
+              <Button size="lg" variant="secondary" onClick={() => navigate("/situation-room")}>Situation Room</Button>
+              <Button size="lg" variant="secondary" onClick={() => navigate("/donate")}>Donate</Button>
             </motion.div>
           </div>
 
-          {/* Right Image */}
           <motion.div
             variants={scaleIn}
             initial="hidden"
