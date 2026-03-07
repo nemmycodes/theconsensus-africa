@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const checkRoles = async (userId: string) => {
+    setRolesLoading(true);
     try {
       const [agentRes, adminRes] = await Promise.all([
         supabase.rpc("has_role", { _user_id: userId, _role: "agent" }),
@@ -48,6 +49,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAgent(false);
       setIsAdmin(false);
       return { agent: false, admin: false };
+    } finally {
+      setRolesLoading(false);
     }
   };
 
@@ -57,8 +60,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          await checkRoles(session.user.id);
+          checkRoles(session.user.id);
         } else {
+          setRolesLoading(false);
           setIsAgent(false);
           setIsAdmin(false);
         }
@@ -70,8 +74,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        await checkRoles(session.user.id);
+        checkRoles(session.user.id);
       } else {
+        setRolesLoading(false);
         setIsAgent(false);
         setIsAdmin(false);
       }
