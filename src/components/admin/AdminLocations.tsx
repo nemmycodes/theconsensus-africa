@@ -2,6 +2,44 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { MapPin, RefreshCw, Circle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Fix default marker icons for leaflet + bundlers
+const defaultIcon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
+
+const activeIcon = L.divIcon({
+  className: "",
+  html: `<div style="width:16px;height:16px;background:#22c55e;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(34,197,94,0.6);"></div>`,
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -10],
+});
+
+const idleIcon = L.divIcon({
+  className: "",
+  html: `<div style="width:16px;height:16px;background:#eab308;border:3px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(234,179,8,0.6);"></div>`,
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -10],
+});
+
+const offlineIcon = L.divIcon({
+  className: "",
+  html: `<div style="width:16px;height:16px;background:#6b7280;border:3px solid #fff;border-radius:50%;"></div>`,
+  iconSize: [16, 16],
+  iconAnchor: [8, 8],
+  popupAnchor: [0, -10],
+});
 
 interface AgentLocation {
   id: string;
@@ -35,7 +73,6 @@ const AdminLocations = () => {
 
   useEffect(() => { fetchLocations(); }, []);
 
-  // Realtime updates
   useEffect(() => {
     const channel = supabase
       .channel("agent-locations-admin")
@@ -46,6 +83,8 @@ const AdminLocations = () => {
 
   const statusColor = (s: string) => s === "active" ? "text-primary" : s === "idle" ? "text-yellow-400" : "text-muted-foreground";
 
+  const getIcon = (status: string) => status === "active" ? activeIcon : status === "idle" ? idleIcon : offlineIcon;
+
   const timeSince = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime();
     if (diff < 60000) return "Just now";
@@ -54,41 +93,65 @@ const AdminLocations = () => {
     return `${Math.floor(diff / 86400000)}d ago`;
   };
 
+  // Default center: Nigeria (Plateau State)
+  const center: [number, number] = locations.length > 0
+    ? [locations[0].latitude, locations[0].longitude]
+    : [9.2182, 9.5176];
+
+  const activeCount = locations.filter((l) => l.status === "active").length;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-black">Agent Live Locations</h1>
-          <p className="text-muted-foreground text-sm mt-1">Real-time tracking of field agents</p>
+          <p className="text-muted-foreground text-sm mt-1">
+            Real-time tracking of field agents · {activeCount} active, {locations.length} total
+          </p>
         </div>
         <Button variant="outline" size="sm" className="gap-2" onClick={fetchLocations}>
           <RefreshCw className="w-4 h-4" /> Refresh
         </Button>
       </div>
 
-      {/* Map placeholder */}
-      <div className="bg-card border border-border rounded-xl h-72 flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAyMCAwIEwgMCAwIDAgMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50" />
-        <div className="text-center z-10">
-          <MapPin className="w-10 h-10 text-primary mx-auto mb-2" />
-          <p className="text-sm font-bold">Live Map View</p>
-          <p className="text-xs text-muted-foreground">{locations.filter((l) => l.status === "active").length} agents currently active</p>
-        </div>
-        {/* Plot dots for active agents */}
-        {locations.filter((l) => l.status === "active").map((loc, i) => (
-          <div
-            key={loc.id}
-            className="absolute w-3 h-3 bg-primary rounded-full animate-pulse"
-            style={{
-              left: `${20 + (i * 15) % 60}%`,
-              top: `${20 + (i * 20) % 50}%`,
-            }}
-            title={`${loc.profile?.full_name ?? "Agent"} - ${loc.latitude.toFixed(4)}, ${loc.longitude.toFixed(4)}`}
-          />
-        ))}
+      {/* Legend */}
+      <div className="flex items-center gap-6 text-xs text-muted-foreground">
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-primary" /> Active</span>
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-yellow-400" /> Idle</span>
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-full bg-muted-foreground" /> Offline</span>
       </div>
 
-      {/* Agent list */}
+      {/* Map */}
+      <div className="bg-card border border-border rounded-xl overflow-hidden" style={{ height: 450 }}>
+        <MapContainer
+          center={center}
+          zoom={locations.length > 0 ? 10 : 7}
+          scrollWheelZoom={true}
+          style={{ height: "100%", width: "100%" }}
+          className="z-0"
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          />
+          {locations.map((loc) => (
+            <Marker key={loc.id} position={[loc.latitude, loc.longitude]} icon={getIcon(loc.status)}>
+              <Popup>
+                <div className="text-xs space-y-1 min-w-[160px]">
+                  <p className="font-bold text-sm">{loc.profile?.full_name ?? "Agent"}</p>
+                  <p>Status: <strong className="capitalize">{loc.status}</strong></p>
+                  <p className="font-mono">{loc.latitude.toFixed(6)}, {loc.longitude.toFixed(6)}</p>
+                  {loc.accuracy && <p>Accuracy: ±{loc.accuracy.toFixed(0)}m</p>}
+                  {loc.note && <p>Note: {loc.note}</p>}
+                  <p className="text-gray-400">{timeSince(loc.updated_at)}</p>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
+
+      {/* Agent list table */}
       <div className="bg-card border border-border rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
