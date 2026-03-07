@@ -16,16 +16,16 @@ import AdminSettings from "@/components/admin/AdminSettings";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading, rolesLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
+    if (!loading && !rolesLoading && (!user || !isAdmin)) {
       navigate("/admin/login", { replace: true });
     }
-  }, [user, loading, isAdmin, navigate]);
+  }, [user, loading, rolesLoading, isAdmin, navigate]);
 
-  if (loading) {
+  if (loading || rolesLoading) {
     return (
       <div className="min-h-screen bg-[#f5f5f0] flex items-center justify-center">
         <div className="text-center">
