@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_locations: {
+        Row: {
+          accuracy: number | null
+          agent_id: string
+          created_at: string
+          id: string
+          latitude: number
+          longitude: number
+          note: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          accuracy?: number | null
+          agent_id: string
+          created_at?: string
+          id?: string
+          latitude: number
+          longitude: number
+          note?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          accuracy?: number | null
+          agent_id?: string
+          created_at?: string
+          id?: string
+          latitude?: number
+          longitude?: number
+          note?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_id: string
@@ -48,6 +84,51 @@ export type Database = {
           featured_image_url?: string | null
           id?: string
           published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          attendee_count: number | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          event_date: string
+          event_type: string
+          id: string
+          location: string | null
+          max_attendees: number | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          attendee_count?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date: string
+          event_type?: string
+          id?: string
+          location?: string | null
+          max_attendees?: number | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          attendee_count?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          location?: string | null
+          max_attendees?: number | null
+          status?: string
           title?: string
           updated_at?: string
         }
