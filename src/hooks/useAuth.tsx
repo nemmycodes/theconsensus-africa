@@ -7,6 +7,7 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   isAgent: boolean;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   loading: true,
   isAgent: false,
+  isAdmin: false,
   signOut: async () => {},
 });
 
@@ -23,21 +25,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAgent, setIsAgent] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const checkRoles = async (userId: string) => {
+    const [agentRes, adminRes] = await Promise.all([
+      supabase.rpc("has_role", { _user_id: userId, _role: "agent" }),
+      supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+    ]);
+    setIsAgent(!!agentRes.data);
+    setIsAdmin(!!adminRes.data);
+  };
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-
         if (session?.user) {
-          const { data } = await supabase.rpc("has_role", {
-            _user_id: session.user.id,
-            _role: "agent",
-          });
-          setIsAgent(!!data);
+          await checkRoles(session.user.id);
         } else {
           setIsAgent(false);
+          setIsAdmin(false);
         }
         setLoading(false);
       }
@@ -47,10 +55,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        supabase.rpc("has_role", {
-          _user_id: session.user.id,
-          _role: "agent",
-        }).then(({ data }) => setIsAgent(!!data));
+        checkRoles(session.user.id);
       }
       setLoading(false);
     });
@@ -63,7 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, isAgent, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, isAgent, isAdmin, signOut }}>
       {children}
     </AuthContext.Provider>
   );
