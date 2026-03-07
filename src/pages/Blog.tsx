@@ -277,7 +277,7 @@ const Blog = () => {
                 <div className="p-8 md:p-10 flex flex-col justify-center">
                   <div className="flex items-center gap-3 mb-4">
                     <Badge className="bg-primary text-primary-foreground text-xs uppercase tracking-wider">
-                      {featured.category === "General" ? "National" : featured.category}
+                      {categoryDisplayMap[featured.category] || featured.category}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
                       {format(new Date(featured.created_at), "MMMM d, yyyy")}
@@ -330,7 +330,7 @@ const Blog = () => {
                     )}
                     {/* Category Badge */}
                     <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs uppercase tracking-wider">
-                      {post.category}
+                      {categoryDisplayMap[post.category] || post.category}
                     </Badge>
                     {/* Read time */}
                     <span className="absolute bottom-3 left-3 flex items-center gap-1 text-xs bg-background/80 backdrop-blur-sm text-foreground px-2 py-1 rounded">
