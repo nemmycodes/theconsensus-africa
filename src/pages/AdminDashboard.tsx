@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminOverview from "@/components/admin/AdminOverview";
 import AdminUsers from "@/components/admin/AdminUsers";
@@ -14,6 +16,27 @@ import AdminSettings from "@/components/admin/AdminSettings";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const { user, loading, isAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && (!user || !isAdmin)) {
+      navigate("/admin/login", { replace: true });
+    }
+  }, [user, loading, isAdmin, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#f5f5f0] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-gray-500">Verifying admin access…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) return null;
 
   const renderContent = () => {
     switch (activeTab) {
