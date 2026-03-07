@@ -15,6 +15,8 @@ import Donate from "./pages/Donate";
 import ElectionForm from "./pages/ElectionForm";
 import SituationRoom from "./pages/SituationRoom";
 import Blog from "./pages/Blog";
+import Events from "./pages/Events";
+import Discuss from "./pages/Discuss";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +40,8 @@ const App = () => (
             <Route path="/election-form" element={<ElectionForm />} />
             <Route path="/situation-room" element={<SituationRoom />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/events" element={<Events />} />
+            <Route path="/discuss" element={<Discuss />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
