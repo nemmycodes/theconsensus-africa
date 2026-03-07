@@ -67,13 +67,24 @@ const AdminSidebar = ({ activeTab, onTabChange }: AdminSidebarProps) => {
         })}
       </nav>
 
-      {/* Collapse Toggle */}
-      <div className="p-3 border-t border-gray-100">
+      {/* Bottom Actions */}
+      <div className="p-3 border-t border-gray-100 space-y-1">
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors"
         >
           <ChevronLeft className={`w-4 h-4 transition-transform ${collapsed ? "rotate-180" : ""}`} />
+        </button>
+        <button
+          onClick={async () => {
+            await signOut();
+            navigate("/admin/login");
+          }}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+          title="Sign Out"
+        >
+          <LogOut className="w-4 h-4" />
+          {!collapsed && <span className="text-sm font-medium">Sign Out</span>}
         </button>
       </div>
     </aside>
