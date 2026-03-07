@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import AdminHeader from "./AdminHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Download, UserPlus, MoreHorizontal } from "lucide-react";
+import { Search, Download, UserPlus, MoreVertical, Filter, Users, Shield, Mail, CheckCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Profile {
@@ -13,116 +14,145 @@ interface Profile {
   created_at: string;
 }
 
+const mockUsers = [
+  { name: "Sarah Okonkwo", email: "sarah.o@consensus.org", role: "Election Coordinator", region: "Plateau North", status: "active", joined: "Nov 15, 2025" },
+  { name: "John Danladi", email: "john.d@consensus.org", role: "Field Agent", region: "Jos North", status: "active", joined: "Dec 3, 2025" },
+  { name: "Grace Ayuba", email: "grace.a@consensus.org", role: "Training Manager", region: "Plateau Central", status: "active", joined: "Oct 22, 2025" },
+  { name: "Michael Gyang", email: "michael.g@consensus.org", role: "Content Manager", region: "Jos South", status: "active", joined: "Nov 8, 2025" },
+  { name: "Blessing Pam", email: "blessing.p@consensus.org", role: "Field Agent", region: "Pankshin", status: "inactive", joined: "Sep 14, 2025" },
+  { name: "David Gowon", email: "david.g@consensus.org", role: "Intelligence Officer", region: "Barkin Ladi", status: "active", joined: "Jan 5, 2026" },
+  { name: "Ruth Choji", email: "ruth.c@consensus.org", role: "Communications Lead", region: "Plateau South", status: "active", joined: "Dec 18, 2025" },
+  { name: "Emmanuel Yakubu", email: "emmanuel.y@consensus.org", role: "Field Agent", region: "Shendam", status: "active", joined: "Feb 1, 2026" },
+];
+
+const roleColors: Record<string, string> = {
+  "Election Coordinator": "bg-emerald-50 text-emerald-700 border-emerald-200",
+  "Field Agent": "bg-emerald-50 text-emerald-700 border-emerald-200",
+  "Training Manager": "bg-emerald-50 text-emerald-700 border-emerald-200",
+  "Content Manager": "bg-emerald-50 text-emerald-700 border-emerald-200",
+  "Intelligence Officer": "bg-emerald-50 text-emerald-700 border-emerald-200",
+  "Communications Lead": "bg-emerald-50 text-emerald-700 border-emerald-200",
+};
+
 const AdminUsers = () => {
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  const fetchProfiles = async () => {
-    setLoading(true);
-    const { data, error } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
-    if (data) setProfiles(data);
-    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-    setLoading(false);
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      setLoading(true);
+      const { data } = await supabase.from("profiles").select("*").order("created_at", { ascending: false });
+      if (data) setProfiles(data);
+      setLoading(false);
+    };
+    fetchProfiles();
+  }, []);
+
+  const getInitials = (name: string) => {
+    return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
   };
 
-  useEffect(() => { fetchProfiles(); }, []);
-
-  const filtered = profiles.filter((p) =>
-    (p.full_name ?? "").toLowerCase().includes(search.toLowerCase()) ||
-    p.user_id.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const exportCSV = () => {
-    const header = "Name,User ID,Created At\n";
-    const rows = filtered.map((p) => `"${p.full_name ?? "N/A"}","${p.user_id}","${p.created_at}"`).join("\n");
-    const blob = new Blob([header + rows], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `users_export_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast({ title: "Export Complete", description: `${filtered.length} users exported.` });
-  };
-
-  const assignRole = async (userId: string, role: "agent" | "user") => {
-    const { error } = await supabase.from("user_roles").insert({ user_id: userId, role });
-    if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Role Assigned", description: `User assigned ${role} role.` });
-    }
-  };
+  const initialsColors = ["bg-emerald-100 text-emerald-700", "bg-blue-100 text-blue-700", "bg-amber-100 text-amber-700", "bg-purple-100 text-purple-700", "bg-rose-100 text-rose-700"];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-black">User Management</h1>
-          <p className="text-muted-foreground text-sm mt-1">{profiles.length} registered users</p>
+    <div>
+      <AdminHeader title="Users" subtitle="Manage user accounts, roles, and permissions" />
+
+      {/* Search + Actions */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Input placeholder="Search users by name, email, or role..." className="pl-10 bg-white border-gray-200 text-gray-900 placeholder:text-gray-400" />
         </div>
-        <Button onClick={exportCSV} variant="outline" size="sm" className="gap-2">
-          <Download className="w-4 h-4" /> Export CSV
+        <Button variant="outline" className="gap-2 border-gray-200 text-gray-700 bg-white hover:bg-gray-50">
+          <Filter className="w-4 h-4" /> Filter
+        </Button>
+        <Button variant="outline" className="gap-2 border-gray-200 text-gray-700 bg-white hover:bg-gray-50">
+          <Download className="w-4 h-4" /> Export
+        </Button>
+        <Button className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
+          <UserPlus className="w-4 h-4" /> Add User
         </Button>
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          placeholder="Search by name or user ID..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10"
-        />
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        {[
+          { icon: Users, label: "Total Users", value: "12,847", bg: "bg-emerald-50", color: "text-emerald-600" },
+          { icon: CheckCircle, label: "Active Users", value: "11,234", bg: "bg-blue-50", color: "text-blue-600" },
+          { icon: Mail, label: "Pending Verification", value: "1,613", bg: "bg-amber-50", color: "text-amber-600" },
+          { icon: Shield, label: "Agents", value: "384", bg: "bg-emerald-50", color: "text-emerald-600" },
+        ].map((s) => (
+          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5 flex items-center gap-4">
+            <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center`}>
+              <s.icon className={`w-5 h-5 ${s.color}`} />
+            </div>
+            <div>
+              <p className="text-2xl font-black text-gray-900">{s.value}</p>
+              <p className="text-xs text-gray-500">{s.label}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className="bg-card border border-border rounded-xl overflow-hidden">
+      {/* Table */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border text-xs text-muted-foreground uppercase tracking-wider">
-              <th className="text-left p-4">User</th>
-              <th className="text-left p-4">User ID</th>
-              <th className="text-left p-4">Joined</th>
-              <th className="text-right p-4">Actions</th>
+            <tr className="border-b border-gray-200">
+              <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">User</th>
+              <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Role</th>
+              <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Region</th>
+              <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Joined</th>
+              <th className="text-center p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {loading ? (
-              <tr><td colSpan={4} className="p-8 text-center text-muted-foreground">Loading...</td></tr>
-            ) : filtered.length === 0 ? (
-              <tr><td colSpan={4} className="p-8 text-center text-muted-foreground">No users found</td></tr>
-            ) : (
-              filtered.map((profile) => (
-                <tr key={profile.id} className="border-b border-border/50 hover:bg-secondary/30 transition-colors">
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
-                        {(profile.full_name ?? "U")[0].toUpperCase()}
-                      </div>
-                      <span className="font-medium text-sm">{profile.full_name ?? "Unnamed"}</span>
+            {mockUsers.map((user, i) => (
+              <tr key={i} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-full ${initialsColors[i % initialsColors.length]} flex items-center justify-center text-xs font-bold`}>
+                      {getInitials(user.name)}
                     </div>
-                  </td>
-                  <td className="p-4 text-xs text-muted-foreground font-mono">{profile.user_id.slice(0, 12)}...</td>
-                  <td className="p-4 text-xs text-muted-foreground">
-                    {new Date(profile.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="p-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button size="sm" variant="outline" className="text-xs h-7" onClick={() => assignRole(profile.user_id, "agent")}>
-                        Make Agent
-                      </Button>
-                      <Button size="sm" variant="ghost" className="h-7 w-7 p-0">
-                        <MoreHorizontal className="w-4 h-4" />
-                      </Button>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">{user.name}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
-                  </td>
-                </tr>
-              ))
-            )}
+                  </div>
+                </td>
+                <td className="p-4">
+                  <span className={`inline-block px-2.5 py-1 rounded-md text-xs font-medium border ${roleColors[user.role] ?? "bg-gray-50 text-gray-600 border-gray-200"}`}>
+                    {user.role}
+                  </span>
+                </td>
+                <td className="p-4 text-sm text-gray-700">{user.region}</td>
+                <td className="p-4">
+                  <span className={`flex items-center gap-1.5 text-xs font-medium ${user.status === "active" ? "text-emerald-600" : "text-gray-400"}`}>
+                    <span className={`w-2 h-2 rounded-full ${user.status === "active" ? "bg-emerald-500" : "bg-gray-300"}`} />
+                    {user.status}
+                  </span>
+                </td>
+                <td className="p-4 text-sm text-gray-500">{user.joined}</td>
+                <td className="p-4 text-center">
+                  <button className="text-gray-400 hover:text-gray-600">
+                    <MoreVertical className="w-4 h-4" />
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+        <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
+          <p className="text-sm text-gray-500">Showing <span className="font-bold text-gray-900">8</span> of <span className="font-bold text-gray-900">8</span> users</p>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="border-gray-200 text-gray-600 bg-white">Previous</Button>
+            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white">Next</Button>
+          </div>
+        </div>
       </div>
     </div>
   );
