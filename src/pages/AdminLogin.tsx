@@ -20,45 +20,26 @@ const AdminLogin = () => {
     e.preventDefault();
     setLoading(true);
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-    if (error) {
-      toast({ title: "Login failed", description: error.message, variant: "destructive" });
-      setLoading(false);
-      return;
-    }
+      if (error) {
+        toast({ title: "Login failed", description: error.message, variant: "destructive" });
+        return;
+      }
 
-    // Verify admin role
-    const { data: hasAdmin, error: roleError } = await supabase.rpc("has_role", {
-      _user_id: data.user.id,
-      _role: "admin",
-    });
-
-    if (roleError) {
-      await supabase.auth.signOut();
+      toast({ title: "Welcome, Administrator" });
+      // Role validation now happens in /admin guard via useAuth
+      navigate("/admin", { replace: true });
+    } catch {
       toast({
-        title: "Access check failed",
-        description: "Unable to verify admin access. Please try again.",
+        title: "Login error",
+        description: "Something went wrong while signing in. Please try again.",
         variant: "destructive",
       });
+    } finally {
       setLoading(false);
-      return;
     }
-
-    if (!hasAdmin) {
-      await supabase.auth.signOut();
-      toast({
-        title: "Access Denied",
-        description: "This login is restricted to administrators only.",
-        variant: "destructive",
-      });
-      setLoading(false);
-      return;
-    }
-
-    toast({ title: "Welcome, Administrator" });
-    navigate("/admin");
-    setLoading(false);
   };
 
   return (
