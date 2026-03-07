@@ -85,20 +85,46 @@ const AdminBlogPosts = () => {
   };
 
   const handleSave = async () => {
-    if (!form.title.trim() || !form.content.trim()) { toast({ title: "Title and content are required", variant: "destructive" }); return; }
+    if (!form.title.trim() || !form.content.trim()) {
+      toast({ title: "Title and content are required", variant: "destructive" });
+      return;
+    }
+
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData.user) {
+      toast({ title: "Please sign in", description: "You must be logged in to create or edit articles.", variant: "destructive" });
+      return;
+    }
+
     setSaving(true);
-    const payload = { title: form.title.trim(), excerpt: form.excerpt.trim() || null, content: form.content.trim(), category: form.category, featured_image_url: form.featured_image_url.trim() || null, published: form.published };
+    const payload = {
+      title: form.title.trim(),
+      excerpt: form.excerpt.trim() || null,
+      content: form.content.trim(),
+      category: form.category,
+      featured_image_url: form.featured_image_url.trim() || null,
+      published: form.published,
+    };
+
     if (editingPost) {
       const { error } = await supabase.from("blog_posts").update(payload).eq("id", editingPost.id);
-      if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-      else toast({ title: "Post updated" });
+      if (error) {
+        toast({ title: "Update failed", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: "Post updated" });
+      }
     } else {
-      const { data: userData } = await supabase.auth.getUser();
-      const { error } = await supabase.from("blog_posts").insert({ ...payload, author_id: userData.user?.id || "" });
-      if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
-      else toast({ title: "Post created" });
+      const { error } = await supabase.from("blog_posts").insert({ ...payload, author_id: authData.user.id });
+      if (error) {
+        toast({ title: "Create failed", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: "Post created" });
+      }
     }
-    setSaving(false); setDialogOpen(false); fetchPosts();
+
+    setSaving(false);
+    setDialogOpen(false);
+    fetchPosts();
   };
 
   const filtered = posts.filter((p) => {
