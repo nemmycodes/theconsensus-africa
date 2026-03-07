@@ -58,6 +58,14 @@ const Blog = () => {
   const [filter, setFilter] = useState("All News");
 
   const categories = ["General", "Politics", "Community", "Development", "Youth", "Culture"];
+  const categoryDisplayMap: Record<string, string> = {
+    General: "National",
+    Politics: "Policy",
+    Development: "Tech",
+    Community: "Community",
+    Youth: "Youth",
+    Culture: "Culture",
+  };
 
   useEffect(() => {
     fetchPosts();
