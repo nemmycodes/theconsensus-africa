@@ -1,17 +1,20 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { ArrowRight, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import eventTownhall from "@/assets/event-townhall.jpg";
-import eventWorkshop from "@/assets/event-workshop.jpg";
-import eventRally from "@/assets/event-rally.jpg";
+
+interface EventItem {
+  id: string;
+  title: string;
+  description: string | null;
+  event_type: string;
+  image_url: string | null;
+}
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0, 0, 0.2, 1] as const },
-  },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0, 0, 0.2, 1] as const } },
 };
 
 const staggerContainer = {
@@ -19,32 +22,30 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.15 } },
 };
 
-const events = [
-  {
-    image: eventTownhall,
-    tag: "STRATEGY",
-    tagColor: "bg-primary/20 text-primary",
-    title: "Leadership Retreat",
-    description: "Developing the next generation of strategic thinkers and policy makers in Abuja.",
-  },
-  {
-    image: eventWorkshop,
-    tag: "EMPOWERMENT",
-    tagColor: "bg-primary/20 text-primary",
-    title: "Youth Summit",
-    description: "Lagos mega-gathering focusing on vocational skills and entrepreneurial grants.",
-  },
-  {
-    image: eventRally,
-    tag: "UNITY",
-    tagColor: "bg-primary/20 text-primary",
-    title: "Unity Rally",
-    description: "Bringing together diverse ethnic groups under the umbrella of progress.",
-  },
-];
-
 const EventsSection = () => {
   const navigate = useNavigate();
+  const [events, setEvents] = useState<EventItem[]>([]);
+
+  const fetchEvents = async () => {
+    const { data } = await supabase
+      .from("events")
+      .select("id, title, description, event_type, image_url")
+      .gte("event_date", new Date().toISOString())
+      .order("event_date", { ascending: true })
+      .limit(3);
+    if (data) setEvents(data as EventItem[]);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+    const channel = supabase
+      .channel("events-home")
+      .on("postgres_changes", { event: "*", schema: "public", table: "events" }, () => fetchEvents())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  if (events.length === 0) return null;
 
   return (
     <section className="py-24 bg-card relative overflow-hidden">
@@ -78,26 +79,28 @@ const EventsSection = () => {
         >
           {events.map((event) => (
             <motion.div
-              key={event.title}
+              key={event.id}
               variants={fadeInUp}
               className="group bg-secondary rounded-2xl overflow-hidden border border-border hover:border-primary/30 transition-all duration-300"
             >
               <div className="relative h-48 overflow-hidden">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                {event.image_url ? (
+                  <img src={event.image_url} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                ) : (
+                  <div className="w-full h-full bg-muted flex items-center justify-center">
+                    <Calendar className="h-10 w-10 text-muted-foreground/30" />
+                  </div>
+                )}
               </div>
               <div className="p-6 space-y-3">
-                <span className={`inline-block text-xs font-bold tracking-wider px-2 py-1 rounded ${event.tagColor}`}>
-                  {event.tag}
+                <span className="inline-block text-xs font-bold tracking-wider px-2 py-1 rounded bg-primary/20 text-primary uppercase">
+                  {event.event_type}
                 </span>
                 <h3 className="text-lg font-bold group-hover:text-primary transition-colors">
                   {event.title}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {event.description}
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                  {event.description || "Join us for this exciting event."}
                 </p>
                 <button
                   onClick={() => navigate("/events")}
