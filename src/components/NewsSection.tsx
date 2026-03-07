@@ -1,26 +1,43 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, MessageSquare, Share2 } from "lucide-react";
-import news1 from "@/assets/news-1.jpg";
-import news2 from "@/assets/news-2.jpg";
+import { supabase } from "@/integrations/supabase/client";
+import { ArrowRight, MessageSquare, Share2, BookOpen } from "lucide-react";
+import { format } from "date-fns";
 
-const newsItems = [
-  {
-    image: news1,
-    date: "OCTOBER 24, 2024",
-    title: "Chief Kefas Ropshik Wungak Outlines Vision for Northern Development",
-    description: "The party's chairman addressed a massive crowd in Kano, focusing on agricultural modernization and solar energy infrastructure for the North.",
-    comments: 24,
-  },
-  {
-    image: news2,
-    date: "OCTOBER 21, 2024",
-    title: "Consensus Party Launches Digital Membership Identification Card",
-    description: "A landmark move in Nigerian politics, the new ID system uses blockchain technology to ensure membership integrity and voting transparency.",
-    comments: 89,
-  },
-];
+interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string | null;
+  content: string;
+  featured_image_url: string | null;
+  category: string;
+  created_at: string;
+}
 
 const NewsSection = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+
+  const fetchPosts = async () => {
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("id, title, excerpt, content, featured_image_url, category, created_at")
+      .eq("published", true)
+      .order("created_at", { ascending: false })
+      .limit(3);
+    if (data) setPosts(data);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+    const channel = supabase
+      .channel("news-home")
+      .on("postgres_changes", { event: "*", schema: "public", table: "blog_posts" }, () => fetchPosts())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, []);
+
+  if (posts.length === 0) return null;
+
   return (
     <section className="py-24 bg-background">
       <div className="container mx-auto px-4 lg:px-8">
@@ -41,9 +58,10 @@ const NewsSection = () => {
         </motion.div>
 
         <div className="space-y-6">
-          {newsItems.map((item, i) => (
-            <motion.div
-              key={item.title}
+          {posts.map((post, i) => (
+            <motion.a
+              key={post.id}
+              href="/blog"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -51,18 +69,27 @@ const NewsSection = () => {
               className="flex flex-col md:flex-row gap-6 p-6 bg-card rounded-xl border border-border hover:border-primary/30 transition-colors group cursor-pointer"
             >
               <div className="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0">
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                {post.featured_image_url ? (
+                  <img src={post.featured_image_url} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                ) : (
+                  <div className="w-full h-full bg-secondary flex items-center justify-center">
+                    <BookOpen className="h-8 w-8 text-muted-foreground/30" />
+                  </div>
+                )}
               </div>
               <div className="flex-1 space-y-2">
-                <span className="text-xs font-bold text-primary tracking-wider">{item.date}</span>
-                <h3 className="text-lg font-bold group-hover:text-primary transition-colors">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                <span className="text-xs font-bold text-primary tracking-wider uppercase">
+                  {format(new Date(post.created_at), "MMMM d, yyyy")}
+                </span>
+                <h3 className="text-lg font-bold group-hover:text-primary transition-colors">{post.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                  {post.excerpt || post.content.slice(0, 200)}
+                </p>
                 <div className="flex items-center gap-4 text-xs text-muted-foreground pt-1">
-                  <span className="flex items-center gap-1"><MessageSquare size={12} /> {item.comments} Comments</span>
                   <span className="flex items-center gap-1"><Share2 size={12} /> Share</span>
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
       </div>

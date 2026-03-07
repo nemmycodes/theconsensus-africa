@@ -92,6 +92,11 @@ const SituationRoom = () => {
 
   useEffect(() => {
     fetchUpdates();
+    const channel = supabase
+      .channel("situation-public")
+      .on("postgres_changes", { event: "*", schema: "public", table: "situation_updates" }, () => fetchUpdates())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const fetchUpdates = async () => {

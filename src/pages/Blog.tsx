@@ -69,6 +69,11 @@ const Blog = () => {
 
   useEffect(() => {
     fetchPosts();
+    const channel = supabase
+      .channel("blog-public")
+      .on("postgres_changes", { event: "*", schema: "public", table: "blog_posts" }, () => fetchPosts())
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const fetchPosts = async () => {
