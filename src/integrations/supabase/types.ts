@@ -98,6 +98,7 @@ export type Database = {
           event_date: string
           event_type: string
           id: string
+          image_url: string | null
           location: string | null
           max_attendees: number | null
           status: string
@@ -112,6 +113,7 @@ export type Database = {
           event_date: string
           event_type?: string
           id?: string
+          image_url?: string | null
           location?: string | null
           max_attendees?: number | null
           status?: string
@@ -126,6 +128,7 @@ export type Database = {
           event_date?: string
           event_type?: string
           id?: string
+          image_url?: string | null
           location?: string | null
           max_attendees?: number | null
           status?: string
