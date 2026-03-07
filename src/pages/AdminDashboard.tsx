@@ -7,6 +7,7 @@ import AdminData from "@/components/admin/AdminData";
 import AdminEvents from "@/components/admin/AdminEvents";
 import AdminLocations from "@/components/admin/AdminLocations";
 import AdminUpdates from "@/components/admin/AdminUpdates";
+import AdminBlogPosts from "@/components/admin/AdminBlogPosts";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -16,6 +17,7 @@ const AdminDashboard = () => {
       case "overview": return <AdminOverview />;
       case "users": return <AdminUsers />;
       case "agents": return <AdminAgents />;
+      case "blog": return <AdminBlogPosts />;
       case "data": return <AdminData />;
       case "events": return <AdminEvents />;
       case "locations": return <AdminLocations />;

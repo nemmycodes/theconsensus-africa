@@ -1,4 +1,4 @@
-import { Users, Shield, Database, Calendar, MapPin, FileText, LayoutDashboard, LogOut } from "lucide-react";
+import { Users, Shield, Database, Calendar, MapPin, FileText, LayoutDashboard, LogOut, BookOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
@@ -11,8 +11,9 @@ const menuItems = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "users", label: "Users", icon: Users },
   { id: "agents", label: "Agents", icon: Shield },
-  { id: "data", label: "Data & Exports", icon: Database },
+  { id: "blog", label: "Blog Posts", icon: BookOpen },
   { id: "events", label: "Live Events", icon: Calendar },
+  { id: "data", label: "Data & Exports", icon: Database },
   { id: "locations", label: "Agent Locations", icon: MapPin },
   { id: "updates", label: "Agent Updates", icon: FileText },
 ];
