@@ -58,6 +58,14 @@ const Blog = () => {
   const [filter, setFilter] = useState("All News");
 
   const categories = ["General", "Politics", "Community", "Development", "Youth", "Culture"];
+  const categoryDisplayMap: Record<string, string> = {
+    General: "National",
+    Politics: "Policy",
+    Development: "Tech",
+    Community: "Community",
+    Youth: "Youth",
+    Culture: "Culture",
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -101,7 +109,12 @@ const Blog = () => {
     setLoading(false);
   };
 
-  const filtered = filter === "All News" ? posts : posts.filter((p) => p.category === filter);
+  const categoryFilterMap: Record<string, string[]> = {
+    "Press Release": ["Politics"],
+    "National Updates": ["General", "Development"],
+    "Community": ["Community"],
+  };
+  const filtered = filter === "All News" ? posts : posts.filter((p) => (categoryFilterMap[filter] || []).includes(p.category));
   const featured = filtered[0];
   const rest = filtered.slice(1);
 
@@ -264,7 +277,7 @@ const Blog = () => {
                 <div className="p-8 md:p-10 flex flex-col justify-center">
                   <div className="flex items-center gap-3 mb-4">
                     <Badge className="bg-primary text-primary-foreground text-xs uppercase tracking-wider">
-                      {featured.category === "General" ? "National" : featured.category}
+                      {categoryDisplayMap[featured.category] || featured.category}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
                       {format(new Date(featured.created_at), "MMMM d, yyyy")}
@@ -317,7 +330,7 @@ const Blog = () => {
                     )}
                     {/* Category Badge */}
                     <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs uppercase tracking-wider">
-                      {post.category}
+                      {categoryDisplayMap[post.category] || post.category}
                     </Badge>
                     {/* Read time */}
                     <span className="absolute bottom-3 left-3 flex items-center gap-1 text-xs bg-background/80 backdrop-blur-sm text-foreground px-2 py-1 rounded">
