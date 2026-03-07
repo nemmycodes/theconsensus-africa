@@ -101,7 +101,12 @@ const Blog = () => {
     setLoading(false);
   };
 
-  const filtered = filter === "All News" ? posts : posts.filter((p) => p.category === filter);
+  const categoryFilterMap: Record<string, string[]> = {
+    "Press Release": ["Politics"],
+    "National Updates": ["General", "Development"],
+    "Community": ["Community"],
+  };
+  const filtered = filter === "All News" ? posts : posts.filter((p) => (categoryFilterMap[filter] || []).includes(p.category));
   const featured = filtered[0];
   const rest = filtered.slice(1);
 
