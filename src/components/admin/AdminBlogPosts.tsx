@@ -60,15 +60,27 @@ const AdminBlogPosts = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData.user) {
+      toast({ title: "Please sign in", description: "You must be logged in to upload images.", variant: "destructive" });
+      return;
+    }
+
     setUploading(true);
-    const path = `blog/${Date.now()}.${file.name.split(".").pop()}`;
-    const { error } = await supabase.storage.from("cms-uploads").upload(path, file);
-    if (error) toast({ title: "Upload failed", description: error.message, variant: "destructive" });
-    else {
+    const extension = file.name.split(".").pop() || "jpg";
+    const path = `blog/${authData.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
+
+    const { error } = await supabase.storage.from("cms-uploads").upload(path, file, { upsert: true });
+    if (error) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } else {
       const { data: urlData } = supabase.storage.from("cms-uploads").getPublicUrl(path);
       setForm((f) => ({ ...f, featured_image_url: urlData.publicUrl }));
       toast({ title: "Image uploaded" });
     }
+
+    e.target.value = "";
     setUploading(false);
   };
 
