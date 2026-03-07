@@ -29,10 +29,21 @@ const AdminLogin = () => {
     }
 
     // Verify admin role
-    const { data: hasAdmin } = await supabase.rpc("has_role", {
+    const { data: hasAdmin, error: roleError } = await supabase.rpc("has_role", {
       _user_id: data.user.id,
       _role: "admin",
     });
+
+    if (roleError) {
+      await supabase.auth.signOut();
+      toast({
+        title: "Access check failed",
+        description: "Unable to verify admin access. Please try again.",
+        variant: "destructive",
+      });
+      setLoading(false);
+      return;
+    }
 
     if (!hasAdmin) {
       await supabase.auth.signOut();

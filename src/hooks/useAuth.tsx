@@ -28,12 +28,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   const checkRoles = async (userId: string) => {
-    const [agentRes, adminRes] = await Promise.all([
-      supabase.rpc("has_role", { _user_id: userId, _role: "agent" }),
-      supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
-    ]);
-    setIsAgent(!!agentRes.data);
-    setIsAdmin(!!adminRes.data);
+    try {
+      const [agentRes, adminRes] = await Promise.all([
+        supabase.rpc("has_role", { _user_id: userId, _role: "agent" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+      ]);
+
+      const agent = !agentRes.error && !!agentRes.data;
+      const admin = !adminRes.error && !!adminRes.data;
+
+      setIsAgent(agent);
+      setIsAdmin(admin);
+
+      return { agent, admin };
+    } catch {
+      setIsAgent(false);
+      setIsAdmin(false);
+      return { agent: false, admin: false };
+    }
   };
 
   useEffect(() => {
@@ -51,11 +63,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        checkRoles(session.user.id);
+        await checkRoles(session.user.id);
+      } else {
+        setIsAgent(false);
+        setIsAdmin(false);
       }
       setLoading(false);
     });
