@@ -4,12 +4,50 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, User, Heart, MapPin, Mail } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Check, User, Heart, MapPin, Mail, Users, GraduationCap, Briefcase, Palette, Globe, ShieldCheck, TrendingUp, MessageSquare, Award } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import joinusHero from "@/assets/joinus-hero.jpg";
+
+const membershipTypes = [
+  { icon: Users, title: "Gen Z & Young Millennials", description: "The vibrant heart of Africa's digital and social transformation." },
+  { icon: GraduationCap, title: "Students", description: "Academic excellence meets practical leadership and civic engagement." },
+  { icon: Briefcase, title: "Entrepreneurs", description: "Building the value creators and economic engines of the continent." },
+  { icon: Award, title: "Professionals", description: "Industry experts driving governance, policy, and market intelligence." },
+  { icon: Palette, title: "Creatives", description: "Visionary thinkers crafting the narrative of a new African era." },
+  { icon: Globe, title: "Community Builders", description: "Social architects focused on sustainable impact and local growth." },
+];
+
+const benefits = [
+  { icon: ShieldCheck, title: "Verified Network", description: "Access a verified economic and civic network of high-caliber individuals." },
+  { icon: MessageSquare, title: "Community Discussions", description: "Engage in high-impact forums and local community deep-dives." },
+  { icon: TrendingUp, title: "Leadership Ops", description: "Direct pathways to leadership and exclusive economic opportunities." },
+  { icon: Globe, title: "Civic Intelligence", description: "Get data-driven insights and deep civic intelligence on African affairs." },
+  { icon: Award, title: "Empowerment Ecosystem", description: "Long-term support for your personal and professional development journey." },
+];
+
+const impactRoles = [
+  {
+    title: "Volunteer",
+    description: "Support ground campaigns and digital outreach. Perfect for those starting their civic journey.",
+    features: ["Community outreach", "Digital advocacy", "Event support"],
+    highlight: false,
+  },
+  {
+    title: "Mobilization Agent",
+    description: "Lead local chapters and drive registration in your constituency. Direct party coordination.",
+    features: ["Voting unit coordination", "Member verification", "Strategy meetings"],
+    highlight: true,
+  },
+  {
+    title: "Lead / Delegate",
+    description: "Run for internal office and represent your community in the national convention.",
+    features: ["Policy proposal rights", "Delegate voting power", "Leadership coaching"],
+    highlight: false,
+  },
+];
 
 const LGA_OPTIONS = [
   "Jos North", "Jos South", "Jos East", "Barkin Ladi", "Bassa", "Bokkos",
@@ -36,26 +74,18 @@ const Onboarding = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Step 0 - Account
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // Step 1 - Personal
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [dob, setDob] = useState("");
-
-  // Step 2 - Interests
   const [interests, setInterests] = useState<string[]>([]);
-
-  // Step 3 - Location
   const [lga, setLga] = useState("");
   const [ward, setWard] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   const toggleInterest = (interest: string) => {
-    setInterests((prev) =>
-      prev.includes(interest) ? prev.filter((i) => i !== interest) : [...prev, interest]
-    );
+    setInterests((prev) => prev.includes(interest) ? prev.filter((i) => i !== interest) : [...prev, interest]);
   };
 
   const canProceed = () => {
@@ -91,164 +121,262 @@ const Onboarding = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="pt-24 pb-16 flex items-center justify-center px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-lg"
-        >
-          <div className="text-center mb-8">
-            <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-16 mx-auto mb-4" />
-            <h1 className="text-3xl font-heading font-black">Join the Movement</h1>
-            <p className="text-muted-foreground mt-2">Become part of The Plateau Consensus</p>
-          </div>
 
-          {/* Progress Steps */}
-          <div className="flex items-center justify-center gap-2 mb-8">
-            {steps.map((s, i) => (
-              <div key={s.label} className="flex items-center gap-2">
-                <div
-                  className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                    i <= step
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {i < step ? <Check className="h-4 w-4" /> : <s.icon className="h-4 w-4" />}
+      {/* Hero */}
+      <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
+        <img src={joinusHero} alt="Join Us" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-background/60" />
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 text-center px-4">
+          <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight">JOIN US</h1>
+          <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+            We are building a future defined by collective action, youth empowerment, and sustainable governance. Be the change Nigeria deserves.
+          </p>
+          <Button size="lg" className="mt-6 font-bold" onClick={() => setShowForm(true)}>JOIN THE MOVEMENT</Button>
+        </motion.div>
+      </section>
+
+      {/* Membership Open To */}
+      <section className="py-20 px-4 lg:px-8">
+        <div className="container mx-auto">
+          <h2 className="text-2xl md:text-3xl font-black text-center mb-10">Membership is open to:</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {membershipTypes.map((type, i) => (
+              <motion.div
+                key={type.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="flex items-start gap-4 p-5 bg-card rounded-xl border border-border hover:border-primary/30 transition-colors"
+              >
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <type.icon className="w-5 h-5 text-primary" />
                 </div>
-                {i < steps.length - 1 && (
-                  <div className={`w-8 h-0.5 ${i < step ? "bg-primary" : "bg-muted"}`} />
-                )}
-              </div>
+                <div>
+                  <h3 className="font-bold text-sm">{type.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">{type.description}</p>
+                </div>
+              </motion.div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <Card className="border-border">
-            <CardHeader>
-              <CardTitle>{steps[step].label} Details</CardTitle>
-              <CardDescription>
-                {step === 0 && "Create your account credentials"}
-                {step === 1 && "Tell us about yourself"}
-                {step === 2 && "What areas interest you most?"}
-                {step === 3 && "Where are you located in Plateau State?"}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <AnimatePresence mode="wait">
+      {/* Benefits */}
+      <section className="py-20 px-4 lg:px-8 bg-card">
+        <div className="container mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div>
+              <span className="text-xs font-bold tracking-widest text-primary uppercase">Why Join Us?</span>
+              <h2 className="text-3xl md:text-4xl font-black mt-2 mb-4">Benefits of Joining</h2>
+              <p className="text-muted-foreground mb-8">
+                Unlock exclusive access to a long-term empowerment ecosystem designed for growth, collaboration, and impactful leadership.
+              </p>
+              <div className="p-5 bg-primary/10 border border-primary/20 rounded-xl">
+                <p className="text-sm italic text-foreground">
+                  "The Consensus isn't just a network, it's the intelligence layer for Africa's next generation of leaders."
+                </p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              {benefits.map((b, i) => (
                 <motion.div
-                  key={step}
+                  key={b.title}
                   initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-4"
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  className="flex items-start gap-4"
                 >
-                  {step === 0 && (
-                    <>
-                      <div className="space-y-2">
-                        <Label>Email Address</Label>
-                        <Input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Password</Label>
-                        <Input type="password" placeholder="Min. 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} />
-                      </div>
-                    </>
-                  )}
-
-                  {step === 1 && (
-                    <>
-                      <div className="space-y-2">
-                        <Label>Full Name</Label>
-                        <Input placeholder="Your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Phone Number (optional)</Label>
-                        <Input placeholder="+234..." value={phone} onChange={(e) => setPhone(e.target.value)} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Date of Birth (optional)</Label>
-                        <Input type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="bg-background" />
-                      </div>
-                    </>
-                  )}
-
-                  {step === 2 && (
-                    <div className="flex flex-wrap gap-2">
-                      {INTEREST_OPTIONS.map((interest) => (
-                        <button
-                          key={interest}
-                          type="button"
-                          onClick={() => toggleInterest(interest)}
-                          className={`px-3 py-2 rounded-full text-sm font-medium border transition-colors ${
-                            interests.includes(interest)
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-card text-muted-foreground border-border hover:border-primary/50"
-                          }`}
-                        >
-                          {interest}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  {step === 3 && (
-                    <>
-                      <div className="space-y-2">
-                        <Label>Local Government Area (LGA)</Label>
-                        <select
-                          value={lga}
-                          onChange={(e) => setLga(e.target.value)}
-                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        >
-                          <option value="">Select LGA</option>
-                          {LGA_OPTIONS.map((l) => (
-                            <option key={l} value={l}>{l}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Ward (optional)</Label>
-                        <Input placeholder="Your ward" value={ward} onChange={(e) => setWard(e.target.value)} />
-                      </div>
-                    </>
-                  )}
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <b.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm">{b.title}</h4>
+                    <p className="text-xs text-muted-foreground mt-1">{b.description}</p>
+                  </div>
                 </motion.div>
-              </AnimatePresence>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="flex items-center justify-between mt-8">
-                <Button
-                  variant="ghost"
-                  onClick={() => setStep(step - 1)}
-                  disabled={step === 0}
-                  className="gap-1"
-                >
-                  <ArrowLeft className="h-4 w-4" /> Back
-                </Button>
+      {/* Ready to Take Your Place */}
+      <section className="py-20 px-4 lg:px-8 bg-secondary text-center">
+        <div className="container mx-auto">
+          <h2 className="text-3xl md:text-4xl font-black">Ready to take your place?</h2>
+          <p className="text-muted-foreground mt-4">Join through the official portal:</p>
+          <p className="text-primary font-bold mt-2 underline">www.theconsensus.africa</p>
+          <div className="flex items-center justify-center gap-4 mt-6 text-sm text-muted-foreground">
+            <span className="flex items-center gap-1.5"><Check size={14} className="text-primary" /> Register</span>
+            <span className="flex items-center gap-1.5"><Check size={14} className="text-primary" /> Connect</span>
+            <span className="flex items-center gap-1.5"><Check size={14} className="text-primary" /> Grow</span>
+            <span className="flex items-center gap-1.5"><Check size={14} className="text-primary" /> Lead</span>
+          </div>
+          <Button size="lg" className="mt-8 font-bold" onClick={() => setShowForm(true)}>Register Now</Button>
+        </div>
+      </section>
 
-                {step < steps.length - 1 ? (
-                  <Button onClick={() => setStep(step + 1)} disabled={!canProceed()} className="gap-1">
-                    Next <ArrowRight className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button onClick={handleSubmit} disabled={!canProceed() || loading} className="gap-1">
-                    {loading ? "Creating..." : "Complete Signup"} <Check className="h-4 w-4" />
-                  </Button>
+      {/* Choose Your Impact */}
+      <section className="py-20 px-4 lg:px-8">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
+            <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {impactRoles.map((role, i) => (
+              <motion.div
+                key={role.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className={`rounded-2xl p-8 border ${role.highlight ? "border-primary bg-card" : "border-border bg-card"} text-center relative`}
+              >
+                {role.highlight && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                    MOST ACTIVE
+                  </span>
                 )}
-              </div>
-
-              <div className="mt-6 text-center">
-                <button
-                  onClick={() => navigate("/auth")}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  {role.title === "Volunteer" && <Users className="w-7 h-7 text-primary" />}
+                  {role.title === "Mobilization Agent" && <Award className="w-7 h-7 text-primary" />}
+                  {role.title === "Lead / Delegate" && <ShieldCheck className="w-7 h-7 text-primary" />}
+                </div>
+                <h3 className="text-lg font-bold mb-3">{role.title}</h3>
+                <p className="text-sm text-muted-foreground mb-6">{role.description}</p>
+                <ul className="space-y-2 text-left mb-6">
+                  {role.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  variant={role.highlight ? "default" : "outline"}
+                  className="w-full font-bold"
+                  onClick={() => role.title === "Mobilization Agent" ? navigate("/election-form") : setShowForm(true)}
                 >
-                  Already have an account? Sign in
-                </button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+                  Select {role.title.split(" ")[0]}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Registration Modal / Form */}
+      {showForm && (
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-card border border-border rounded-2xl p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-black">Join the Movement</h2>
+              <button onClick={() => setShowForm(false)} className="text-muted-foreground hover:text-foreground">✕</button>
+            </div>
+
+            {/* Progress Steps */}
+            <div className="flex items-center justify-center gap-2 mb-8">
+              {steps.map((s, i) => (
+                <div key={s.label} className="flex items-center gap-2">
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${i <= step ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                    {i < step ? <Check className="h-4 w-4" /> : <s.icon className="h-4 w-4" />}
+                  </div>
+                  {i < steps.length - 1 && <div className={`w-8 h-0.5 ${i < step ? "bg-primary" : "bg-muted"}`} />}
+                </div>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              {step === 0 && (
+                <>
+                  <div className="space-y-2">
+                    <Label>Email Address</Label>
+                    <Input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Password</Label>
+                    <Input type="password" placeholder="Min. 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} />
+                  </div>
+                </>
+              )}
+              {step === 1 && (
+                <>
+                  <div className="space-y-2">
+                    <Label>Full Name</Label>
+                    <Input placeholder="Your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Phone Number (optional)</Label>
+                    <Input placeholder="+234..." value={phone} onChange={(e) => setPhone(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Date of Birth (optional)</Label>
+                    <Input type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="bg-background" />
+                  </div>
+                </>
+              )}
+              {step === 2 && (
+                <div className="flex flex-wrap gap-2">
+                  {INTEREST_OPTIONS.map((interest) => (
+                    <button
+                      key={interest}
+                      type="button"
+                      onClick={() => toggleInterest(interest)}
+                      className={`px-3 py-2 rounded-full text-sm font-medium border transition-colors ${interests.includes(interest) ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:border-primary/50"}`}
+                    >
+                      {interest}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {step === 3 && (
+                <>
+                  <div className="space-y-2">
+                    <Label>Local Government Area (LGA)</Label>
+                    <select value={lga} onChange={(e) => setLga(e.target.value)} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                      <option value="">Select LGA</option>
+                      {LGA_OPTIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Ward (optional)</Label>
+                    <Input placeholder="Your ward" value={ward} onChange={(e) => setWard(e.target.value)} />
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between mt-8">
+              <Button variant="ghost" onClick={() => step === 0 ? setShowForm(false) : setStep(step - 1)} className="gap-1">
+                <ArrowLeft className="h-4 w-4" /> {step === 0 ? "Cancel" : "Back"}
+              </Button>
+              {step < steps.length - 1 ? (
+                <Button onClick={() => setStep(step + 1)} disabled={!canProceed()} className="gap-1">
+                  Next <ArrowRight className="h-4 w-4" />
+                </Button>
+              ) : (
+                <Button onClick={handleSubmit} disabled={!canProceed() || loading} className="gap-1">
+                  {loading ? "Creating..." : "Complete Signup"} <Check className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+
+            <div className="mt-6 text-center">
+              <button onClick={() => { setShowForm(false); navigate("/auth"); }} className="text-sm text-muted-foreground hover:text-foreground">
+                Already have an account? Sign in
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
