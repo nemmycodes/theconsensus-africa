@@ -6,7 +6,7 @@ import aboutWhoWeAre from "@/assets/about-whoweare2.jpg";
 import mentorKefas from "@/assets/mentor-kefas.jpg";
 import youthEmpowerment from "@/assets/youth-empowerment-photo.jpg";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, Target, Lightbulb, Eye, TrendingUp, BookOpen, Heart, Users, Briefcase, Palette, Globe, Award, ChevronDown } from "lucide-react";
+import { ShieldCheck, Target, Lightbulb, Eye, TrendingUp, BookOpen, Heart, Users, Briefcase, Palette, Globe, Award, ChevronDown, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 const fadeInUp = {
