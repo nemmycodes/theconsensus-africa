@@ -22,6 +22,11 @@ const Navbar = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
+
   return (
     <motion.nav
       initial={{ y: -80 }}
@@ -50,7 +55,7 @@ const Navbar = () => {
           {user ? (
             <>
               <span className="text-xs text-muted-foreground">{user.email}</span>
-              <Button size="sm" variant="outline" onClick={() => signOut()}>Logout</Button>
+              <Button size="sm" variant="outline" onClick={handleSignOut}>Logout</Button>
             </>
           ) : (
             <>
@@ -95,7 +100,7 @@ const Navbar = () => {
             ))}
             <div className="flex gap-3 mt-4">
               {user ? (
-                <Button size="sm" variant="outline" onClick={() => { signOut(); setMobileOpen(false); }}>Logout</Button>
+                <Button size="sm" variant="outline" onClick={() => { handleSignOut(); setMobileOpen(false); }}>Logout</Button>
               ) : (
                 <>
                   <Button size="sm" variant="default" onClick={() => { navigate("/join"); setMobileOpen(false); }}>Join Us</Button>
