@@ -19,6 +19,7 @@ import Blog from "./pages/Blog";
 import Events from "./pages/Events";
 import Discuss from "./pages/Discuss";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLogin from "./pages/AdminLogin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
