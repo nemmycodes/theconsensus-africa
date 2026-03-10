@@ -95,7 +95,7 @@ const Blog = () => {
   const fetchPosts = async () => {
     const { data, error } = await supabase
       .from("blog_posts")
-      .select("*, profiles!blog_posts_author_id_fkey(full_name)")
+      .select("*")
       .eq("published", true)
       .order("created_at", { ascending: false });
 
