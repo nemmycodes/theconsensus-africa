@@ -68,13 +68,29 @@ const Blog = () => {
   };
 
   useEffect(() => {
-    fetchPosts();
+    fetchPosts().then(() => {
+      const params = new URLSearchParams(window.location.search);
+      const postId = params.get("post");
+      if (postId) {
+        // Will be set after posts load via the next effect
+      }
+    });
     const channel = supabase
       .channel("blog-public")
       .on("postgres_changes", { event: "*", schema: "public", table: "blog_posts" }, () => fetchPosts())
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, []);
+
+  // Deep-link: open post from ?post=id
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get("post");
+    if (postId && posts.length > 0 && !selectedPost) {
+      const found = posts.find((p) => p.id === postId);
+      if (found) setSelectedPost(found);
+    }
+  }, [posts]);
 
   const fetchPosts = async () => {
     const { data, error } = await supabase
