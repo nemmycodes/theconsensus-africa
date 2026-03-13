@@ -20,6 +20,7 @@ import Events from "./pages/Events";
 import Discuss from "./pages/Discuss";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
+import MemberDashboard from "./pages/MemberDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/events" element={<Events />} />
             <Route path="/discuss" element={<Discuss />} />
+            <Route path="/dashboard" element={<MemberDashboard />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
