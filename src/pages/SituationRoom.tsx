@@ -18,6 +18,7 @@ import {
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import situationHero from "@/assets/situation-hero.jpg";
+import SituationDashboard from "@/components/situation/SituationDashboard";
 
 const statusIcons: Record<string, React.ReactNode> = {
   Active: <AlertTriangle className="h-4 w-4" />,
@@ -305,102 +306,9 @@ const SituationRoom = () => {
         </div>
       </section>
 
-      {/* Live Updates (shown after clicking "Enter Room") */}
+      {/* Dashboard View (shown after clicking "Enter Room") */}
       {showUpdates && (
-        <section className="py-20 px-4 lg:px-8" id="updates">
-          <div className="container mx-auto">
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-              <h2 className="text-2xl font-heading font-black">Live Updates</h2>
-              <div className="flex flex-wrap gap-2">
-                {["All", ...categories].map((cat) => (
-                  <Button
-                    key={cat}
-                    variant={filter === cat ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setFilter(cat)}
-                  >
-                    {cat}
-                  </Button>
-                ))}
-              </div>
-              {isAgent && (
-                <Button onClick={() => setShowForm(!showForm)} size="sm" className="gap-1">
-                  <Plus className="h-4 w-4" /> Post Update
-                </Button>
-              )}
-            </div>
-
-            {/* Agent Create Form */}
-            {showForm && isAgent && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mb-8">
-                <Card className="border-primary/30">
-                  <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle className="text-lg">New Situation Update</CardTitle>
-                    <button onClick={() => setShowForm(false)}><X className="h-5 w-5 text-muted-foreground" /></button>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                      <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
-                      <Textarea placeholder="Describe the situation..." value={content} onChange={(e) => setContent(e.target.value)} required rows={4} />
-                      <div className="flex gap-4">
-                        <select value={category} onChange={(e) => setCategory(e.target.value)} className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm">
-                          {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-                        </select>
-                        <select value={status} onChange={(e) => setStatus(e.target.value)} className="flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm">
-                          {statuses.map((s) => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                      </div>
-                      <Button type="submit" disabled={loading}>{loading ? "Posting..." : "Post Update"}</Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-
-            {/* Updates Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filtered.map((update, i) => (
-                <motion.div
-                  key={update.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Card className="h-full hover:border-primary/30 transition-colors">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="outline" className="text-xs">{update.category}</Badge>
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[update.status] || statusColors.Info}`}>
-                          {statusIcons[update.status] || statusIcons.Info}
-                          {update.status}
-                        </span>
-                      </div>
-                      <CardTitle className="text-lg leading-tight">{update.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{update.content}</p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{(update.profiles as any)?.full_name || "Agent"}</span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {format(new Date(update.created_at), "MMM d, yyyy HH:mm")}
-                        </span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-
-            {filtered.length === 0 && (
-              <div className="text-center py-16 text-muted-foreground">
-                <Info className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p className="text-lg font-heading font-bold">No updates yet</p>
-                <p className="text-sm">Check back soon for the latest developments.</p>
-              </div>
-            )}
-          </div>
-        </section>
+        <SituationDashboard />
       )}
 
       <Footer />
