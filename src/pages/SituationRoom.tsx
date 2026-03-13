@@ -18,6 +18,7 @@ import {
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import situationHero from "@/assets/situation-hero.jpg";
+import SituationDashboard from "@/components/situation/SituationDashboard";
 
 const statusIcons: Record<string, React.ReactNode> = {
   Active: <AlertTriangle className="h-4 w-4" />,
