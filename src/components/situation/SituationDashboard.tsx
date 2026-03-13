@@ -1,7 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 import {
   FileText, CheckCircle, Clock, AlertTriangle, Users, MapPin,
   Activity, Eye, Upload, Shield, TrendingUp,
