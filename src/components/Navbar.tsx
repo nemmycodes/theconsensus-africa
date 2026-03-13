@@ -104,7 +104,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <Button size="sm" variant="default" onClick={() => { navigate("/join"); setMobileOpen(false); }}>Join Us</Button>
-                  <Button size="sm" variant="outline" onClick={() => { navigate("/auth"); setMobileOpen(false); }}>Login</Button>
+                  <Button size="sm" variant="outline" onClick={() => { navigate("/login"); setMobileOpen(false); }}>Login</Button>
                 </>
               )}
             </div>
