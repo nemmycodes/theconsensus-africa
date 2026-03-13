@@ -55,6 +55,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<LoginPortal />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -66,6 +67,8 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/discuss" element={<Discuss />} />
             <Route path="/dashboard" element={<MemberDashboard />} />
+            <Route path="/agent/login" element={<AgentLogin />} />
+            <Route path="/agent" element={<AgentDashboard />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
