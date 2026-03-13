@@ -34,7 +34,7 @@ const Auth = () => {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Welcome back!" });
-      navigate("/");
+      navigate("/dashboard");
     }
     setLoading(false);
   };
