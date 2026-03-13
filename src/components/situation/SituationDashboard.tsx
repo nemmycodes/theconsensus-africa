@@ -161,31 +161,31 @@ const SituationDashboard = () => {
               <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500" /> Critical</span>
             </div>
           </div>
-          <div className="h-[400px]">
-            <MapContainer
-              center={[9.6, 8.9]}
-              zoom={8}
-              className="h-full w-full"
-              zoomControl={false}
-              attributionControl={false}
-            >
-              <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
-              {mapMarkers.map((m, i) => (
-                <CircleMarker
-                  key={i}
-                  center={[m.lat, m.lng]}
-                  radius={8}
-                  pathOptions={{
-                    color: markerColors[m.status],
-                    fillColor: markerColors[m.status],
-                    fillOpacity: 0.6,
-                    weight: 2,
-                  }}
-                >
-                  <Tooltip>{m.label} — {m.status}</Tooltip>
-                </CircleMarker>
+          <div className="h-[400px] bg-secondary/50 relative overflow-hidden">
+            {/* Custom SVG Map */}
+            <svg viewBox="0 0 500 400" className="w-full h-full">
+              {/* Grid lines */}
+              {Array.from({ length: 10 }).map((_, i) => (
+                <line key={`h${i}`} x1="0" y1={i * 40} x2="500" y2={i * 40} stroke="hsl(var(--border))" strokeWidth="0.5" opacity="0.3" />
               ))}
-            </MapContainer>
+              {Array.from({ length: 13 }).map((_, i) => (
+                <line key={`v${i}`} x1={i * 40} y1="0" x2={i * 40} y2="400" stroke="hsl(var(--border))" strokeWidth="0.5" opacity="0.3" />
+              ))}
+              {/* Map markers */}
+              {mapMarkers.map((m, i) => {
+                const x = ((m.lng - 8.3) / 1.2) * 500;
+                const y = 400 - ((m.lat - 9.1) / 1.0) * 400;
+                return (
+                  <g key={i}>
+                    <circle cx={x} cy={y} r="12" fill={markerColors[m.status]} opacity="0.15">
+                      <animate attributeName="r" values="12;18;12" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx={x} cy={y} r="6" fill={markerColors[m.status]} opacity="0.8" />
+                    <title>{m.label} — {m.status}</title>
+                  </g>
+                );
+              })}
+            </svg>
           </div>
           <div className="px-5 py-3 border-t border-border">
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Plateau State Operations</p>
