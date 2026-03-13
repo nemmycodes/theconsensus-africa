@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import aboutHero from "@/assets/about-hero.jpg";
 import aboutWhoWeAre from "@/assets/about-whoweare2.jpg";
-import mentorKefas from "@/assets/situation-hero.jpg";
+import mentorKefas from "@/assets/chief-kefas.png";
 import youthEmpowerment from "@/assets/youth-empowerment-photo.jpg";
 import { Button } from "@/components/ui/button";
 import {
