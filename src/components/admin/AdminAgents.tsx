@@ -90,8 +90,9 @@ const AdminAgents = () => {
         },
       });
 
-      if (res.error || res.data?.error) {
-        throw new Error(res.data?.error || res.error?.message || "Failed to create agent");
+      const errorMsg = res.data?.error || res.error?.message;
+      if (errorMsg) {
+        throw new Error(errorMsg);
       }
 
       toast({ title: "Agent account created successfully" });
