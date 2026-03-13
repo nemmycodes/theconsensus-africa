@@ -15,16 +15,22 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, isAgent, isAdmin, rolesLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Redirect if already logged in
+  // Role-based redirect
   useEffect(() => {
-    if (!authLoading && user) {
-      navigate("/dashboard", { replace: true });
+    if (!authLoading && !rolesLoading && user) {
+      if (isAdmin) {
+        navigate("/admin", { replace: true });
+      } else if (isAgent) {
+        navigate("/agent", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, rolesLoading, isAdmin, isAgent, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
