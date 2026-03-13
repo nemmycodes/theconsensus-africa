@@ -60,7 +60,7 @@ const Navbar = () => {
           ) : (
             <>
               <Button size="sm" variant="default" onClick={() => navigate("/join")}>Join Us</Button>
-              <Button size="sm" variant="outline" onClick={() => navigate("/auth")}>Login</Button>
+              <Button size="sm" variant="outline" onClick={() => navigate("/login")}>Login</Button>
             </>
           )}
         </div>
