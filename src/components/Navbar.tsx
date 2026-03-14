@@ -54,7 +54,7 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-3">
           {user ? (
             <>
-              <span className="text-xs text-muted-foreground">{user.email}</span>
+              <span className="text-xs text-white/60">{user.email}</span>
               <Button size="sm" variant="outline" onClick={handleSignOut}>Logout</Button>
             </>
           ) : (
