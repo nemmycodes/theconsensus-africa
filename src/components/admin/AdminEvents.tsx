@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Calendar, Plus, MapPin, Users, Clock, Search, Filter, Eye, Edit, Trash2, Upload } from "lucide-react";
+import { Calendar, Plus, MapPin, Users, Clock, Search, Filter, Eye, Edit, Trash2, Upload, ImageIcon } from "lucide-react";
 import { format } from "date-fns";
 
 interface Event {
@@ -46,6 +46,8 @@ const AdminEvents = () => {
   const [form, setForm] = useState(emptyForm);
   const [search, setSearch] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -62,17 +64,41 @@ const AdminEvents = () => {
     return () => { supabase.removeChannel(channel); };
   }, []);
 
-  const openCreate = () => { setEditingEvent(null); setForm(emptyForm); setDialogOpen(true); };
+  const openCreate = () => { setEditingEvent(null); setForm(emptyForm); setImagePreview(null); setDialogOpen(true); };
   const openEdit = (event: Event) => {
     setEditingEvent(event);
-    setForm({ title: event.title, description: event.description || "", location: event.location || "", event_date: event.event_date ? new Date(event.event_date).toISOString().slice(0, 16) : "", event_type: event.event_type, max_attendees: event.max_attendees?.toString() || "", image_url: (event as any).image_url || "" });
+    setForm({ title: event.title, description: event.description || "", location: event.location || "", event_date: event.event_date ? new Date(event.event_date).toISOString().slice(0, 16) : "", event_type: event.event_type, max_attendees: event.max_attendees?.toString() || "", image_url: event.image_url || "" });
+    setImagePreview(event.image_url || null);
     setDialogOpen(true);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Please select an image file", variant: "destructive" });
+      return;
+    }
+    setUploading(true);
+    const fileExt = file.name.split(".").pop();
+    const filePath = `events/${Date.now()}.${fileExt}`;
+    const { error } = await supabase.storage.from("cms-uploads").upload(filePath, file);
+    if (error) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+      setUploading(false);
+      return;
+    }
+    const { data: urlData } = supabase.storage.from("cms-uploads").getPublicUrl(filePath);
+    setForm((prev) => ({ ...prev, image_url: urlData.publicUrl }));
+    setImagePreview(urlData.publicUrl);
+    setUploading(false);
+    toast({ title: "Image uploaded" });
   };
 
   const handleSave = async () => {
     if (!form.title || !form.event_date) { toast({ title: "Title and date are required", variant: "destructive" }); return; }
     setSaving(true);
-    const payload = { title: form.title.trim(), description: form.description.trim() || null, location: form.location.trim() || null, event_date: form.event_date, event_type: form.event_type, max_attendees: form.max_attendees ? parseInt(form.max_attendees) : null };
+    const payload = { title: form.title.trim(), description: form.description.trim() || null, location: form.location.trim() || null, event_date: form.event_date, event_type: form.event_type, max_attendees: form.max_attendees ? parseInt(form.max_attendees) : null, image_url: form.image_url.trim() || null };
     if (editingEvent) {
       const { error } = await supabase.from("events").update(payload).eq("id", editingEvent.id);
       if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -207,7 +233,42 @@ const AdminEvents = () => {
               <div><Label className="text-gray-700">Type</Label><select className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900" value={form.event_type} onChange={(e) => setForm({ ...form, event_type: e.target.value })}>{eventTypes.map((t) => <option key={t} value={t}>{t}</option>)}</select></div>
               <div><Label className="text-gray-700">Max Attendees</Label><Input type="number" value={form.max_attendees} onChange={(e) => setForm({ ...form, max_attendees: e.target.value })} className="bg-white border-gray-200 text-gray-900" /></div>
             </div>
-            <Button onClick={handleSave} disabled={saving} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">{saving ? "Saving..." : editingEvent ? "Update Event" : "Create Event"}</Button>
+            <div>
+              <Label className="text-gray-700">Event Image</Label>
+              <div className="mt-1.5">
+                {imagePreview ? (
+                  <div className="relative rounded-lg overflow-hidden border border-gray-200">
+                    <img src={imagePreview} alt="Event preview" className="w-full h-48 object-cover" />
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="destructive"
+                      className="absolute top-2 right-2 h-8 text-xs"
+                      onClick={() => { setImagePreview(null); setForm((prev) => ({ ...prev, image_url: "" })); }}
+                    >
+                      <Trash2 className="w-3.5 h-3.5 mr-1" /> Remove
+                    </Button>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-emerald-400 hover:bg-emerald-50/50 transition-colors">
+                    {uploading ? (
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mb-2" />
+                        <p className="text-sm text-gray-500">Uploading...</p>
+                      </div>
+                    ) : (
+                      <>
+                        <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-600 font-medium">Click to upload event image</p>
+                        <p className="text-xs text-gray-400 mt-1">JPG, PNG or WebP</p>
+                      </>
+                    )}
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                  </label>
+                )}
+              </div>
+            </div>
+            <Button onClick={handleSave} disabled={saving || uploading} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">{saving ? "Saving..." : editingEvent ? "Update Event" : "Create Event"}</Button>
           </div>
         </DialogContent>
       </Dialog>
