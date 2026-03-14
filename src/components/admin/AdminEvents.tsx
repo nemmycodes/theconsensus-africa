@@ -64,11 +64,35 @@ const AdminEvents = () => {
     return () => { supabase.removeChannel(channel); };
   }, []);
 
-  const openCreate = () => { setEditingEvent(null); setForm(emptyForm); setDialogOpen(true); };
+  const openCreate = () => { setEditingEvent(null); setForm(emptyForm); setImagePreview(null); setDialogOpen(true); };
   const openEdit = (event: Event) => {
     setEditingEvent(event);
-    setForm({ title: event.title, description: event.description || "", location: event.location || "", event_date: event.event_date ? new Date(event.event_date).toISOString().slice(0, 16) : "", event_type: event.event_type, max_attendees: event.max_attendees?.toString() || "", image_url: (event as any).image_url || "" });
+    setForm({ title: event.title, description: event.description || "", location: event.location || "", event_date: event.event_date ? new Date(event.event_date).toISOString().slice(0, 16) : "", event_type: event.event_type, max_attendees: event.max_attendees?.toString() || "", image_url: event.image_url || "" });
+    setImagePreview(event.image_url || null);
     setDialogOpen(true);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Please select an image file", variant: "destructive" });
+      return;
+    }
+    setUploading(true);
+    const fileExt = file.name.split(".").pop();
+    const filePath = `events/${Date.now()}.${fileExt}`;
+    const { error } = await supabase.storage.from("cms-uploads").upload(filePath, file);
+    if (error) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+      setUploading(false);
+      return;
+    }
+    const { data: urlData } = supabase.storage.from("cms-uploads").getPublicUrl(filePath);
+    setForm((prev) => ({ ...prev, image_url: urlData.publicUrl }));
+    setImagePreview(urlData.publicUrl);
+    setUploading(false);
+    toast({ title: "Image uploaded" });
   };
 
   const handleSave = async () => {
