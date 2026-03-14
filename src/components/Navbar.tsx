@@ -80,7 +80,7 @@ const Navbar = () => {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-background border-b border-border px-4 pb-4 overflow-hidden"
+            className="lg:hidden bg-[hsl(220,20%,8%)] border-b border-[hsl(220,15%,18%)] px-4 pb-4 overflow-hidden"
           >
             {navLinks.map((link, i) => (
               <motion.div
