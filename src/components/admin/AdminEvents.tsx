@@ -98,7 +98,7 @@ const AdminEvents = () => {
   const handleSave = async () => {
     if (!form.title || !form.event_date) { toast({ title: "Title and date are required", variant: "destructive" }); return; }
     setSaving(true);
-    const payload = { title: form.title.trim(), description: form.description.trim() || null, location: form.location.trim() || null, event_date: form.event_date, event_type: form.event_type, max_attendees: form.max_attendees ? parseInt(form.max_attendees) : null };
+    const payload = { title: form.title.trim(), description: form.description.trim() || null, location: form.location.trim() || null, event_date: form.event_date, event_type: form.event_type, max_attendees: form.max_attendees ? parseInt(form.max_attendees) : null, image_url: form.image_url.trim() || null };
     if (editingEvent) {
       const { error } = await supabase.from("events").update(payload).eq("id", editingEvent.id);
       if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
