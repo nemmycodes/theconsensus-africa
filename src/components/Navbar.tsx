@@ -91,7 +91,7 @@ const Navbar = () => {
               >
                 <Link
                   to={link.href}
-                  className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
