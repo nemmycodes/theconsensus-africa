@@ -46,6 +46,8 @@ const AdminEvents = () => {
   const [form, setForm] = useState(emptyForm);
   const [search, setSearch] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
