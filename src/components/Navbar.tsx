@@ -36,7 +36,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-14 w-auto" />
+          <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-[76px] w-auto" />
         </Link>
 
         <div className="hidden lg:flex items-center gap-5">
