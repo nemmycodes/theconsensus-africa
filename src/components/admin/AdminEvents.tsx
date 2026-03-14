@@ -233,7 +233,42 @@ const AdminEvents = () => {
               <div><Label className="text-gray-700">Type</Label><select className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900" value={form.event_type} onChange={(e) => setForm({ ...form, event_type: e.target.value })}>{eventTypes.map((t) => <option key={t} value={t}>{t}</option>)}</select></div>
               <div><Label className="text-gray-700">Max Attendees</Label><Input type="number" value={form.max_attendees} onChange={(e) => setForm({ ...form, max_attendees: e.target.value })} className="bg-white border-gray-200 text-gray-900" /></div>
             </div>
-            <Button onClick={handleSave} disabled={saving} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">{saving ? "Saving..." : editingEvent ? "Update Event" : "Create Event"}</Button>
+            <div>
+              <Label className="text-gray-700">Event Image</Label>
+              <div className="mt-1.5">
+                {imagePreview ? (
+                  <div className="relative rounded-lg overflow-hidden border border-gray-200">
+                    <img src={imagePreview} alt="Event preview" className="w-full h-48 object-cover" />
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="destructive"
+                      className="absolute top-2 right-2 h-8 text-xs"
+                      onClick={() => { setImagePreview(null); setForm((prev) => ({ ...prev, image_url: "" })); }}
+                    >
+                      <Trash2 className="w-3.5 h-3.5 mr-1" /> Remove
+                    </Button>
+                  </div>
+                ) : (
+                  <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-emerald-400 hover:bg-emerald-50/50 transition-colors">
+                    {uploading ? (
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin mb-2" />
+                        <p className="text-sm text-gray-500">Uploading...</p>
+                      </div>
+                    ) : (
+                      <>
+                        <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-600 font-medium">Click to upload event image</p>
+                        <p className="text-xs text-gray-400 mt-1">JPG, PNG or WebP</p>
+                      </>
+                    )}
+                    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} disabled={uploading} />
+                  </label>
+                )}
+              </div>
+            </div>
+            <Button onClick={handleSave} disabled={saving || uploading} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">{saving ? "Saving..." : editingEvent ? "Update Event" : "Create Event"}</Button>
           </div>
         </DialogContent>
       </Dialog>
