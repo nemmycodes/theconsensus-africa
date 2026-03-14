@@ -32,7 +32,7 @@ const Navbar = () => {
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border"
+      className="fixed top-0 left-0 right-0 z-50 bg-[hsl(220,20%,8%)]/95 backdrop-blur-md border-b border-[hsl(220,15%,18%)]"
     >
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2">
@@ -44,7 +44,7 @@ const Navbar = () => {
             <Link
               key={link.label}
               to={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm text-white/70 hover:text-white transition-colors"
             >
               {link.label}
             </Link>
@@ -54,7 +54,7 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-3">
           {user ? (
             <>
-              <span className="text-xs text-muted-foreground">{user.email}</span>
+              <span className="text-xs text-white/60">{user.email}</span>
               <Button size="sm" variant="outline" onClick={handleSignOut}>Logout</Button>
             </>
           ) : (
@@ -66,7 +66,7 @@ const Navbar = () => {
         </div>
 
         <button
-          className="lg:hidden text-foreground"
+          className="lg:hidden text-white"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -80,7 +80,7 @@ const Navbar = () => {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-background border-b border-border px-4 pb-4 overflow-hidden"
+            className="lg:hidden bg-[hsl(220,20%,8%)] border-b border-[hsl(220,15%,18%)] px-4 pb-4 overflow-hidden"
           >
             {navLinks.map((link, i) => (
               <motion.div
@@ -91,7 +91,7 @@ const Navbar = () => {
               >
                 <Link
                   to={link.href}
-                  className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
