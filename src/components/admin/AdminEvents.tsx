@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Calendar, Plus, MapPin, Users, Clock, Search, Filter, Eye, Edit, Trash2, Upload } from "lucide-react";
+import { Calendar, Plus, MapPin, Users, Clock, Search, Filter, Eye, Edit, Trash2, Upload, ImageIcon } from "lucide-react";
 import { format } from "date-fns";
 
 interface Event {
