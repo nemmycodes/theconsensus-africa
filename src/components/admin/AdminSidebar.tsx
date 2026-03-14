@@ -35,7 +35,7 @@ const AdminSidebar = ({ activeTab, onTabChange }: AdminSidebarProps) => {
       {/* Brand Logo */}
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <img src="/brand-logo.png" alt="The Plateau Consensus" className="w-10 h-10 object-contain" />
+          <img src="/brand-logo.png" alt="The Plateau Consensus" className="w-14 h-14 object-contain" />
           {!collapsed && (
             <div className="leading-tight">
               <p className="text-[10px] font-bold text-gray-800 uppercase tracking-wider">The Plateau</p>
