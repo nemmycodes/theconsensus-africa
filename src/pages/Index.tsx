@@ -16,6 +16,7 @@ const Index = () => {
       <EventsSection />
       <NewsSection />
       <CtaBanner />
+      <FaqSection />
       <Footer />
     </div>
   );
