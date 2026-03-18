@@ -40,15 +40,27 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden lg:flex items-center gap-5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              to={link.href}
-              className="text-sm text-white/70 hover:text-white transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.external ? (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-white/70 hover:text-white transition-colors"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="text-sm text-white/70 hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
+            )
+          )}
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
