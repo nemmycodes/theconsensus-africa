@@ -8,11 +8,11 @@ import { useAuth } from "@/hooks/useAuth";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  
   { label: "Discuss", href: "/discuss" },
   { label: "Situation Room", href: "/situation-room" },
   { label: "Events", href: "/events" },
   { label: "Blog", href: "/blog" },
+  { label: "INEC", href: "https://www.inecnigeria.org", external: true },
   { label: "Donate", href: "/donate" },
   { label: "Contact Us", href: "/contact" },
 ];
@@ -40,15 +40,27 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden lg:flex items-center gap-5">
-          {navLinks.map((link) => (
-            <Link
-              key={link.label}
-              to={link.href}
-              className="text-sm text-white/70 hover:text-white transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.external ? (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-white/70 hover:text-white transition-colors"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="text-sm text-white/70 hover:text-white transition-colors"
+              >
+                {link.label}
+              </Link>
+            )
+          )}
         </div>
 
         <div className="hidden lg:flex items-center gap-3">
@@ -89,13 +101,25 @@ const Navbar = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.04 }}
               >
-                <Link
-                  to={link.href}
-                  className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </Link>
+                {link.external ? (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    to={link.href}
+                    className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )}
               </motion.div>
             ))}
             <div className="flex gap-3 mt-4">
