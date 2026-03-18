@@ -101,13 +101,25 @@ const Navbar = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.04 }}
               >
-                <Link
-                  to={link.href}
-                  className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </Link>
+                {link.external ? (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    to={link.href}
+                    className="block py-2 text-sm text-white/70 hover:text-white transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )}
               </motion.div>
             ))}
             <div className="flex gap-3 mt-4">
