@@ -7,6 +7,8 @@ import SuperAdminAnalytics from "@/components/super-admin/SuperAdminAnalytics";
 import SuperAdminActivityLog from "@/components/super-admin/SuperAdminActivityLog";
 import SuperAdminAccountManagement from "@/components/super-admin/SuperAdminAccountManagement";
 import SuperAdminWebsiteCMS from "@/components/super-admin/SuperAdminWebsiteCMS";
+import SuperAdminSiteEditor from "@/components/super-admin/SuperAdminSiteEditor";
+import SuperAdminContactMessages from "@/components/super-admin/SuperAdminContactMessages";
 import AdminSituationRoom from "@/components/admin/AdminSituationRoom";
 import AdminElectionCollation from "@/components/admin/AdminElectionCollation";
 import AdminEvents from "@/components/admin/AdminEvents";
