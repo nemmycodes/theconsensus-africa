@@ -73,6 +73,8 @@ const App = () => (
             <Route path="/agent" element={<AgentDashboard />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/super-admin/login" element={<SuperAdminLogin />} />
+            <Route path="/super-admin" element={<SuperAdminDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
