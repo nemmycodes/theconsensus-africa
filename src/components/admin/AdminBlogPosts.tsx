@@ -153,7 +153,7 @@ const AdminBlogPosts = () => {
               <div>
                 <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{s.label}</p>
                 <p className="text-3xl font-black text-gray-900 mt-1">{s.value}</p>
-                {s.change && <p className="text-xs text-emerald-600 font-bold mt-1">↑ {s.change}</p>}
+                
               </div>
               <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center`}>
                 <s.icon className={`w-5 h-5 ${s.color}`} />
