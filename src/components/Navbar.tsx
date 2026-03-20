@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { Crown } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -19,7 +20,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, signOut, isSuperAdmin, isAdmin, isAgent } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -66,7 +67,18 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-3">
           {user ? (
             <>
-              <span className="text-xs text-white/60">{user.email}</span>
+              {isSuperAdmin && (
+                <Button size="sm" variant="outline" className="gap-1.5 border-amber-500/30 text-amber-400 hover:bg-amber-500/10" onClick={() => navigate("/super-admin")}>
+                  <Crown className="w-3.5 h-3.5" /> Super Admin
+                </Button>
+              )}
+              {isAdmin && !isSuperAdmin && (
+                <Button size="sm" variant="outline" onClick={() => navigate("/admin")}>Admin</Button>
+              )}
+              {isAgent && !isAdmin && !isSuperAdmin && (
+                <Button size="sm" variant="outline" onClick={() => navigate("/agent")}>Agent Panel</Button>
+              )}
+              <Button size="sm" variant="default" onClick={() => navigate("/dashboard")}>Dashboard</Button>
               <Button size="sm" variant="outline" onClick={handleSignOut}>Logout</Button>
             </>
           ) : (
@@ -122,9 +134,17 @@ const Navbar = () => {
                 )}
               </motion.div>
             ))}
-            <div className="flex gap-3 mt-4">
+            <div className="flex flex-col gap-2 mt-4">
               {user ? (
-                <Button size="sm" variant="outline" onClick={() => { handleSignOut(); setMobileOpen(false); }}>Logout</Button>
+                <>
+                  {isSuperAdmin && (
+                    <Button size="sm" variant="outline" className="gap-1.5 border-amber-500/30 text-amber-400" onClick={() => { navigate("/super-admin"); setMobileOpen(false); }}>
+                      <Crown className="w-3.5 h-3.5" /> Super Admin
+                    </Button>
+                  )}
+                  <Button size="sm" variant="default" onClick={() => { navigate("/dashboard"); setMobileOpen(false); }}>Dashboard</Button>
+                  <Button size="sm" variant="outline" onClick={() => { handleSignOut(); setMobileOpen(false); }}>Logout</Button>
+                </>
               ) : (
                 <>
                   <Button size="sm" variant="default" onClick={() => { navigate("/join"); setMobileOpen(false); }}>Join Us</Button>

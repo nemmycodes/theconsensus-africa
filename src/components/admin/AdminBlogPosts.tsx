@@ -146,14 +146,14 @@ const AdminBlogPosts = () => {
           { label: "TOTAL ARTICLES", value: posts.length.toString(), icon: FileText, bg: "bg-emerald-50", color: "text-emerald-600" },
           { label: "PUBLISHED", value: publishedCount.toString(), icon: FileText, bg: "bg-emerald-50", color: "text-emerald-600" },
           { label: "DRAFTS", value: draftCount.toString(), icon: Edit, bg: "bg-amber-50", color: "text-amber-600" },
-          { label: "TOTAL VIEWS", value: "8,191", icon: Eye, change: "+18%", bg: "bg-emerald-50", color: "text-emerald-600" },
+          { label: "CATEGORIES", value: new Set(posts.map(p => p.category)).size.toString(), icon: Eye, bg: "bg-emerald-50", color: "text-emerald-600" },
         ].map((s) => (
           <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{s.label}</p>
                 <p className="text-3xl font-black text-gray-900 mt-1">{s.value}</p>
-                {s.change && <p className="text-xs text-emerald-600 font-bold mt-1">↑ {s.change}</p>}
+                
               </div>
               <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center`}>
                 <s.icon className={`w-5 h-5 ${s.color}`} />
@@ -219,7 +219,7 @@ const AdminBlogPosts = () => {
                     <span>By Agent</span>
                     <span className="px-2 py-0.5 bg-gray-100 rounded text-gray-600">{post.category}</span>
                     <span>{format(new Date(post.created_at), "MMM d, yyyy")}</span>
-                    {post.published && <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> 2,847 views</span>}
+                    
                   </div>
                 </div>
                 <div className="flex items-center gap-1 ml-4">

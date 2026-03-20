@@ -44,7 +44,7 @@ const SuperAdminDashboard = () => {
 
   const renderContent = () => {
     switch (activeTab) {
-      case "overview": return <SuperAdminOverview />;
+      case "overview": return <SuperAdminOverview onTabChange={setActiveTab} />;
       case "analytics": return <SuperAdminAnalytics />;
       case "activity": return <SuperAdminActivityLog />;
       case "users": return <SuperAdminAccountManagement filter="all" />;
