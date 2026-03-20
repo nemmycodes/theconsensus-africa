@@ -219,7 +219,7 @@ const AdminBlogPosts = () => {
                     <span>By Agent</span>
                     <span className="px-2 py-0.5 bg-gray-100 rounded text-gray-600">{post.category}</span>
                     <span>{format(new Date(post.created_at), "MMM d, yyyy")}</span>
-                    {post.published && <span className="flex items-center gap-1"><Eye className="w-3 h-3" /> 2,847 views</span>}
+                    
                   </div>
                 </div>
                 <div className="flex items-center gap-1 ml-4">
