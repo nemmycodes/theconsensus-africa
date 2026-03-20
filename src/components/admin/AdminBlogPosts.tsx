@@ -146,7 +146,7 @@ const AdminBlogPosts = () => {
           { label: "TOTAL ARTICLES", value: posts.length.toString(), icon: FileText, bg: "bg-emerald-50", color: "text-emerald-600" },
           { label: "PUBLISHED", value: publishedCount.toString(), icon: FileText, bg: "bg-emerald-50", color: "text-emerald-600" },
           { label: "DRAFTS", value: draftCount.toString(), icon: Edit, bg: "bg-amber-50", color: "text-amber-600" },
-          { label: "TOTAL VIEWS", value: "8,191", icon: Eye, change: "+18%", bg: "bg-emerald-50", color: "text-emerald-600" },
+          { label: "CATEGORIES", value: new Set(posts.map(p => p.category)).size.toString(), icon: Eye, bg: "bg-emerald-50", color: "text-emerald-600" },
         ].map((s) => (
           <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5">
             <div className="flex items-start justify-between">
