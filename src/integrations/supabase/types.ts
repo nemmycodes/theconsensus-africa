@@ -89,6 +89,39 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          form_type: string
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          form_type?: string
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+          subject: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          form_type?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+          subject?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           attendee_count: number | null
@@ -176,6 +209,30 @@ export type Database = {
           phone?: string | null
           user_id?: string
           ward?: string | null
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          content: Json
+          id: string
+          section_key: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          content?: Json
+          id?: string
+          section_key: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          content?: Json
+          id?: string
+          section_key?: string
+          updated_at?: string
+          updated_by?: string | null
         }
         Relationships: []
       }
