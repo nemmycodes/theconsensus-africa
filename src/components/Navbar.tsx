@@ -20,7 +20,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, signOut, isSuperAdmin, isAdmin, isAgent } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
