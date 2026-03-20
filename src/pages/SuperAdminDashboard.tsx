@@ -51,6 +51,8 @@ const SuperAdminDashboard = () => {
       case "agents": return <SuperAdminAccountManagement filter="agents" />;
       case "admins": return <SuperAdminAccountManagement filter="admins" />;
       case "website": return <SuperAdminWebsiteCMS />;
+      case "site-editor": return <SuperAdminSiteEditor />;
+      case "messages": return <SuperAdminContactMessages />;
       case "situation": return <AdminSituationRoom />;
       case "election": return <AdminElectionCollation />;
       case "events": return <AdminEvents />;
