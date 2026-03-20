@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import aboutHero from "@/assets/about-hero.jpg";
-import aboutWhoWeAre from "@/assets/about-whoweare2.jpg";
-import mentorKefas from "@/assets/chief-kefas.png";
+import aboutWhoWeAreFallback from "@/assets/about-whoweare2.jpg";
+import mentorKefasFallback from "@/assets/chief-kefas.png";
 import youthEmpowerment from "@/assets/youth-empowerment-photo.jpg";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,7 @@ import {
   Heart, Users, Briefcase, Globe, Award, ChevronDown, ArrowRight, Quote
 } from "lucide-react";
 import { useState } from "react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
