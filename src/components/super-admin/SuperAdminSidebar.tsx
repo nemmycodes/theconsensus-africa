@@ -5,6 +5,7 @@ import {
   Crown, LayoutDashboard, Users, Shield, UserCog, BarChart3,
   Globe, Radio, Calendar, FileText, MessageSquare, Image,
   Bell, Settings, ChevronLeft, LogOut, Database, Activity,
+  PenTool, Mail,
 } from "lucide-react";
 
 interface SuperAdminSidebarProps {
