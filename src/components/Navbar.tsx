@@ -67,7 +67,18 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-3">
           {user ? (
             <>
-              <span className="text-xs text-white/60">{user.email}</span>
+              {isSuperAdmin && (
+                <Button size="sm" variant="outline" className="gap-1.5 border-amber-500/30 text-amber-400 hover:bg-amber-500/10" onClick={() => navigate("/super-admin")}>
+                  <Crown className="w-3.5 h-3.5" /> Super Admin
+                </Button>
+              )}
+              {isAdmin && !isSuperAdmin && (
+                <Button size="sm" variant="outline" onClick={() => navigate("/admin")}>Admin</Button>
+              )}
+              {isAgent && !isAdmin && !isSuperAdmin && (
+                <Button size="sm" variant="outline" onClick={() => navigate("/agent")}>Agent Panel</Button>
+              )}
+              <Button size="sm" variant="default" onClick={() => navigate("/dashboard")}>Dashboard</Button>
               <Button size="sm" variant="outline" onClick={handleSignOut}>Logout</Button>
             </>
           ) : (
