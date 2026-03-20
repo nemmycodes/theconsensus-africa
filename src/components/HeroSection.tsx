@@ -2,8 +2,9 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import heroBg from "@/assets/hero-bg.jpg";
-import mentorImg from "@/assets/mentor-portrait.png";
+import heroBgFallback from "@/assets/hero-bg.jpg";
+import mentorImgFallback from "@/assets/mentor-portrait.png";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -25,6 +26,32 @@ const scaleIn = {
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const { content } = useSiteContent("hero");
+
+  // Use DB content or fallback to defaults
+  const badge = content?.badge || "YOUR FUTURE IS TODAY";
+  const heading = content?.heading || "EMPOWERING NIGERIA'S YOUTH FOR A NEW ERA OF LEADERSHIP";
+  const highlightWord = content?.highlight_word || "YOUTH";
+  const paragraph1 = content?.paragraph1 || "The Consensus is a non-partisan civic and economic empowerment movement organizing Gen Z and young Millennial into a structured community focused on increasing economic freedom, strengthening political consciousness, and building a future defined by competence, integrity, and shared prosperity.";
+  const paragraph2 = content?.paragraph2 || "We believe that when young people are economically empowered, families are stabilized, mothers are strengthened, and communities move forward. The movement begins with the Central Zone of Plateau State, building a verified digital community and scalable infrastructure ready for statewide expansion.";
+  const mentorName = content?.mentor_name || "Chief Kefas Ropshik Wungak";
+  const tagline = content?.tagline || "Join the movement. Build your economic power. Shape the future.";
+  const heroBg = content?.hero_bg_url || heroBgFallback;
+  const mentorImg = content?.mentor_img_url || mentorImgFallback;
+
+  // Split heading around highlight word
+  const renderHeading = () => {
+    const idx = heading.toUpperCase().indexOf(highlightWord.toUpperCase());
+    if (idx === -1) return heading;
+    const before = heading.slice(0, idx);
+    const word = heading.slice(idx, idx + highlightWord.length);
+    const after = heading.slice(idx + highlightWord.length);
+    return (
+      <>
+        {before}<span className="text-primary">{word}</span>{after}
+      </>
+    );
+  };
 
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
@@ -51,7 +78,7 @@ const HeroSection = () => {
               className="inline-flex items-center gap-2 border border-primary/40 rounded-full px-4 py-1.5"
             >
               <span className="w-2 h-2 rounded-full bg-primary" />
-              <span className="text-sm font-medium text-primary tracking-wide">YOUR FUTURE IS TODAY</span>
+              <span className="text-sm font-medium text-primary tracking-wide">{badge}</span>
             </motion.div>
 
             <motion.h1
@@ -61,8 +88,7 @@ const HeroSection = () => {
               custom={1}
               className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight"
             >
-              EMPOWERING NIGERIA'S{" "}
-              <span className="text-primary">YOUTH</span> FOR A NEW ERA OF LEADERSHIP
+              {renderHeading()}
             </motion.h1>
 
             <motion.div
@@ -72,21 +98,15 @@ const HeroSection = () => {
               custom={2}
               className="space-y-4 text-muted-foreground text-base lg:text-lg max-w-xl"
             >
-              <p>
-                The Consensus is a non-partisan civic and economic empowerment movement organizing Gen Z and young Millennial into a structured community focused on increasing economic freedom, strengthening political consciousness, and building a future defined by competence, integrity, and shared prosperity.
-              </p>
-              <p>
-                We believe that when young people are economically empowered, families are stabilized, mothers are strengthened, and communities move forward. The movement begins with the Central Zone of Plateau State, building a verified digital community and scalable infrastructure ready for statewide expansion.
-              </p>
+              <p>{paragraph1}</p>
+              <p>{paragraph2}</p>
             </motion.div>
 
             <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}>
               <p className="text-foreground">
-                <span className="font-bold">Lead Mentor:</span> Chief Kefas Ropshik Wungak
+                <span className="font-bold">Lead Mentor:</span> {mentorName}
               </p>
-              <p className="text-muted-foreground text-sm mt-1">
-                Join the movement. Build your economic power. Shape the future.
-              </p>
+              <p className="text-muted-foreground text-sm mt-1">{tagline}</p>
             </motion.div>
 
             <motion.div
@@ -114,7 +134,7 @@ const HeroSection = () => {
             <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-border shadow-2xl">
               <img
                 src={mentorImg}
-                alt="Chief Kefas Ropshik Wungak"
+                alt={mentorName}
                 className="w-full h-full object-cover"
               />
             </div>
