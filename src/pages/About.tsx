@@ -135,21 +135,21 @@ const About = () => {
               <img src={mentorKefas} alt="Chief Kefas Ropshik" className="w-full h-[400px] object-cover" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-6">
-              <span className="text-xs font-bold tracking-widest text-primary uppercase">Chief / Consensus Movement Leader</span>
-              <h3 className="text-2xl md:text-3xl font-black">Chief Kefas Ropshik</h3>
+              <span className="text-xs font-bold tracking-widest text-primary uppercase">{leaderData?.title_label || "Chief / Consensus Movement Leader"}</span>
+              <h3 className="text-2xl md:text-3xl font-black">{leaderData?.name || "Chief Kefas Ropshik"}</h3>
               <p className="text-muted-foreground leading-relaxed">
-                "If our leadership is not about the next election, it's about the next generation. We are building roads under whose shade we may not sit, but our children will flourish."
+                "{leaderData?.quote || "If our leadership is not about the next election, it's about the next generation. We are building roads under whose shade we may not sit, but our children will flourish."}"
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                As the Lead Mentor of The Consensus Movement, Chief Kefas provides the philosophical compass and strategic direction needed to navigate complex political landscapes. His role is centered on mentoring young leaders, building capacity around integrity, and bridging the gap between established leadership and youth-led innovation.
+                {leaderData?.bio || "As the Lead Mentor of The Consensus Movement, Chief Kefas provides the philosophical compass and strategic direction needed to navigate complex political landscapes. His role is centered on mentoring young leaders, building capacity around integrity, and bridging the gap between established leadership and youth-led innovation."}
               </p>
               <div className="flex gap-8 pt-4">
                 <div>
-                  <p className="text-2xl font-black text-primary">20+</p>
+                  <p className="text-2xl font-black text-primary">{leaderData?.years_in_leadership || "20+"}</p>
                   <p className="text-xs text-muted-foreground">Years in Leadership</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-black text-primary">1000+</p>
+                  <p className="text-2xl font-black text-primary">{leaderData?.mentees_active || "1000+"}</p>
                   <p className="text-xs text-muted-foreground">Mentees Active</p>
                 </div>
               </div>
