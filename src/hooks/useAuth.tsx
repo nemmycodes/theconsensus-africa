@@ -36,22 +36,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const checkRoles = async (userId: string) => {
     setRolesLoading(true);
     try {
-      const [agentRes, adminRes] = await Promise.all([
+      const [agentRes, adminRes, superAdminRes] = await Promise.all([
         supabase.rpc("has_role", { _user_id: userId, _role: "agent" }),
         supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "super_admin" }),
       ]);
 
       const agent = !agentRes.error && !!agentRes.data;
       const admin = !adminRes.error && !!adminRes.data;
+      const superAdmin = !superAdminRes.error && !!superAdminRes.data;
 
       setIsAgent(agent);
       setIsAdmin(admin);
+      setIsSuperAdmin(superAdmin);
 
-      return { agent, admin };
+      return { agent, admin, superAdmin };
     } catch {
       setIsAgent(false);
       setIsAdmin(false);
-      return { agent: false, admin: false };
+      setIsSuperAdmin(false);
+      return { agent: false, admin: false, superAdmin: false };
     } finally {
       setRolesLoading(false);
     }
