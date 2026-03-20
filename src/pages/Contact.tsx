@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Mail, Phone, MapPin, Send, Twitter, Facebook, Instagram } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,10 +35,22 @@ const Contact = () => {
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setIsSubmitting(false);
-    reset();
-    toast({ title: "Message sent!", description: "We'll get back to you shortly." });
+    try {
+      const { error } = await supabase.from("contact_messages").insert({
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+        form_type: formType,
+      } as any);
+      if (error) throw error;
+      reset();
+      toast({ title: "Message sent!", description: "We'll get back to you shortly." });
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message || "Failed to send message", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

@@ -7,6 +7,8 @@ import SuperAdminAnalytics from "@/components/super-admin/SuperAdminAnalytics";
 import SuperAdminActivityLog from "@/components/super-admin/SuperAdminActivityLog";
 import SuperAdminAccountManagement from "@/components/super-admin/SuperAdminAccountManagement";
 import SuperAdminWebsiteCMS from "@/components/super-admin/SuperAdminWebsiteCMS";
+import SuperAdminSiteEditor from "@/components/super-admin/SuperAdminSiteEditor";
+import SuperAdminContactMessages from "@/components/super-admin/SuperAdminContactMessages";
 import AdminSituationRoom from "@/components/admin/AdminSituationRoom";
 import AdminElectionCollation from "@/components/admin/AdminElectionCollation";
 import AdminEvents from "@/components/admin/AdminEvents";
@@ -49,6 +51,8 @@ const SuperAdminDashboard = () => {
       case "agents": return <SuperAdminAccountManagement filter="agents" />;
       case "admins": return <SuperAdminAccountManagement filter="admins" />;
       case "website": return <SuperAdminWebsiteCMS />;
+      case "site-editor": return <SuperAdminSiteEditor />;
+      case "messages": return <SuperAdminContactMessages />;
       case "situation": return <AdminSituationRoom />;
       case "election": return <AdminElectionCollation />;
       case "events": return <AdminEvents />;

@@ -2,8 +2,8 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import aboutHero from "@/assets/about-hero.jpg";
-import aboutWhoWeAre from "@/assets/about-whoweare2.jpg";
-import mentorKefas from "@/assets/chief-kefas.png";
+import aboutWhoWeAreFallback from "@/assets/about-whoweare2.jpg";
+import mentorKefasFallback from "@/assets/chief-kefas.png";
 import youthEmpowerment from "@/assets/youth-empowerment-photo.jpg";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,7 @@ import {
   Heart, Users, Briefcase, Globe, Award, ChevronDown, ArrowRight, Quote
 } from "lucide-react";
 import { useState } from "react";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -58,6 +59,11 @@ const faqs = [
 
 const About = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { content: aboutData } = useSiteContent("about_who_we_are");
+  const { content: leaderData } = useSiteContent("leader");
+
+  const aboutWhoWeAre = aboutData?.image_url || aboutWhoWeAreFallback;
+  const mentorKefas = leaderData?.image_url || mentorKefasFallback;
 
   return (
     <div className="min-h-screen bg-background">
@@ -101,15 +107,15 @@ const About = () => {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">Who We Are</motion.h2>
+              <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">{aboutData?.heading || "Who We Are"}</motion.h2>
               <motion.p variants={fadeInUp} className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-                The Consensus is not just an organization; it is a generational awakening. We are a youth-led civic and economic movement dedicated to organizing the energy, creativity, and potential of <span className="text-foreground font-semibold">Gen Z and Millennials in Plateau State</span>.
+                {aboutData?.paragraph1 || <>The Consensus is not just an organization; it is a generational awakening. We are a youth-led civic and economic movement dedicated to organizing the energy, creativity, and potential of <span className="text-foreground font-semibold">Gen Z and Millennials in Plateau State</span>.</>}
               </motion.p>
               <motion.p variants={fadeInUp} className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-                We believe that political influence is downstream from economic power. By leveraging technology to organize, educate, and empower, we are building a formidable bloc capable of demanding accountability and driving sustainable development.
+                {aboutData?.paragraph2 || "We believe that political influence is downstream from economic power. By leveraging technology to organize, educate, and empower, we are building a formidable bloc capable of demanding accountability and driving sustainable development."}
               </motion.p>
               <motion.p variants={fadeInUp} className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-                Our movement transcends traditional party lines, focusing instead on a shared vision of prosperity, integrity, and modern governance for our people.
+                {aboutData?.paragraph3 || "Our movement transcends traditional party lines, focusing instead on a shared vision of prosperity, integrity, and modern governance for our people."}
               </motion.p>
             </motion.div>
           </div>
@@ -129,21 +135,21 @@ const About = () => {
               <img src={mentorKefas} alt="Chief Kefas Ropshik" className="w-full h-[400px] object-cover" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-6">
-              <span className="text-xs font-bold tracking-widest text-primary uppercase">Chief / Consensus Movement Leader</span>
-              <h3 className="text-2xl md:text-3xl font-black">Chief Kefas Ropshik</h3>
+              <span className="text-xs font-bold tracking-widest text-primary uppercase">{leaderData?.title_label || "Chief / Consensus Movement Leader"}</span>
+              <h3 className="text-2xl md:text-3xl font-black">{leaderData?.name || "Chief Kefas Ropshik"}</h3>
               <p className="text-muted-foreground leading-relaxed">
-                "If our leadership is not about the next election, it's about the next generation. We are building roads under whose shade we may not sit, but our children will flourish."
+                "{leaderData?.quote || "If our leadership is not about the next election, it's about the next generation. We are building roads under whose shade we may not sit, but our children will flourish."}"
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                As the Lead Mentor of The Consensus Movement, Chief Kefas provides the philosophical compass and strategic direction needed to navigate complex political landscapes. His role is centered on mentoring young leaders, building capacity around integrity, and bridging the gap between established leadership and youth-led innovation.
+                {leaderData?.bio || "As the Lead Mentor of The Consensus Movement, Chief Kefas provides the philosophical compass and strategic direction needed to navigate complex political landscapes. His role is centered on mentoring young leaders, building capacity around integrity, and bridging the gap between established leadership and youth-led innovation."}
               </p>
               <div className="flex gap-8 pt-4">
                 <div>
-                  <p className="text-2xl font-black text-primary">20+</p>
+                  <p className="text-2xl font-black text-primary">{leaderData?.years_in_leadership || "20+"}</p>
                   <p className="text-xs text-muted-foreground">Years in Leadership</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-black text-primary">1000+</p>
+                  <p className="text-2xl font-black text-primary">{leaderData?.mentees_active || "1000+"}</p>
                   <p className="text-xs text-muted-foreground">Mentees Active</p>
                 </div>
               </div>
