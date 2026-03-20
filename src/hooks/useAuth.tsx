@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [rolesLoading, setRolesLoading] = useState(false);
   const [isAgent, setIsAgent] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const checkRoles = async (userId: string) => {
     setRolesLoading(true);
