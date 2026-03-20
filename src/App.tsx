@@ -38,6 +38,10 @@ const CtrlQListener = () => {
         e.preventDefault();
         navigate("/admin");
       }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "w") {
+        e.preventDefault();
+        navigate("/super-admin");
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
