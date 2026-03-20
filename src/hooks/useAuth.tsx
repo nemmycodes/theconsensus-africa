@@ -9,6 +9,7 @@ interface AuthContextType {
   rolesLoading: boolean;
   isAgent: boolean;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -19,6 +20,7 @@ const AuthContext = createContext<AuthContextType>({
   rolesLoading: false,
   isAgent: false,
   isAdmin: false,
+  isSuperAdmin: false,
   signOut: async () => {},
 });
 
@@ -29,26 +31,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [rolesLoading, setRolesLoading] = useState(false);
   const [isAgent, setIsAgent] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   const checkRoles = async (userId: string) => {
     setRolesLoading(true);
     try {
-      const [agentRes, adminRes] = await Promise.all([
+      const [agentRes, adminRes, superAdminRes] = await Promise.all([
         supabase.rpc("has_role", { _user_id: userId, _role: "agent" }),
         supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "super_admin" }),
       ]);
 
       const agent = !agentRes.error && !!agentRes.data;
       const admin = !adminRes.error && !!adminRes.data;
+      const superAdmin = !superAdminRes.error && !!superAdminRes.data;
 
       setIsAgent(agent);
       setIsAdmin(admin);
+      setIsSuperAdmin(superAdmin);
 
-      return { agent, admin };
+      return { agent, admin, superAdmin };
     } catch {
       setIsAgent(false);
       setIsAdmin(false);
-      return { agent: false, admin: false };
+      setIsSuperAdmin(false);
+      return { agent: false, admin: false, superAdmin: false };
     } finally {
       setRolesLoading(false);
     }
@@ -65,6 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setRolesLoading(false);
           setIsAgent(false);
           setIsAdmin(false);
+          setIsSuperAdmin(false);
         }
         setLoading(false);
       }
@@ -79,6 +87,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setRolesLoading(false);
         setIsAgent(false);
         setIsAdmin(false);
+        setIsSuperAdmin(false);
       }
       setLoading(false);
     });
@@ -92,11 +101,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setRolesLoading(false);
     setIsAgent(false);
     setIsAdmin(false);
+    setIsSuperAdmin(false);
     await supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, rolesLoading, isAgent, isAdmin, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, rolesLoading, isAgent, isAdmin, isSuperAdmin, signOut }}>
       {children}
     </AuthContext.Provider>
   );

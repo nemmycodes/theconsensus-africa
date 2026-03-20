@@ -1,0 +1,74 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import SuperAdminSidebar from "@/components/super-admin/SuperAdminSidebar";
+import SuperAdminOverview from "@/components/super-admin/SuperAdminOverview";
+import SuperAdminAnalytics from "@/components/super-admin/SuperAdminAnalytics";
+import SuperAdminActivityLog from "@/components/super-admin/SuperAdminActivityLog";
+import SuperAdminAccountManagement from "@/components/super-admin/SuperAdminAccountManagement";
+import SuperAdminWebsiteCMS from "@/components/super-admin/SuperAdminWebsiteCMS";
+import AdminSituationRoom from "@/components/admin/AdminSituationRoom";
+import AdminElectionCollation from "@/components/admin/AdminElectionCollation";
+import AdminEvents from "@/components/admin/AdminEvents";
+import AdminBlogPosts from "@/components/admin/AdminBlogPosts";
+import AdminCommunityForum from "@/components/admin/AdminCommunityForum";
+import AdminMediaLibrary from "@/components/admin/AdminMediaLibrary";
+import AdminNotifications from "@/components/admin/AdminNotifications";
+import AdminSettings from "@/components/admin/AdminSettings";
+
+const SuperAdminDashboard = () => {
+  const [activeTab, setActiveTab] = useState("overview");
+  const { user, loading, rolesLoading, isSuperAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !rolesLoading && (!user || !isSuperAdmin)) {
+      navigate("/super-admin/login", { replace: true });
+    }
+  }, [user, loading, rolesLoading, isSuperAdmin, navigate]);
+
+  if (loading || rolesLoading) {
+    return (
+      <div className="min-h-screen bg-[#050a15] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-gray-400">Verifying super admin access…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || !isSuperAdmin) return null;
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "overview": return <SuperAdminOverview />;
+      case "analytics": return <SuperAdminAnalytics />;
+      case "activity": return <SuperAdminActivityLog />;
+      case "users": return <SuperAdminAccountManagement filter="all" />;
+      case "agents": return <SuperAdminAccountManagement filter="agents" />;
+      case "admins": return <SuperAdminAccountManagement filter="admins" />;
+      case "website": return <SuperAdminWebsiteCMS />;
+      case "situation": return <AdminSituationRoom />;
+      case "election": return <AdminElectionCollation />;
+      case "events": return <AdminEvents />;
+      case "blog": return <AdminBlogPosts />;
+      case "forum": return <AdminCommunityForum />;
+      case "media": return <AdminMediaLibrary />;
+      case "notifications": return <AdminNotifications />;
+      case "settings": return <AdminSettings />;
+      default: return <SuperAdminOverview />;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background flex">
+      <SuperAdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <main className="flex-1 p-8 overflow-y-auto">
+        {renderContent()}
+      </main>
+    </div>
+  );
+};
+
+export default SuperAdminDashboard;
