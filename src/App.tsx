@@ -38,7 +38,7 @@ const CtrlQListener = () => {
         e.preventDefault();
         navigate("/admin");
       }
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "w") {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "e") {
         e.preventDefault();
         navigate("/super-admin");
       }
