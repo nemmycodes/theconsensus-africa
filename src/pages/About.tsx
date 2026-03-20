@@ -59,6 +59,11 @@ const faqs = [
 
 const About = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { content: aboutData } = useSiteContent("about_who_we_are");
+  const { content: leaderData } = useSiteContent("leader");
+
+  const aboutWhoWeAre = aboutData?.image_url || aboutWhoWeAreFallback;
+  const mentorKefas = leaderData?.image_url || mentorKefasFallback;
 
   return (
     <div className="min-h-screen bg-background">
