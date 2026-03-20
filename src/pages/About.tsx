@@ -107,15 +107,15 @@ const About = () => {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">Who We Are</motion.h2>
+              <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">{aboutData?.heading || "Who We Are"}</motion.h2>
               <motion.p variants={fadeInUp} className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-                The Consensus is not just an organization; it is a generational awakening. We are a youth-led civic and economic movement dedicated to organizing the energy, creativity, and potential of <span className="text-foreground font-semibold">Gen Z and Millennials in Plateau State</span>.
+                {aboutData?.paragraph1 || <>The Consensus is not just an organization; it is a generational awakening. We are a youth-led civic and economic movement dedicated to organizing the energy, creativity, and potential of <span className="text-foreground font-semibold">Gen Z and Millennials in Plateau State</span>.</>}
               </motion.p>
               <motion.p variants={fadeInUp} className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-                We believe that political influence is downstream from economic power. By leveraging technology to organize, educate, and empower, we are building a formidable bloc capable of demanding accountability and driving sustainable development.
+                {aboutData?.paragraph2 || "We believe that political influence is downstream from economic power. By leveraging technology to organize, educate, and empower, we are building a formidable bloc capable of demanding accountability and driving sustainable development."}
               </motion.p>
               <motion.p variants={fadeInUp} className="text-muted-foreground text-base lg:text-lg leading-relaxed">
-                Our movement transcends traditional party lines, focusing instead on a shared vision of prosperity, integrity, and modern governance for our people.
+                {aboutData?.paragraph3 || "Our movement transcends traditional party lines, focusing instead on a shared vision of prosperity, integrity, and modern governance for our people."}
               </motion.p>
             </motion.div>
           </div>
