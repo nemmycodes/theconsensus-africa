@@ -9,6 +9,7 @@ interface AuthContextType {
   rolesLoading: boolean;
   isAgent: boolean;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
   signOut: () => Promise<void>;
 }
 
