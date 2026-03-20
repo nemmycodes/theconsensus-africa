@@ -134,9 +134,17 @@ const Navbar = () => {
                 )}
               </motion.div>
             ))}
-            <div className="flex gap-3 mt-4">
+            <div className="flex flex-col gap-2 mt-4">
               {user ? (
-                <Button size="sm" variant="outline" onClick={() => { handleSignOut(); setMobileOpen(false); }}>Logout</Button>
+                <>
+                  {isSuperAdmin && (
+                    <Button size="sm" variant="outline" className="gap-1.5 border-amber-500/30 text-amber-400" onClick={() => { navigate("/super-admin"); setMobileOpen(false); }}>
+                      <Crown className="w-3.5 h-3.5" /> Super Admin
+                    </Button>
+                  )}
+                  <Button size="sm" variant="default" onClick={() => { navigate("/dashboard"); setMobileOpen(false); }}>Dashboard</Button>
+                  <Button size="sm" variant="outline" onClick={() => { handleSignOut(); setMobileOpen(false); }}>Logout</Button>
+                </>
               ) : (
                 <>
                   <Button size="sm" variant="default" onClick={() => { navigate("/join"); setMobileOpen(false); }}>Join Us</Button>
