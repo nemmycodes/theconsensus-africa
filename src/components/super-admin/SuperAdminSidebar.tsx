@@ -33,7 +33,9 @@ const menuGroups = [
   {
     label: "Content & Data",
     items: [
-      { id: "website", label: "Website CMS", icon: Globe },
+      { id: "site-editor", label: "Site Editor", icon: PenTool },
+      { id: "website", label: "Content Manager", icon: Globe },
+      { id: "messages", label: "Contact Messages", icon: Mail },
       { id: "situation", label: "Situation Room", icon: Radio },
       { id: "election", label: "Election Data", icon: Database },
       { id: "events", label: "Events", icon: Calendar },
