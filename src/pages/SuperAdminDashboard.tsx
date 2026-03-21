@@ -17,6 +17,7 @@ import AdminCommunityForum from "@/components/admin/AdminCommunityForum";
 import AdminMediaLibrary from "@/components/admin/AdminMediaLibrary";
 import AdminNotifications from "@/components/admin/AdminNotifications";
 import AdminSettings from "@/components/admin/AdminSettings";
+import AdminKefCares from "@/components/admin/AdminKefCares";
 
 const SuperAdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
