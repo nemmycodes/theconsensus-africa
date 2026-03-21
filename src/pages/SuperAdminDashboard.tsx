@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Menu, X } from "lucide-react";
 import SuperAdminSidebar from "@/components/super-admin/SuperAdminSidebar";
 import SuperAdminOverview from "@/components/super-admin/SuperAdminOverview";
 import SuperAdminAnalytics from "@/components/super-admin/SuperAdminAnalytics";
@@ -21,8 +23,10 @@ import AdminKefCares from "@/components/admin/AdminKefCares";
 
 const SuperAdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, loading, rolesLoading, isSuperAdmin } = useAuth();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!loading && !rolesLoading && (!user || !isSuperAdmin)) {
@@ -43,9 +47,14 @@ const SuperAdminDashboard = () => {
 
   if (!user || !isSuperAdmin) return null;
 
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    if (isMobile) setSidebarOpen(false);
+  };
+
   const renderContent = () => {
     switch (activeTab) {
-      case "overview": return <SuperAdminOverview onTabChange={setActiveTab} />;
+      case "overview": return <SuperAdminOverview onTabChange={handleTabChange} />;
       case "analytics": return <SuperAdminAnalytics />;
       case "activity": return <SuperAdminActivityLog />;
       case "users": return <SuperAdminAccountManagement filter="all" />;
@@ -68,9 +77,30 @@ const SuperAdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
-      <SuperAdminSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-      <main className="flex-1 p-8 overflow-y-auto">
+    <div className="min-h-screen bg-background flex relative">
+      {isMobile && (
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="fixed top-3 left-3 z-[60] w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center shadow-md"
+        >
+          {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      )}
+
+      {isMobile ? (
+        sidebarOpen && (
+          <>
+            <div className="fixed inset-0 bg-black/40 z-40" onClick={() => setSidebarOpen(false)} />
+            <div className="fixed left-0 top-0 bottom-0 z-50">
+              <SuperAdminSidebar activeTab={activeTab} onTabChange={handleTabChange} />
+            </div>
+          </>
+        )
+      ) : (
+        <SuperAdminSidebar activeTab={activeTab} onTabChange={handleTabChange} />
+      )}
+
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
         {renderContent()}
       </main>
     </div>
