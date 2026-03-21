@@ -31,7 +31,7 @@ const MemberSidebar = ({ activeTab, onTabChange }: MemberSidebarProps) => {
     <aside className={`${collapsed ? "w-16" : "w-56"} min-h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 shrink-0`}>
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <img src="/brand-logo.png" alt="TPC" className="w-10 h-10 object-contain" />
+          <Link to="/"><img src="/brand-logo.png" alt="TPC" className="w-10 h-10 object-contain" /></Link>
           {!collapsed && (
             <div className="leading-tight">
               <p className="text-[10px] font-bold text-gray-800 uppercase tracking-wider">The Plateau</p>
