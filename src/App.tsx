@@ -26,6 +26,7 @@ import AgentDashboard from "./pages/AgentDashboard";
 import MemberDashboard from "./pages/MemberDashboard";
 import SuperAdminLogin from "./pages/SuperAdminLogin";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
+import KefCares from "./pages/KefCares";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
