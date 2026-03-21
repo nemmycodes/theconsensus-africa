@@ -151,60 +151,7 @@ const MemberProfile = () => {
       </div>
 
       {/* ID Card Modal */}
-      {showIdCard && (
-        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => setShowIdCard(false)}>
-          <div className="bg-white rounded-2xl p-6 w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <CreditCard className="w-6 h-6 text-emerald-600" />
-                <div>
-                  <h3 className="font-bold text-gray-900">Membership ID Card</h3>
-                  <p className="text-xs text-gray-500">Your official TPC identification card</p>
-                </div>
-              </div>
-              <button onClick={() => setShowIdCard(false)} className="text-gray-400 hover:text-gray-600 text-xl">✕</button>
-            </div>
-
-            {/* Card */}
-            <div className="bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 rounded-2xl p-6 text-white border-4 border-amber-400 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <p className="text-xs font-bold tracking-widest uppercase text-emerald-200">The Plateau</p>
-                  <p className="text-lg font-black uppercase">Consensus</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-[10px] uppercase text-emerald-200">Member Card</p>
-                  <p className="text-sm font-bold">2025 - 2027</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center text-2xl font-bold">{displayName[0]?.toUpperCase()}</div>
-                <div>
-                  <p className="text-lg font-black">{displayName}</p>
-                  <p className="text-xs text-emerald-200">Verified Member</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div><p className="text-emerald-300 uppercase text-[10px]">Member ID</p><p className="font-bold">TPC-2025-0847</p></div>
-                <div><p className="text-emerald-300 uppercase text-[10px]">LGA / Ward</p><p className="font-bold">{lga} / {ward}</p></div>
-                <div><p className="text-emerald-300 uppercase text-[10px]">Date Issued</p><p className="font-bold">{joinedDate}</p></div>
-                <div><p className="text-emerald-300 uppercase text-[10px]">Polling Unit</p><p className="font-bold">PU-034</p></div>
-              </div>
-            </div>
-
-            <p className="text-xs text-gray-400 text-center mt-3">🔄 Click card to flip</p>
-
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-              <p className="flex items-center gap-1 text-xs text-emerald-600 font-medium">✓ Card verified and active</p>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="gap-1">🖨 Print</Button>
-                <Button size="sm" className="gap-1 bg-emerald-600 hover:bg-emerald-700">⬇ Download</Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <MemberIdCard profile={profile} open={showIdCard} onClose={() => setShowIdCard(false)} />
     </div>
   );
 };
