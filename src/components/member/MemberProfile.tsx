@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CreditCard, Edit, User, Mail, Phone, Calendar, MapPin, Award, FileText, MessageSquare, CheckCircle } from "lucide-react";
+import MemberIdCard from "./MemberIdCard";
 
 const MemberProfile = () => {
   const { user } = useAuth();
