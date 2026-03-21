@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Crown, LayoutDashboard, Users, Shield, UserCog, BarChart3,
   Globe, Radio, Calendar, FileText, MessageSquare, Image,
