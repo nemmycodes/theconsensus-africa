@@ -170,6 +170,129 @@ export type Database = {
         }
         Relationships: []
       }
+      kef_cares_registrations: {
+        Row: {
+          artisan_skills: string[] | null
+          business_type: string | null
+          community: string | null
+          consent_given: boolean
+          created_at: string
+          creative_skills: string[] | null
+          date_of_birth: string | null
+          economic_status: string | null
+          education_status: string | null
+          email: string | null
+          field_of_study: string | null
+          full_name: string
+          gender: string
+          highest_qualification: string | null
+          id: string
+          interest_agricultural: boolean | null
+          interest_economic_empowerment: boolean | null
+          interest_entrepreneurship: boolean | null
+          interest_leadership: boolean | null
+          interest_professional_networking: boolean | null
+          interest_skills_training: boolean | null
+          interest_trading: boolean | null
+          interested_in_volunteering: boolean | null
+          lga: string
+          monthly_income_range: string | null
+          occupation: string | null
+          owns_business: string | null
+          phone_number: string
+          polling_unit: string | null
+          primary_economic_sector: string | null
+          professional_skills: string[] | null
+          residential_address: string | null
+          sport_type: string | null
+          sports_participation: boolean | null
+          volunteer_availability: string | null
+          volunteer_role: string | null
+          ward: string | null
+          whatsapp_active: boolean | null
+        }
+        Insert: {
+          artisan_skills?: string[] | null
+          business_type?: string | null
+          community?: string | null
+          consent_given?: boolean
+          created_at?: string
+          creative_skills?: string[] | null
+          date_of_birth?: string | null
+          economic_status?: string | null
+          education_status?: string | null
+          email?: string | null
+          field_of_study?: string | null
+          full_name: string
+          gender: string
+          highest_qualification?: string | null
+          id?: string
+          interest_agricultural?: boolean | null
+          interest_economic_empowerment?: boolean | null
+          interest_entrepreneurship?: boolean | null
+          interest_leadership?: boolean | null
+          interest_professional_networking?: boolean | null
+          interest_skills_training?: boolean | null
+          interest_trading?: boolean | null
+          interested_in_volunteering?: boolean | null
+          lga: string
+          monthly_income_range?: string | null
+          occupation?: string | null
+          owns_business?: string | null
+          phone_number: string
+          polling_unit?: string | null
+          primary_economic_sector?: string | null
+          professional_skills?: string[] | null
+          residential_address?: string | null
+          sport_type?: string | null
+          sports_participation?: boolean | null
+          volunteer_availability?: string | null
+          volunteer_role?: string | null
+          ward?: string | null
+          whatsapp_active?: boolean | null
+        }
+        Update: {
+          artisan_skills?: string[] | null
+          business_type?: string | null
+          community?: string | null
+          consent_given?: boolean
+          created_at?: string
+          creative_skills?: string[] | null
+          date_of_birth?: string | null
+          economic_status?: string | null
+          education_status?: string | null
+          email?: string | null
+          field_of_study?: string | null
+          full_name?: string
+          gender?: string
+          highest_qualification?: string | null
+          id?: string
+          interest_agricultural?: boolean | null
+          interest_economic_empowerment?: boolean | null
+          interest_entrepreneurship?: boolean | null
+          interest_leadership?: boolean | null
+          interest_professional_networking?: boolean | null
+          interest_skills_training?: boolean | null
+          interest_trading?: boolean | null
+          interested_in_volunteering?: boolean | null
+          lga?: string
+          monthly_income_range?: string | null
+          occupation?: string | null
+          owns_business?: string | null
+          phone_number?: string
+          polling_unit?: string | null
+          primary_economic_sector?: string | null
+          professional_skills?: string[] | null
+          residential_address?: string | null
+          sport_type?: string | null
+          sports_participation?: boolean | null
+          volunteer_availability?: string | null
+          volunteer_role?: string | null
+          ward?: string | null
+          whatsapp_active?: boolean | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null

@@ -13,6 +13,7 @@ import AdminCommunityForum from "@/components/admin/AdminCommunityForum";
 import AdminMediaLibrary from "@/components/admin/AdminMediaLibrary";
 import AdminNotifications from "@/components/admin/AdminNotifications";
 import AdminSettings from "@/components/admin/AdminSettings";
+import AdminKefCares from "@/components/admin/AdminKefCares";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -50,6 +51,7 @@ const AdminDashboard = () => {
       case "forum": return <AdminCommunityForum />;
       case "media": return <AdminMediaLibrary />;
       case "notifications": return <AdminNotifications />;
+      case "kef-cares": return <AdminKefCares />;
       case "settings": return <AdminSettings />;
       default: return <AdminOverview />;
     }
