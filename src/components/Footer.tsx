@@ -17,7 +17,7 @@ const Footer = () => {
         >
           {/* Brand */}
           <div className="space-y-4">
-            <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-12 w-auto" />
+            <Link to="/"><img src="/brand-logo.png" alt="The Plateau Consensus" className="h-12 w-auto" /></Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               The Consensus Movement<br />
               Central Zone Pilot – Plateau State<br />

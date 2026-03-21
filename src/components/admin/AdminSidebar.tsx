@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard, Users, Shield, Radio, BarChart3, Calendar,
   FileText, MessageSquare, Image, Bell, Settings, ChevronLeft, LogOut,
@@ -36,7 +36,7 @@ const AdminSidebar = ({ activeTab, onTabChange }: AdminSidebarProps) => {
       {/* Brand Logo */}
       <div className="p-4 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <img src="/brand-logo.png" alt="The Plateau Consensus" className="w-14 h-14 object-contain" />
+          <Link to="/"><img src="/brand-logo.png" alt="The Plateau Consensus" className="w-14 h-14 object-contain" /></Link>
           {!collapsed && (
             <div className="leading-tight">
               <p className="text-[10px] font-bold text-gray-800 uppercase tracking-wider">The Plateau</p>

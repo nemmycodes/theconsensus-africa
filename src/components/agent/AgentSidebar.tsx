@@ -1,6 +1,6 @@
 import { LayoutDashboard, FileText, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -34,7 +34,7 @@ const AgentSidebar = ({ activeTab, onTabChange }: AgentSidebarProps) => {
     <aside className="w-64 bg-[#0d1f15] text-white flex flex-col shrink-0 min-h-screen">
       {/* Logo */}
       <div className="p-6">
-        <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-16" />
+        <Link to="/"><img src="/brand-logo.png" alt="The Plateau Consensus" className="h-16" /></Link>
       </div>
 
       {/* Nav */}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Crown, LayoutDashboard, Users, Shield, UserCog, BarChart3,
   Globe, Radio, Calendar, FileText, MessageSquare, Image,
@@ -64,9 +64,9 @@ const SuperAdminSidebar = ({ activeTab, onTabChange }: SuperAdminSidebarProps) =
       {/* Brand */}
       <div className="p-4 border-b border-amber-900/20">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-600/20 border border-amber-500/30 flex items-center justify-center shrink-0">
+          <Link to="/" className="w-10 h-10 rounded-xl bg-amber-600/20 border border-amber-500/30 flex items-center justify-center shrink-0">
             <Crown className="w-5 h-5 text-amber-400" />
-          </div>
+          </Link>
           {!collapsed && (
             <div className="leading-tight">
               <p className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Super Admin</p>
