@@ -42,6 +42,7 @@ const menuGroups = [
       { id: "blog", label: "Blog Posts", icon: FileText },
       { id: "forum", label: "Forum", icon: MessageSquare },
       { id: "media", label: "Media Library", icon: Image },
+      { id: "kef-cares", label: "KEF-CARES", icon: Users },
     ],
   },
   {

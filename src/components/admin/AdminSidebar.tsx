@@ -22,6 +22,7 @@ const menuItems = [
   { id: "forum", label: "Community Forum", icon: MessageSquare },
   { id: "media", label: "Media Library", icon: Image },
   { id: "notifications", label: "Notifications", icon: Bell },
+  { id: "kef-cares", label: "KEF-CARES", icon: Users },
   { id: "settings", label: "Settings", icon: Settings },
 ];
 

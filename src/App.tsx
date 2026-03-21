@@ -73,6 +73,7 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/events" element={<Events />} />
             <Route path="/discuss" element={<Discuss />} />
+            <Route path="/kef-cares" element={<KefCares />} />
             <Route path="/dashboard" element={<MemberDashboard />} />
             <Route path="/agent/login" element={<AgentLogin />} />
             <Route path="/agent" element={<AgentDashboard />} />

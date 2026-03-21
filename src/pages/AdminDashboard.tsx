@@ -51,6 +51,7 @@ const AdminDashboard = () => {
       case "forum": return <AdminCommunityForum />;
       case "media": return <AdminMediaLibrary />;
       case "notifications": return <AdminNotifications />;
+      case "kef-cares": return <AdminKefCares />;
       case "settings": return <AdminSettings />;
       default: return <AdminOverview />;
     }
