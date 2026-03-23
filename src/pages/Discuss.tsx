@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquare } from "lucide-react";
+import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquare, Radio, Play, Clock, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import discussHero from "@/assets/discuss-hero.jpg";
 
