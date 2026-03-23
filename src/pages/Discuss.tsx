@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquare } from "lucide-react";
+import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquare, Radio, Play, Clock, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import discussHero from "@/assets/discuss-hero.jpg";
 
@@ -29,6 +29,21 @@ const dialogues = [
     time: "15 mins ago",
     tag: "POLICY",
   },
+];
+
+const livePodcast = {
+  title: "The Consensus Live: Youth Economic Agenda",
+  host: "KEF Media Team",
+  status: "LIVE NOW",
+  listeners: 234,
+  description: "Join our live discussion on creating economic opportunities for young people across the central zone.",
+};
+
+const pastPodcasts = [
+  { title: "Building Grassroots Movements That Last", host: "Sarah J. & David K.", duration: "45 min", date: "Mar 20, 2026", plays: 1240 },
+  { title: "Digital Tools for Community Organizing", host: "KEF Media Team", duration: "38 min", date: "Mar 18, 2026", plays: 982 },
+  { title: "Women in Leadership: Breaking Barriers", host: "Grace N.", duration: "52 min", date: "Mar 15, 2026", plays: 1876 },
+  { title: "Agricultural Innovation in Plateau State", host: "Michael P. & John C.", duration: "41 min", date: "Mar 12, 2026", plays: 756 },
 ];
 
 const Discuss = () => {
@@ -148,7 +163,80 @@ const Discuss = () => {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Podcast Section */}
+      <section className="py-20 px-4 lg:px-8">
+        <div className="container mx-auto">
+          <div className="flex items-center gap-2 mb-2">
+            <Headphones className="w-5 h-5 text-primary" />
+            <span className="text-xs font-bold tracking-widest text-primary uppercase">Podcast</span>
+          </div>
+          <h2 className="text-2xl font-black mb-8">Listen & Learn</h2>
+
+          {/* Live Podcast */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-primary rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden"
+          >
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive/60 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-destructive"></span>
+              </span>
+              <span className="text-xs font-black text-primary-foreground tracking-wider">{livePodcast.status}</span>
+            </div>
+            <div className="flex items-start gap-5">
+              <div className="w-14 h-14 rounded-xl bg-primary-foreground/20 flex items-center justify-center shrink-0">
+                <Radio className="w-7 h-7 text-primary-foreground" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg md:text-xl font-black text-primary-foreground">{livePodcast.title}</h3>
+                <p className="text-sm text-primary-foreground/70 mt-1">Hosted by {livePodcast.host}</p>
+                <p className="text-sm text-primary-foreground/80 mt-2">{livePodcast.description}</p>
+                <div className="flex items-center gap-4 mt-4">
+                  <Button size="sm" variant="secondary" className="font-bold gap-2">
+                    <Play className="w-4 h-4" /> Listen Live
+                  </Button>
+                  <span className="text-xs text-primary-foreground/60 flex items-center gap-1">
+                    <Users className="w-3 h-3" /> {livePodcast.listeners} listening
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Past Episodes */}
+          <h3 className="text-sm font-black uppercase tracking-wider text-muted-foreground mb-4">Past Episodes</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {pastPodcasts.map((ep, i) => (
+              <motion.div
+                key={ep.title}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="bg-card rounded-xl border border-border p-5 hover:border-primary/30 transition-colors cursor-pointer group flex items-center gap-4"
+              >
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                  <Play className="w-5 h-5 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-sm truncate">{ep.title}</h4>
+                  <p className="text-xs text-muted-foreground mt-1">Hosted by {ep.host}</p>
+                  <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {ep.duration}</span>
+                    <span>{ep.date}</span>
+                    <span className="flex items-center gap-1"><Headphones className="w-3 h-3" /> {ep.plays}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
       <section className="py-24 bg-background text-center">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
