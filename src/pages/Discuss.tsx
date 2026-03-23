@@ -31,6 +31,21 @@ const dialogues = [
   },
 ];
 
+const livePodcast = {
+  title: "The Consensus Live: Youth Economic Agenda",
+  host: "KEF Media Team",
+  status: "LIVE NOW",
+  listeners: 234,
+  description: "Join our live discussion on creating economic opportunities for young people across the central zone.",
+};
+
+const pastPodcasts = [
+  { title: "Building Grassroots Movements That Last", host: "Sarah J. & David K.", duration: "45 min", date: "Mar 20, 2026", plays: 1240 },
+  { title: "Digital Tools for Community Organizing", host: "KEF Media Team", duration: "38 min", date: "Mar 18, 2026", plays: 982 },
+  { title: "Women in Leadership: Breaking Barriers", host: "Grace N.", duration: "52 min", date: "Mar 15, 2026", plays: 1876 },
+  { title: "Agricultural Innovation in Plateau State", host: "Michael P. & John C.", duration: "41 min", date: "Mar 12, 2026", plays: 756 },
+];
+
 const Discuss = () => {
   const navigate = useNavigate();
 
