@@ -53,14 +53,6 @@ const Navbar = () => {
               >
                 {link.label}
               </a>
-            ) : link.href === "/kef-cares" ? (
-              <Link
-                key={link.label}
-                to={link.href}
-                className="text-sm font-semibold px-4 py-1.5 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-              >
-                {link.label}
-              </Link>
             ) : (
               <Link
                 key={link.label}
