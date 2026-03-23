@@ -15,7 +15,7 @@ const navLinks = [
   { label: "Blog", href: "/blog" },
   { label: "KEF-Cares", href: "/kef-cares" },
   { label: "INEC", href: "https://www.inecnigeria.org", external: true },
-  { label: "Donate", href: "/donate" },
+  
   { label: "Contact Us", href: "/contact" },
 ];
 
