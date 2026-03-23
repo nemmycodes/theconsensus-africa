@@ -119,9 +119,8 @@ const HeroSection = () => {
               <Button size="lg" className="gap-2 font-semibold" onClick={() => navigate("/join")}>
                 JOIN US <ArrowRight size={18} />
               </Button>
-              <Button size="lg" variant="secondary" onClick={() => navigate("/discuss")}>Discuss</Button>
               <Button size="lg" variant="secondary" onClick={() => navigate("/situation-room")}>Situation Room</Button>
-              <Button size="lg" variant="secondary" onClick={() => navigate("/donate")}>Donate</Button>
+              <Button size="lg" variant="secondary" onClick={() => navigate("/kef-cares")}>KEF-Cares</Button>
             </motion.div>
           </div>
 
