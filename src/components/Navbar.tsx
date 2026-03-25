@@ -21,7 +21,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, signOut, isSuperAdmin, isAdmin, isAgent } = useAuth();
+  const { user, signOut, isSuperAdmin, isAdmin, isAgent, isKefUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -79,7 +79,10 @@ const Navbar = () => {
               {isAgent && !isAdmin && !isSuperAdmin && (
                 <Button size="sm" variant="outline" onClick={() => navigate("/agent")}>Agent Panel</Button>
               )}
-              <Button size="sm" variant="default" onClick={() => navigate("/dashboard")}>Dashboard</Button>
+              {isKefUser && !isAdmin && !isSuperAdmin && !isAgent && (
+                <Button size="sm" variant="default" onClick={() => navigate("/kef-cares/dashboard")}>KEF Dashboard</Button>
+              )}
+              {!isKefUser && <Button size="sm" variant="default" onClick={() => navigate("/dashboard")}>Dashboard</Button>}
               <Button size="sm" variant="outline" onClick={handleSignOut}>Logout</Button>
             </>
           ) : (
