@@ -34,9 +34,13 @@ const MemberProfile = () => {
       {/* Banner */}
       <div className="relative h-32 bg-gradient-to-r from-emerald-700 to-emerald-500 rounded-xl overflow-hidden">
         <div className="absolute bottom-0 left-6 translate-y-1/2">
-          <div className="w-20 h-20 rounded-full bg-emerald-600 text-white flex items-center justify-center text-3xl font-bold border-4 border-white shadow-lg">
-            {displayName[0]?.toUpperCase()}
-          </div>
+          {profile?.avatar_url ? (
+            <img src={profile.avatar_url} alt={displayName} className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg" />
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-emerald-600 text-white flex items-center justify-center text-3xl font-bold border-4 border-white shadow-lg">
+              {displayName[0]?.toUpperCase()}
+            </div>
+          )}
         </div>
         <div className="absolute bottom-3 left-28 text-white">
           <h3 className="font-black text-lg">{displayName}</h3>
