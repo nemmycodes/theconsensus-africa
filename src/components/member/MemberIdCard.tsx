@@ -26,6 +26,7 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
   const interests = profile?.interests || user?.user_metadata?.interests || [];
   const joinedDate = user?.created_at ? new Date(user.created_at).toLocaleDateString() : "—";
   const memberId = `TPC-${new Date(user?.created_at || "").getFullYear()}-${user?.id?.slice(0, 6).toUpperCase() || "000000"}`;
+  const avatarUrl = profile?.avatar_url || user?.user_metadata?.avatar_url || "";
 
   const downloadCard = async (side: "front" | "back" | "both") => {
     // Using canvas-based approach for download
@@ -38,7 +39,7 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
     canvas.width = w;
     canvas.height = h;
 
-    const drawFront = () => {
+    const drawFront = async () => {
       // Background gradient
       const grad = ctx.createLinearGradient(0, 0, w, h);
       grad.addColorStop(0, "#047857");
@@ -85,16 +86,45 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
       ctx.fillText("2025 – 2027", w - 40, 72);
       ctx.textAlign = "left";
 
-      // Avatar circle
-      ctx.fillStyle = "rgba(255,255,255,0.2)";
-      ctx.beginPath();
-      ctx.roundRect(40, 130, 100, 100, 16);
-      ctx.fill();
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 48px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText(displayName[0]?.toUpperCase() || "M", 90, 198);
-      ctx.textAlign = "left";
+      // Avatar
+      if (avatarUrl) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = avatarUrl;
+        try {
+          await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve();
+            img.onerror = () => reject();
+            setTimeout(() => resolve(), 3000);
+          });
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(40, 130, 100, 100, 16);
+          ctx.clip();
+          ctx.drawImage(img, 40, 130, 100, 100);
+          ctx.restore();
+        } catch {
+          ctx.fillStyle = "rgba(255,255,255,0.2)";
+          ctx.beginPath();
+          ctx.roundRect(40, 130, 100, 100, 16);
+          ctx.fill();
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 48px Arial";
+          ctx.textAlign = "center";
+          ctx.fillText(displayName[0]?.toUpperCase() || "M", 90, 198);
+          ctx.textAlign = "left";
+        }
+      } else {
+        ctx.fillStyle = "rgba(255,255,255,0.2)";
+        ctx.beginPath();
+        ctx.roundRect(40, 130, 100, 100, 16);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 48px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(displayName[0]?.toUpperCase() || "M", 90, 198);
+        ctx.textAlign = "left";
+      }
 
       // Name
       ctx.fillStyle = "#ffffff";
@@ -212,7 +242,7 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
     };
 
     if (side === "front" || side === "both") {
-      drawFront();
+      await drawFront();
       const link = document.createElement("a");
       link.download = `TPC-ID-Front-${displayName.replace(/\s+/g, "_")}.png`;
       link.href = canvas.toDataURL("image/png");
@@ -264,9 +294,13 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
               </div>
 
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center text-2xl font-bold shrink-0">
-                  {displayName[0]?.toUpperCase()}
-                </div>
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt={displayName} className="w-16 h-16 rounded-xl object-cover shrink-0 border-2 border-white/30" />
+                ) : (
+                  <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center text-2xl font-bold shrink-0">
+                    {displayName[0]?.toUpperCase()}
+                  </div>
+                )}
                 <div>
                   <p className="text-lg font-black">{displayName}</p>
                   <p className="text-xs text-emerald-200">Verified Member</p>

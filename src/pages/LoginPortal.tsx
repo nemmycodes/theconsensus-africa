@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, Shield, ShieldCheck, ArrowRight } from "lucide-react";
+import { Users, Shield, ShieldCheck, Heart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const portals = [
@@ -12,6 +12,15 @@ const portals = [
     route: "/auth",
     color: "bg-primary/10 text-primary border-primary/20",
     btnClass: "bg-primary hover:bg-primary/90 text-primary-foreground",
+  },
+  {
+    title: "KEF-Cares",
+    subtitle: "Community Registration",
+    description: "Register for KEF-CARES economic empowerment and community programmes.",
+    icon: Heart,
+    route: "/kef-cares",
+    color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    btnClass: "bg-emerald-600 hover:bg-emerald-700 text-white",
   },
   {
     title: "Agent",
@@ -44,7 +53,7 @@ const LoginPortal = () => {
         animate={{ opacity: 1, y: 0 }}
         className="mb-10 text-center"
       >
-        <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-16 mx-auto mb-4" />
+        <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-16 mx-auto mb-4 cursor-pointer" onClick={() => navigate("/")} />
         <h1 className="text-3xl md:text-4xl font-black text-foreground uppercase tracking-tight">
           Choose Your Portal
         </h1>
@@ -54,28 +63,28 @@ const LoginPortal = () => {
       </motion.div>
 
       {/* Portal Cards */}
-      <div className="grid md:grid-cols-3 gap-6 w-full max-w-4xl">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-5xl">
         {portals.map((portal, i) => (
           <motion.div
             key={portal.title}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-card border border-border rounded-2xl p-8 flex flex-col items-center text-center hover:border-primary/30 transition-all group cursor-pointer"
+            className="bg-card border border-border rounded-2xl p-6 md:p-8 flex flex-col items-center text-center hover:border-primary/30 transition-all group cursor-pointer"
             onClick={() => navigate(portal.route)}
           >
-            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border ${portal.color} mb-5`}>
-              <portal.icon className="w-8 h-8" />
+            <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center border ${portal.color} mb-4 md:mb-5`}>
+              <portal.icon className="w-7 h-7 md:w-8 md:h-8" />
             </div>
-            <h2 className="text-xl font-black text-foreground">{portal.title}</h2>
-            <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase mt-1">
+            <h2 className="text-lg md:text-xl font-black text-foreground">{portal.title}</h2>
+            <p className="text-[10px] md:text-xs font-bold tracking-widest text-muted-foreground uppercase mt-1">
               {portal.subtitle}
             </p>
-            <p className="text-sm text-muted-foreground mt-4 mb-6 leading-relaxed flex-1">
+            <p className="text-xs md:text-sm text-muted-foreground mt-3 md:mt-4 mb-4 md:mb-6 leading-relaxed flex-1">
               {portal.description}
             </p>
-            <Button className={`w-full gap-2 font-bold ${portal.btnClass}`}>
-              Sign In <ArrowRight className="w-4 h-4" />
+            <Button className={`w-full gap-2 font-bold text-xs md:text-sm ${portal.btnClass}`}>
+              {portal.title === "KEF-Cares" ? "Register" : "Sign In"} <ArrowRight className="w-4 h-4" />
             </Button>
           </motion.div>
         ))}

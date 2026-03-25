@@ -24,10 +24,24 @@ const staggerContainer = {
 };
 
 const drivenByPurpose = [
-  { icon: TrendingUp, title: "Economic Freedom", description: "Empowering youth to achieve financial independence through innovation and enterprise development." },
-  { icon: BookOpen, title: "Civic Awareness", description: "Awakening informed political consciousness and active participation in democratic processes." },
-  { icon: Heart, title: "Resilience", description: "Building community capacity for long-term sustainable growth and social impact." },
-  { icon: Users, title: "Leadership Pathways", description: "Identifying, grooming, and empowering the next generation of young leaders." },
+  {
+    icon: TrendingUp,
+    title: "Economic Freedom",
+    subtitle: "Empowering people to earn, grow, and become financially independent.",
+    description: "We identify traders, farmers, artisans, professionals, and youth entrepreneurs through data, then support them with opportunities, skills, and economic programmes under KEF-CARES. We believe that when people have income and stability, they are less vulnerable and more in control of their future.",
+  },
+  {
+    icon: BookOpen,
+    title: "Civic Awareness",
+    subtitle: "Building informed citizens who understand governance and their role in it.",
+    description: "Impact through dialogue, education, and community engagement via forums, content, and digital platforms. We ensure that an informed citizen can make better decisions and cannot be easily misled or manipulated.",
+  },
+  {
+    icon: Heart,
+    title: "Resilience",
+    subtitle: "Creating communities that can withstand challenges and grow sustainably.",
+    description: "Strengthening local economies, supporting networks (farmers, traders, artisans), and using data to respond to real community needs. Support strong communities to adapt, survive, and continue to grow without dependency.",
+  },
 ];
 
 const strategyItems = [
@@ -91,22 +105,10 @@ const About = () => {
       <section className="py-24 bg-card">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="rounded-2xl overflow-hidden shadow-xl"
-            >
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-2xl overflow-hidden shadow-xl">
               <img src={aboutWhoWeAre} alt="Team discussion" className="w-full h-[400px] md:h-[500px] object-cover" />
             </motion.div>
-
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
+            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="space-y-6">
               <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight">{aboutData?.heading || "Who We Are"}</motion.h2>
               <motion.p variants={fadeInUp} className="text-muted-foreground text-base lg:text-lg leading-relaxed">
                 {aboutData?.paragraph1 || <>The Consensus is not just an organization; it is a generational awakening. We are a youth-led civic and economic movement dedicated to organizing the energy, creativity, and potential of <span className="text-foreground font-semibold">Gen Z and Millennials in Plateau State</span>.</>}
@@ -129,7 +131,6 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-black">Leadership & Mentorship</h2>
             <p className="text-muted-foreground mt-4 max-w-xl mx-auto">Guided by wisdom, driven by youth. Our leadership structure combines experience with energy.</p>
           </motion.div>
-
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-2xl overflow-hidden shadow-xl">
               <img src={mentorKefas} alt="Chief Kefas Ropshik" className="w-full h-[400px] object-cover" />
@@ -158,7 +159,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Driven by Purpose — dark green bg */}
+      {/* Our Mandate – Driven by Purpose */}
       <section className="py-24 relative overflow-hidden" style={{ background: 'hsl(145, 63%, 20%)' }}>
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
@@ -166,7 +167,7 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-black mt-4 text-primary-foreground">Driven by Purpose</h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             {drivenByPurpose.map((item, i) => (
               <motion.div
                 key={item.title}
@@ -174,14 +175,15 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="rounded-xl p-6 text-center border transition-colors"
+                className="rounded-xl p-6 border transition-colors"
                 style={{ background: 'hsl(145, 63%, 16%)', borderColor: 'hsl(145, 63%, 28%)' }}
               >
                 <div className="w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4" style={{ background: 'hsl(145, 63%, 42%)' }}>
                   <item.icon className="w-6 h-6 text-primary-foreground" />
                 </div>
-                <h3 className="font-bold mb-2 text-primary-foreground">{item.title}</h3>
-                <p className="text-sm" style={{ color: 'hsl(145, 30%, 70%)' }}>{item.description}</p>
+                <h3 className="font-bold text-lg mb-2 text-primary-foreground text-center">{item.title}</h3>
+                <p className="text-sm font-semibold mb-3 text-center" style={{ color: 'hsl(145, 50%, 80%)' }}>{item.subtitle}</p>
+                <p className="text-sm leading-relaxed" style={{ color: 'hsl(145, 30%, 70%)' }}>{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -215,7 +217,6 @@ const About = () => {
                   </div>
                 ))}
               </div>
-              {/* Central Zone Pilot - highlighted card */}
               <div className="flex items-start gap-4 p-4 rounded-xl border transition-colors" style={{ background: 'hsl(145, 63%, 20%)', borderColor: 'hsl(145, 63%, 30%)' }}>
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'hsl(145, 63%, 42%)' }}>
                   <centralZonePilot.icon className="w-5 h-5 text-primary-foreground" />
@@ -253,7 +254,6 @@ const About = () => {
       <section className="py-24 bg-background">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Mission - dark card */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="bg-card rounded-2xl p-8 border border-border">
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
@@ -264,7 +264,6 @@ const About = () => {
                 To build a modern democratic structure that empowers every Nigerian citizen, regardless of tribe or creed, through merit-based leadership, sustainable economic policies, and active youth-led governance.
               </p>
             </motion.div>
-            {/* Vision - green card */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
               className="rounded-2xl p-8" style={{ background: 'hsl(145, 63%, 42%)' }}>
               <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: 'hsl(145, 63%, 52%)' }}>
@@ -287,94 +286,68 @@ const About = () => {
             <p className="text-muted-foreground mt-4">The pillars that guide our movement and our promise to the nation.</p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((v, i) => (
-              <motion.div key={v.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className="bg-secondary rounded-2xl p-8 text-center border border-border hover:border-primary/40 transition-colors">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-5">
-                  <v.icon className="w-7 h-7 text-primary" />
+            {values.map((value, i) => (
+              <motion.div
+                key={value.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-background rounded-xl p-6 border border-border text-center hover:border-primary/30 transition-colors"
+              >
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <value.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-bold mb-3">{v.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{v.description}</p>
+                <h3 className="font-bold mb-2">{value.title}</h3>
+                <p className="text-sm text-muted-foreground">{value.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Youth Empowerment Focus — dark green bg */}
-      <section className="py-24 relative overflow-hidden" style={{ background: 'hsl(145, 63%, 20%)' }}>
+      {/* Youth Image */}
+      <section className="py-24 bg-background">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-8">
-              <h2 className="text-3xl md:text-4xl font-black text-primary-foreground">Youth Empowerment<br />Focus</h2>
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1" style={{ background: 'hsl(145, 63%, 42%)' }}>
-                    <Briefcase className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-primary-foreground">Digital Literacy Fund</h4>
-                    <p className="text-sm mt-1" style={{ color: 'hsl(145, 30%, 70%)' }}>Bridging the tech divide through coding bootcamps, grant-funded tools, and digital platform education for underserved communities.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1" style={{ background: 'hsl(145, 63%, 42%)' }}>
-                    <TrendingUp className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-primary-foreground">Young Entrepreneurs Grant</h4>
-                    <p className="text-sm mt-1" style={{ color: 'hsl(145, 30%, 70%)' }}>Seed-powered seed capital for youth-led enterprises in agriculture, tech, and creative industries.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-1" style={{ background: 'hsl(145, 63%, 42%)' }}>
-                    <Award className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-primary-foreground">Political Mentorship</h4>
-                    <p className="text-sm mt-1" style={{ color: 'hsl(145, 30%, 70%)' }}>Practical political and leadership experience for under-35s in local party governance and legislation works.</p>
-                  </div>
-                </div>
-              </div>
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <img src={youthEmpowerment} alt="Youth empowerment" className="w-full h-[400px] object-cover rounded-2xl shadow-xl" />
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              className="rounded-2xl overflow-hidden shadow-xl">
-              <img src={youthEmpowerment} alt="Youth Empowerment" className="w-full h-[400px] object-cover" />
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-6">
+              <h2 className="text-3xl md:text-4xl font-black">Empowering the Next Generation</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                We invest in the economic empowerment, political education, and personal development of young people across Plateau State. Through structured programmes, digital tools, and community networks, we are creating pathways for youth to lead, earn, and thrive.
+              </p>
+              <Button className="gap-2 font-semibold" onClick={() => window.location.href = '/join'}>
+                Join the Movement <ArrowRight size={16} />
+              </Button>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-background">
+      <section className="py-24 bg-card">
         <div className="container mx-auto px-4 lg:px-8 max-w-3xl">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black">Frequently Asked Questions</h2>
-            <p className="text-muted-foreground mt-4">Everything you need to know about the Consensus movement.</p>
           </motion.div>
           <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="border border-border rounded-xl overflow-hidden"
-              >
+              <div key={i} className="border border-border rounded-xl overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-5 text-left hover:bg-card transition-colors"
+                  className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/30 transition-colors"
                 >
-                  <span className="font-semibold pr-4">{faq.q}</span>
+                  <span className="font-bold text-sm pr-4">{faq.q}</span>
                   <ChevronDown className={`w-5 h-5 text-muted-foreground shrink-0 transition-transform ${openFaq === i ? "rotate-180" : ""}`} />
                 </button>
                 {openFaq === i && (
-                  <div className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
-                    {faq.a}
+                  <div className="px-5 pb-5">
+                    <p className="text-sm text-muted-foreground leading-relaxed">{faq.a}</p>
                   </div>
                 )}
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

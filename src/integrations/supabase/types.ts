@@ -196,6 +196,8 @@ export type Database = {
           interest_trading: boolean | null
           interested_in_volunteering: boolean | null
           lga: string
+          marital_status: string | null
+          member_id: string | null
           monthly_income_range: string | null
           occupation: string | null
           owns_business: string | null
@@ -204,6 +206,7 @@ export type Database = {
           primary_economic_sector: string | null
           professional_skills: string[] | null
           residential_address: string | null
+          social_status: string | null
           sport_type: string | null
           sports_participation: boolean | null
           volunteer_availability: string | null
@@ -236,6 +239,8 @@ export type Database = {
           interest_trading?: boolean | null
           interested_in_volunteering?: boolean | null
           lga: string
+          marital_status?: string | null
+          member_id?: string | null
           monthly_income_range?: string | null
           occupation?: string | null
           owns_business?: string | null
@@ -244,6 +249,7 @@ export type Database = {
           primary_economic_sector?: string | null
           professional_skills?: string[] | null
           residential_address?: string | null
+          social_status?: string | null
           sport_type?: string | null
           sports_participation?: boolean | null
           volunteer_availability?: string | null
@@ -276,6 +282,8 @@ export type Database = {
           interest_trading?: boolean | null
           interested_in_volunteering?: boolean | null
           lga?: string
+          marital_status?: string | null
+          member_id?: string | null
           monthly_income_range?: string | null
           occupation?: string | null
           owns_business?: string | null
@@ -284,6 +292,7 @@ export type Database = {
           primary_economic_sector?: string | null
           professional_skills?: string[] | null
           residential_address?: string | null
+          social_status?: string | null
           sport_type?: string | null
           sports_participation?: boolean | null
           volunteer_availability?: string | null
