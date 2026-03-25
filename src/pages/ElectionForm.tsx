@@ -78,6 +78,28 @@ const ElectionForm = () => {
   const [signatureName, setSignatureName] = useState("");
   const [signatureDate, setSignatureDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [ec8aFile, setEc8aFile] = useState<File | null>(null);
+  const [ec8aPreview, setEc8aPreview] = useState<string | null>(null);
+
+  const handleEc8aChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const allowed = ["image/jpeg", "image/png", "application/pdf"];
+    if (!allowed.includes(file.type)) {
+      toast({ title: "Invalid file type", description: "Please upload JPG, PNG, or PDF.", variant: "destructive" });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Maximum file size is 10MB.", variant: "destructive" });
+      return;
+    }
+    setEc8aFile(file);
+    if (file.type.startsWith("image/")) {
+      setEc8aPreview(URL.createObjectURL(file));
+    } else {
+      setEc8aPreview(null);
+    }
+  };
 
   const totalPartyVotes = Object.values(partyResults).reduce((sum, v) => sum + (v || 0), 0);
 
@@ -360,16 +382,38 @@ const ElectionForm = () => {
                 <h2 className="text-lg font-heading font-bold">4. EC8-A Upload</h2>
               </div>
 
-              <div className="border-2 border-dashed border-primary/30 rounded-xl bg-primary/5 p-12 text-center">
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  <FileUp className="h-7 w-7 text-primary" />
-                </div>
-                <p className="text-sm">
-                  <span className="text-primary font-semibold cursor-pointer hover:underline">Click to upload</span>
-                  {" "}or drag and drop
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">EC8-A Form (JPG, PNG or PDF)</p>
-              </div>
+              <label className="border-2 border-dashed border-primary/30 rounded-xl bg-primary/5 p-12 text-center cursor-pointer block hover:border-primary/50 transition-colors">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,application/pdf"
+                  className="hidden"
+                  onChange={handleEc8aChange}
+                />
+                {ec8aFile ? (
+                  <div>
+                    {ec8aPreview ? (
+                      <img src={ec8aPreview} alt="EC8-A Preview" className="max-h-40 mx-auto mb-3 rounded-lg" />
+                    ) : (
+                      <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                        <FileUp className="h-7 w-7 text-primary" />
+                      </div>
+                    )}
+                    <p className="text-sm font-semibold text-primary">{ec8aFile.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Click to change file</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                      <FileUp className="h-7 w-7 text-primary" />
+                    </div>
+                    <p className="text-sm">
+                      <span className="text-primary font-semibold">Click to upload</span>
+                      {" "}or drag and drop
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">EC8-A Form (JPG, PNG or PDF)</p>
+                  </>
+                )}
+              </label>
             </motion.section>
 
             {/* Section 5: Observations & Verification */}
