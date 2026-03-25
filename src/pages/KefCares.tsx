@@ -5,73 +5,244 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { Heart, Users, Target, BookOpen } from "lucide-react";
+import { Heart, Users, Target, BookOpen, ArrowRight, LogIn, UserPlus, Eye, EyeOff } from "lucide-react";
 import KefCaresFormFields from "@/components/kef-cares/KefCaresFormFields";
+import { motion } from "framer-motion";
+
+type View = "landing" | "login" | "register";
 
 const KefCares = () => {
-  const { user, loading } = useAuth();
-  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const [view, setView] = useState<View>(user ? "register" : "landing");
 
-  if (!loading && !user) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="pt-24 pb-16">
-          <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white py-16">
-            <div className="container mx-auto px-4 text-center max-w-4xl">
+  // If user is logged in, show the registration form directly
+  if (!authLoading && user && view === "landing") {
+    return <KefCaresRegistrationForm />;
+  }
+
+  if (view === "login") return <KefCaresLogin onBack={() => setView("landing")} />;
+  if (view === "register") {
+    if (user) return <KefCaresRegistrationForm />;
+    return <KefCaresSignup onBack={() => setView("landing")} />;
+  }
+
+  return <KefCaresLanding onLogin={() => setView("login")} onRegister={() => setView("register")} />;
+};
+
+/* ─── Landing page with two buttons ─── */
+const KefCaresLanding = ({ onLogin, onRegister }: { onLogin: () => void; onRegister: () => void }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="pt-24 pb-16">
+        <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white py-20">
+          <div className="container mx-auto px-4 text-center max-w-4xl">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <h1 className="text-3xl md:text-5xl font-black mb-4">KEF-CARES – JOIN US</h1>
               <p className="text-lg md:text-xl font-semibold text-emerald-200 mb-2">
                 Kefiano Community Advancement, Resilience & Economic Support Initiative
               </p>
-              <p className="text-emerald-300 text-sm md:text-base mb-8">Central Zone Pilot – Plateau State</p>
-              <p className="text-emerald-100 mb-6">You need to sign in or create an account to access the KEF-CARES registration form.</p>
-              <div className="flex gap-4 justify-center">
-                <Button size="lg" className="bg-white text-emerald-900 hover:bg-emerald-100 font-bold" onClick={() => navigate("/auth")}>
-                  Sign In / Sign Up
-                </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" onClick={() => navigate("/")}>
-                  Back to Home
-                </Button>
-              </div>
-            </div>
-          </section>
+              <p className="text-emerald-300 text-sm md:text-base mb-10">Central Zone Pilot – Plateau State</p>
 
-          {/* Purpose & Why Register - visible to all */}
-          <section className="container mx-auto px-4 py-12 max-w-4xl">
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              <div className="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-                <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3">Purpose</h2>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  KEF-CARES is an economic empowerment initiative aligned with the philosophy of The Consensus Movement: that strong communities are built when citizens—especially youths, traders, farmers, artisans, professionals, entrepreneurs, and creatives—are economically organised and empowered.
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-3">
-                  Through structured community registration across the Central Zone of Plateau State, KEF-CARES builds a data-driven understanding of economic activities, skills, and opportunities. This enables the initiative to design targeted programmes that strengthen livelihoods, expand entrepreneurship, support agriculture and trading networks, and increase the purchasing power of communities.
-                </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-12">
+                {[
+                  { icon: Heart, label: "Empowerment" },
+                  { icon: Users, label: "Community" },
+                  { icon: Target, label: "Resilience" },
+                  { icon: BookOpen, label: "Education" },
+                ].map(({ icon: Icon, label }) => (
+                  <div key={label} className="flex flex-col items-center gap-2 bg-white/10 rounded-lg p-3">
+                    <Icon className="w-6 h-6" />
+                    <span className="text-xs font-medium">{label}</span>
+                  </div>
+                ))}
               </div>
-              <div className="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-                <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3">Why Register?</h2>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Registration helps create a verified community database that identifies skills, occupations, and economic needs across the Central Zone. This allows KEF-CARES to develop practical support programmes in areas such as entrepreneurship, agriculture, trading support, professional networking, vocational development, and youth empowerment.
-                </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                <Button size="lg" className="flex-1 gap-2 bg-white text-emerald-900 hover:bg-emerald-100 font-bold text-base h-14" onClick={onLogin}>
+                  <LogIn className="w-5 h-5" /> Login
+                </Button>
+                <Button size="lg" className="flex-1 gap-2 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-base h-14" onClick={onRegister}>
+                  <UserPlus className="w-5 h-5" /> Create Account
+                </Button>
               </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-4 py-12 max-w-4xl">
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
+              <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3">Purpose</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                KEF-CARES is an economic empowerment initiative aligned with the philosophy of The Consensus Movement: that strong communities are built when citizens—especially youths, traders, farmers, artisans, professionals, entrepreneurs, and creatives—are economically organised and empowered.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-3">
+                Through structured community registration across the Central Zone of Plateau State, KEF-CARES builds a data-driven understanding of economic activities, skills, and opportunities.
+              </p>
             </div>
-          </section>
-        </div>
-        <Footer />
+            <div className="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
+              <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3">Why Register?</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Registration helps create a verified community database that identifies skills, occupations, and economic needs across the Central Zone. This allows KEF-CARES to develop practical support programmes in areas such as entrepreneurship, agriculture, trading support, professional networking, vocational development, and youth empowerment.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
-    );
-  }
-
-  return <KefCaresAuthenticated />;
+      <Footer />
+    </div>
+  );
 };
 
-const KefCaresAuthenticated = () => {
+/* ─── Login form ─── */
+const KefCaresLogin = ({ onBack }: { onBack: () => void }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading(false);
+    if (error) {
+      toast({ title: "Login failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Welcome back!" });
+      // Page will re-render with user, showing the registration form
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="pt-24 pb-16">
+        <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white py-10">
+          <div className="container mx-auto px-4 text-center max-w-lg">
+            <h1 className="text-2xl md:text-3xl font-black mb-2">KEF-CARES Login</h1>
+            <p className="text-emerald-300 text-sm">Sign in to access the KEF-CARES registration form</p>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-4 py-12 max-w-md">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card rounded-xl border shadow-sm p-6 md:p-8">
+            <form onSubmit={handleLogin} className="space-y-5">
+              <div className="space-y-2">
+                <Label>Email Address</Label>
+                <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="h-12" placeholder="your@email.com" />
+              </div>
+              <div className="space-y-2">
+                <Label>Password</Label>
+                <div className="relative">
+                  <Input type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required minLength={6} className="h-12 pr-12" />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+              <Button type="submit" disabled={loading} className="w-full h-12 bg-emerald-700 hover:bg-emerald-800 text-white font-bold">
+                {loading ? "Signing in..." : "Login"}
+              </Button>
+            </form>
+            <div className="mt-6 text-center">
+              <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+/* ─── Signup + Registration Form ─── */
+const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
+  const [step, setStep] = useState<"account" | "form">("account");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password.length < 6) {
+      toast({ title: "Password too short", description: "Password must be at least 6 characters.", variant: "destructive" });
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({ email, password });
+    setLoading(false);
+    if (error) {
+      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Account created!", description: "Please check your email to verify, then fill out the registration form." });
+      setStep("form");
+    }
+  };
+
+  if (step === "form") {
+    return <KefCaresRegistrationForm />;
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <div className="pt-24 pb-16">
+        <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white py-10">
+          <div className="container mx-auto px-4 text-center max-w-lg">
+            <h1 className="text-2xl md:text-3xl font-black mb-2">Create KEF-CARES Account</h1>
+            <p className="text-emerald-300 text-sm">Create your account first, then complete the registration form</p>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-4 py-12 max-w-md">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-card rounded-xl border shadow-sm p-6 md:p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold">1</div>
+              <div>
+                <p className="font-bold text-sm">Create Account</p>
+                <p className="text-xs text-muted-foreground">Set up your email and password</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSignup} className="space-y-5">
+              <div className="space-y-2">
+                <Label>Email Address *</Label>
+                <Input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="h-12" placeholder="your@email.com" />
+              </div>
+              <div className="space-y-2">
+                <Label>Password *</Label>
+                <div className="relative">
+                  <Input type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} required minLength={6} className="h-12 pr-12" placeholder="Min. 6 characters" />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+              <Button type="submit" disabled={loading} className="w-full h-12 bg-emerald-700 hover:bg-emerald-800 text-white font-bold gap-2">
+                {loading ? "Creating account..." : <>Create Account <ArrowRight className="w-4 h-4" /></>}
+              </Button>
+            </form>
+            <div className="mt-6 text-center">
+              <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+/* ─── Registration Form (shown after login/signup) ─── */
+const KefCaresRegistrationForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     member_id: "", full_name: "", gender: "", date_of_birth: "", phone_number: "", whatsapp_active: false,
@@ -135,56 +306,25 @@ const KefCaresAuthenticated = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-24 pb-16">
-        {/* Hero */}
-        <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white py-16">
+        <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white py-12">
           <div className="container mx-auto px-4 text-center max-w-4xl">
             <h1 className="text-3xl md:text-5xl font-black mb-4">KEF-CARES – JOIN US</h1>
             <p className="text-lg md:text-xl font-semibold text-emerald-200 mb-2">
               Kefiano Community Advancement, Resilience & Economic Support Initiative
             </p>
-            <p className="text-emerald-300 text-sm md:text-base mb-8">Central Zone Pilot – Plateau State</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-              {[
-                { icon: Heart, label: "Empowerment" },
-                { icon: Users, label: "Community" },
-                { icon: Target, label: "Resilience" },
-                { icon: BookOpen, label: "Education" },
-              ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex flex-col items-center gap-2 bg-white/10 rounded-lg p-3">
-                  <Icon className="w-6 h-6" />
-                  <span className="text-xs font-medium">{label}</span>
-                </div>
-              ))}
-            </div>
+            <p className="text-emerald-300 text-sm md:text-base">Central Zone Pilot – Plateau State</p>
           </div>
         </section>
 
-        {/* Purpose & Why Register */}
         <section className="container mx-auto px-4 py-12 max-w-4xl">
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-              <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3">Purpose</h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                KEF-CARES is an economic empowerment initiative aligned with the philosophy of The Consensus Movement: that strong communities are built when citizens—especially youths, traders, farmers, artisans, professionals, entrepreneurs, and creatives—are economically organised and empowered.
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed mt-3">
-                Through structured community registration across the Central Zone of Plateau State, KEF-CARES builds a data-driven understanding of economic activities, skills, and opportunities. This enables the initiative to design targeted programmes that strengthen livelihoods, expand entrepreneurship, support agriculture and trading networks, and increase the purchasing power of communities.
-              </p>
-            </div>
-            <div className="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
-              <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3">Why Register?</h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Registration helps create a verified community database that identifies skills, occupations, and economic needs across the Central Zone. This allows KEF-CARES to develop practical support programmes in areas such as entrepreneurship, agriculture, trading support, professional networking, vocational development, and youth empowerment.
-              </p>
-            </div>
-          </div>
-
-          {/* Registration Form */}
           <div className="bg-card rounded-xl border shadow-sm p-6 md:p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold">✓</div>
+              <p className="text-sm text-muted-foreground">Account created — now complete your registration</p>
+            </div>
             <h2 className="text-2xl font-bold mb-6 text-center">KEF-CARES Registration Form</h2>
             <form onSubmit={handleSubmit} className="space-y-8">
               <KefCaresFormFields form={form} setForm={setForm} toggleArrayItem={toggleArrayItem} />
-
               <Button type="submit" disabled={submitting} className="w-full bg-emerald-700 hover:bg-emerald-800 text-white py-3 text-lg">
                 {submitting ? "Submitting…" : "Submit Registration"}
               </Button>
