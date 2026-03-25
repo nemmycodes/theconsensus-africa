@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { DollarSign, BookOpen, Vote, Handshake } from "lucide-react";
+import { TrendingUp, BookOpen, Heart } from "lucide-react";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -19,28 +19,25 @@ const staggerContainer = {
 
 const pillars = [
   {
-    icon: DollarSign,
+    icon: TrendingUp,
     title: "Economic Freedom",
+    subtitle: "Empowering people to earn, grow, and become financially independent.",
     description:
-      "Equipping young people with skills, micro-grants, and entrepreneurial support to build sustainable livelihoods and financial independence.",
+      "We identify traders, farmers, artisans, professionals, and youth entrepreneurs through data, then support them with opportunities, skills, and economic programmes under KEF-CARES. We believe that when people have income and stability, they are less vulnerable and more in control of their future.",
   },
   {
     icon: BookOpen,
-    title: "Political Consciousness",
+    title: "Civic Awareness",
+    subtitle: "Building informed citizens who understand governance and their role in it.",
     description:
-      "Educating the next generation on governance, their civic rights, and the power of informed participation in Nigeria's democratic process.",
+      "Impact through dialogue, education, and community engagement via forums, content, and digital platforms. We ensure that an informed citizen can make better decisions and cannot be easily misled or manipulated.",
   },
   {
-    icon: Vote,
-    title: "Leadership Development",
+    icon: Heart,
+    title: "Resilience",
+    subtitle: "Creating communities that can withstand challenges and grow sustainably.",
     description:
-      "Identifying and mentoring emerging leaders within the community, building a pipeline of competent, integrity-driven public servants.",
-  },
-  {
-    icon: Handshake,
-    title: "Community Solidarity",
-    description:
-      "Strengthening social bonds across ethnic and religious lines, fostering unity and collective action for the common good of Plateau State.",
+      "Strengthening local economies, supporting networks (farmers, traders, artisans), and using data to respond to real community needs. Support strong communities to adapt, survive, and continue to grow without dependency.",
   },
 ];
 
@@ -56,10 +53,10 @@ const MissionSection = () => {
           className="text-center mb-16"
         >
           <span className="text-sm font-semibold tracking-widest text-primary uppercase">
-            Our Mission
+            Our Mandate
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mt-4 leading-tight">
-            Four Pillars of <span className="text-primary">Change</span>
+            Driven by <span className="text-primary">Purpose</span>
           </h2>
         </motion.div>
 
@@ -68,7 +65,7 @@ const MissionSection = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="grid md:grid-cols-2 gap-6 lg:gap-8"
+          className="grid md:grid-cols-3 gap-6 lg:gap-8"
         >
           {pillars.map((pillar, index) => (
             <motion.div
@@ -76,9 +73,7 @@ const MissionSection = () => {
               variants={fadeInUp}
               className="group relative bg-card border border-border rounded-2xl p-8 hover:border-primary/40 transition-all duration-300 overflow-hidden"
             >
-              {/* Accent glow on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300">
@@ -88,8 +83,9 @@ const MissionSection = () => {
                     PILLAR {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="text-xl font-bold mb-3">{pillar.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <h3 className="text-xl font-bold mb-2">{pillar.title}</h3>
+                <p className="text-sm font-semibold text-primary mb-3">{pillar.subtitle}</p>
+                <p className="text-muted-foreground leading-relaxed text-sm">
                   {pillar.description}
                 </p>
               </div>

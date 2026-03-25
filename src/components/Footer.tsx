@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram } from "lucide-react";
+import { Facebook, Twitter, Instagram, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -33,6 +33,9 @@ const Footer = () => {
               <a href="#" className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
                 <Instagram size={16} />
               </a>
+              <a href="https://whatsapp.com/channel/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-green-500 transition-colors">
+                <MessageCircle size={16} />
+              </a>
             </div>
           </div>
 
@@ -52,7 +55,7 @@ const Footer = () => {
             <h4 className="font-bold text-sm uppercase tracking-widest mb-4">Support</h4>
             <ul className="space-y-2">
               <li><Link to="/join" className="text-sm text-muted-foreground hover:text-primary transition-colors">Join Us</Link></li>
-              <li><Link to="/join" className="text-sm text-muted-foreground hover:text-primary transition-colors">Volunteer</Link></li>
+              <li><Link to="/kef-cares" className="text-sm text-muted-foreground hover:text-primary transition-colors">KEF-Cares</Link></li>
               <li><Link to="/situation-room" className="text-sm text-muted-foreground hover:text-primary transition-colors">Report Issue</Link></li>
               <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">Contact Us</Link></li>
             </ul>
