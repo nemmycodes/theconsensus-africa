@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border">
+    <footer className="bg-primary text-primary-foreground border-t border-primary/80">
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
