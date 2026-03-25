@@ -10,6 +10,7 @@ interface AuthContextType {
   isAgent: boolean;
   isAdmin: boolean;
   isSuperAdmin: boolean;
+  isKefUser: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -21,6 +22,7 @@ const AuthContext = createContext<AuthContextType>({
   isAgent: false,
   isAdmin: false,
   isSuperAdmin: false,
+  isKefUser: false,
   signOut: async () => {},
 });
 
@@ -32,30 +34,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAgent, setIsAgent] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [isKefUser, setIsKefUser] = useState(false);
 
   const checkRoles = async (userId: string) => {
     setRolesLoading(true);
     try {
-      const [agentRes, adminRes, superAdminRes] = await Promise.all([
+      const [agentRes, adminRes, superAdminRes, kefRes] = await Promise.all([
         supabase.rpc("has_role", { _user_id: userId, _role: "agent" }),
         supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
         supabase.rpc("has_role", { _user_id: userId, _role: "super_admin" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "kef_user" }),
       ]);
 
       const agent = !agentRes.error && !!agentRes.data;
       const admin = !adminRes.error && !!adminRes.data;
       const superAdmin = !superAdminRes.error && !!superAdminRes.data;
+      const kefUser = !kefRes.error && !!kefRes.data;
 
       setIsAgent(agent);
       setIsAdmin(admin);
       setIsSuperAdmin(superAdmin);
+      setIsKefUser(kefUser);
 
-      return { agent, admin, superAdmin };
+      return { agent, admin, superAdmin, kefUser };
     } catch {
       setIsAgent(false);
       setIsAdmin(false);
       setIsSuperAdmin(false);
-      return { agent: false, admin: false, superAdmin: false };
+      setIsKefUser(false);
+      return { agent: false, admin: false, superAdmin: false, kefUser: false };
     } finally {
       setRolesLoading(false);
     }
