@@ -46,9 +46,13 @@ const MemberHeader = () => {
 
         <div className="relative">
           <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-gray-50">
-            <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">
-              {displayName[0]?.toUpperCase()}
-            </div>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt={displayName} className="w-8 h-8 rounded-full object-cover" />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">
+                {displayName[0]?.toUpperCase()}
+              </div>
+            )}
             <div className="hidden md:block text-left">
               <p className="text-xs font-bold text-gray-900 truncate max-w-[120px]">{displayName}</p>
               <p className="text-[10px] text-gray-500">Member</p>
