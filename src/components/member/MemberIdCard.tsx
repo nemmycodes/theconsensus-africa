@@ -39,7 +39,7 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
     canvas.width = w;
     canvas.height = h;
 
-    const drawFront = () => {
+    const drawFront = async () => {
       // Background gradient
       const grad = ctx.createLinearGradient(0, 0, w, h);
       grad.addColorStop(0, "#047857");
