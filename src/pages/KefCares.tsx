@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,13 +15,16 @@ import { motion } from "framer-motion";
 type View = "landing" | "login" | "register";
 
 const KefCares = () => {
-  const { user, loading: authLoading } = useAuth();
-  const [view, setView] = useState<View>(user ? "register" : "landing");
+  const { user, loading: authLoading, isKefUser, rolesLoading } = useAuth();
+  const navigate = useNavigate();
+  const [view, setView] = useState<View>("landing");
 
-  // If user is logged in, show the registration form directly
-  if (!authLoading && user && view === "landing") {
-    return <KefCaresRegistrationForm />;
-  }
+  // If logged in as kef_user, redirect to dashboard
+  useEffect(() => {
+    if (!authLoading && !rolesLoading && user && isKefUser) {
+      navigate("/kef-cares/dashboard");
+    }
+  }, [authLoading, rolesLoading, user, isKefUser, navigate]);
 
   if (view === "login") return <KefCaresLogin onBack={() => setView("landing")} />;
   if (view === "register") {
@@ -34,7 +37,6 @@ const KefCares = () => {
 
 /* ─── Landing page with two buttons ─── */
 const KefCaresLanding = ({ onLogin, onRegister }: { onLogin: () => void; onRegister: () => void }) => {
-  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -110,13 +112,19 @@ const KefCaresLogin = ({ onBack }: { onBack: () => void }) => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Welcome back!" });
-      // Page will re-render with user, showing the registration form
+      // Check if user has kef_user role
+      const { data: hasRole } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "kef_user" });
+      if (hasRole) {
+        navigate("/kef-cares/dashboard");
+      } else {
+        toast({ title: "Access denied", description: "This account is not registered with KEF-CARES. Please create a KEF-CARES account.", variant: "destructive" });
+        await supabase.auth.signOut();
+      }
     }
   };
 
@@ -127,7 +135,7 @@ const KefCaresLogin = ({ onBack }: { onBack: () => void }) => {
         <section className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-950 text-white py-10">
           <div className="container mx-auto px-4 text-center max-w-lg">
             <h1 className="text-2xl md:text-3xl font-black mb-2">KEF-CARES Login</h1>
-            <p className="text-emerald-300 text-sm">Sign in to access the KEF-CARES registration form</p>
+            <p className="text-emerald-300 text-sm">Sign in to access your KEF-CARES dashboard</p>
           </div>
         </section>
 
@@ -169,6 +177,7 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -177,18 +186,21 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({ email, password });
     setLoading(false);
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Account created!", description: "Please check your email to verify, then fill out the registration form." });
+    } else if (data.user) {
+      // Assign kef_user role
+      await supabase.from("user_roles").insert({ user_id: data.user.id, role: "kef_user" as any });
+      setUserId(data.user.id);
+      toast({ title: "Account created!", description: "Now complete your KEF-CARES registration form." });
       setStep("form");
     }
   };
 
   if (step === "form") {
-    return <KefCaresRegistrationForm />;
+    return <KefCaresRegistrationForm userId={userId} />;
   }
 
   return (
@@ -241,8 +253,10 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
   );
 };
 
-/* ─── Registration Form (shown after login/signup) ─── */
-const KefCaresRegistrationForm = () => {
+/* ─── Registration Form (shown after signup) ─── */
+const KefCaresRegistrationForm = ({ userId }: { userId?: string | null }) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     member_id: "", full_name: "", gender: "", date_of_birth: "", phone_number: "", whatsapp_active: false,
@@ -278,27 +292,17 @@ const KefCaresRegistrationForm = () => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("kef_cares_registrations").insert([form]);
+    const actualUserId = userId || user?.id;
+    const { error } = await supabase.from("kef_cares_registrations").insert([{
+      ...form,
+      user_id: actualUserId,
+    }]);
     setSubmitting(false);
     if (error) {
       toast({ title: "Registration failed", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Registration Successful!", description: "Thank you for registering with KEF-CARES." });
-      setForm({
-        member_id: "", full_name: "", gender: "", date_of_birth: "", phone_number: "", whatsapp_active: false,
-        email: "", residential_address: "", lga: "", ward: "", polling_unit: "", community: "",
-        marital_status: "", social_status: "",
-        highest_qualification: "", field_of_study: "", education_status: "",
-        economic_status: "", occupation: "", primary_economic_sector: "",
-        monthly_income_range: "", owns_business: "", business_type: "",
-        artisan_skills: [], creative_skills: [], professional_skills: [],
-        sports_participation: false, sport_type: "",
-        interest_entrepreneurship: false, interest_agricultural: false, interest_trading: false,
-        interest_skills_training: false, interest_economic_empowerment: false,
-        interest_leadership: false, interest_professional_networking: false,
-        interested_in_volunteering: false, volunteer_role: "", volunteer_availability: "",
-        consent_given: false,
-      });
+      toast({ title: "Registration Successful!", description: "Welcome to KEF-CARES! Redirecting to your dashboard..." });
+      setTimeout(() => navigate("/kef-cares/dashboard"), 1500);
     }
   };
 
@@ -319,7 +323,7 @@ const KefCaresRegistrationForm = () => {
         <section className="container mx-auto px-4 py-12 max-w-4xl">
           <div className="bg-card rounded-xl border shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold">✓</div>
+              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-sm font-bold">2</div>
               <p className="text-sm text-muted-foreground">Account created — now complete your registration</p>
             </div>
             <h2 className="text-2xl font-bold mb-6 text-center">KEF-CARES Registration Form</h2>
