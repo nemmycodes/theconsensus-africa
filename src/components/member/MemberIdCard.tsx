@@ -26,6 +26,7 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
   const interests = profile?.interests || user?.user_metadata?.interests || [];
   const joinedDate = user?.created_at ? new Date(user.created_at).toLocaleDateString() : "—";
   const memberId = `TPC-${new Date(user?.created_at || "").getFullYear()}-${user?.id?.slice(0, 6).toUpperCase() || "000000"}`;
+  const avatarUrl = profile?.avatar_url || user?.user_metadata?.avatar_url || "";
 
   const downloadCard = async (side: "front" | "back" | "both") => {
     // Using canvas-based approach for download
