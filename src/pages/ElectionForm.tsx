@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import {
   Building2, BarChart3, Vote, Upload, ShieldCheck, Search,
-  Calculator, FileUp,
+  Calculator, FileUp, MapPin, Calendar,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -52,6 +52,14 @@ const ElectionForm = () => {
   const { user, isAgent } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Election Date
+  const [electionDate, setElectionDate] = useState("");
+
+  // Live Location
+  const [liveLocation, setLiveLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [locationError, setLocationError] = useState("");
 
   // Section 1
   const [centerName, setCenterName] = useState("");
@@ -124,6 +132,8 @@ const ElectionForm = () => {
     setLoading(true);
     // For now, store as a situation update with structured content
     const reportContent = JSON.stringify({
+      electionDate,
+      liveLocation,
       center: { centerName, agentCode, state, lga, electionType },
       voting: { ward, pollingUnit, registeredVoters, accreditedVoters, totalVotesCast },
       partyResults,
@@ -153,6 +163,27 @@ const ElectionForm = () => {
     toast({ title: "Draft saved", description: "Your report has been saved locally." });
   };
 
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError("Geolocation is not supported by your browser.");
+      return;
+    }
+    setLocationLoading(true);
+    setLocationError("");
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLiveLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+        setLocationLoading(false);
+        toast({ title: "Location captured", description: `Lat: ${position.coords.latitude.toFixed(5)}, Lng: ${position.coords.longitude.toFixed(5)}` });
+      },
+      (err) => {
+        setLocationError("Unable to get location. Please enable GPS.");
+        setLocationLoading(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -174,6 +205,25 @@ const ElectionForm = () => {
           </motion.div>
 
           <div className="space-y-8">
+            {/* Election Date */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-card border border-border rounded-xl p-6 md:p-8"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Calendar className="h-5 w-5 text-primary" />
+                <h2 className="text-lg font-heading font-bold">Election Date</h2>
+              </div>
+              <Input
+                type="date"
+                value={electionDate}
+                onChange={(e) => setElectionDate(e.target.value)}
+                className="max-w-xs"
+              />
+            </motion.section>
+
             {/* Section 1: Center & Agent Details */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
@@ -414,6 +464,40 @@ const ElectionForm = () => {
                   </>
                 )}
               </label>
+            </motion.section>
+
+            {/* Live Location */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-card border border-border rounded-xl p-6 md:p-8"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <MapPin className="h-5 w-5 text-primary" />
+                <h2 className="text-lg font-heading font-bold">Live Location</h2>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Capture your current GPS location to verify your presence at the collation center.
+              </p>
+              <div className="flex items-center gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleGetLocation}
+                  disabled={locationLoading}
+                  className="gap-2"
+                >
+                  <MapPin className="h-4 w-4" />
+                  {locationLoading ? "Getting location..." : liveLocation ? "Update Location" : "Capture Location"}
+                </Button>
+                {liveLocation && (
+                  <div className="text-sm text-primary font-medium">
+                    📍 Lat: {liveLocation.lat.toFixed(5)}, Lng: {liveLocation.lng.toFixed(5)}
+                  </div>
+                )}
+              </div>
+              {locationError && <p className="text-sm text-destructive mt-2">{locationError}</p>}
             </motion.section>
 
             {/* Section 5: Observations & Verification */}
