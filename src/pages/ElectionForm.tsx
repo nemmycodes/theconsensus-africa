@@ -466,6 +466,40 @@ const ElectionForm = () => {
               </label>
             </motion.section>
 
+            {/* Live Location */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-card border border-border rounded-xl p-6 md:p-8"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <MapPin className="h-5 w-5 text-primary" />
+                <h2 className="text-lg font-heading font-bold">Live Location</h2>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Capture your current GPS location to verify your presence at the collation center.
+              </p>
+              <div className="flex items-center gap-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleGetLocation}
+                  disabled={locationLoading}
+                  className="gap-2"
+                >
+                  <MapPin className="h-4 w-4" />
+                  {locationLoading ? "Getting location..." : liveLocation ? "Update Location" : "Capture Location"}
+                </Button>
+                {liveLocation && (
+                  <div className="text-sm text-primary font-medium">
+                    📍 Lat: {liveLocation.lat.toFixed(5)}, Lng: {liveLocation.lng.toFixed(5)}
+                  </div>
+                )}
+              </div>
+              {locationError && <p className="text-sm text-destructive mt-2">{locationError}</p>}
+            </motion.section>
+
             {/* Section 5: Observations & Verification */}
             <motion.section
               initial={{ opacity: 0, y: 20 }}
