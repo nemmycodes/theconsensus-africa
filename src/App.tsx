@@ -27,6 +27,7 @@ import MemberDashboard from "./pages/MemberDashboard";
 import SuperAdminLogin from "./pages/SuperAdminLogin";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import KefCares from "./pages/KefCares";
+import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/discuss" element={<Discuss />} />
             <Route path="/kef-cares" element={<KefCares />} />
+            <Route path="/kef-cares/dashboard" element={<KefCaresDashboard />} />
             <Route path="/dashboard" element={<MemberDashboard />} />
             <Route path="/agent/login" element={<AgentLogin />} />
             <Route path="/agent" element={<AgentDashboard />} />
