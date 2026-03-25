@@ -242,7 +242,7 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
     };
 
     if (side === "front" || side === "both") {
-      drawFront();
+      await drawFront();
       const link = document.createElement("a");
       link.download = `TPC-ID-Front-${displayName.replace(/\s+/g, "_")}.png`;
       link.href = canvas.toDataURL("image/png");
