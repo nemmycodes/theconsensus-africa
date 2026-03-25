@@ -164,6 +164,56 @@ const Onboarding = () => {
         </motion.div>
       </section>
 
+      {/* Choose Your Impact */}
+      <section className="py-20 px-4 lg:px-8">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
+            <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {impactRoles.map((role, i) => (
+              <motion.div
+                key={role.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className={`rounded-2xl p-8 border ${role.highlight ? "border-primary bg-card" : "border-border bg-card"} text-center relative`}
+              >
+                {role.highlight && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
+                    MOST ACTIVE
+                  </span>
+                )}
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  {role.title === "Volunteer" && <Users className="w-7 h-7 text-primary" />}
+                  {role.title === "Mobilization Agent" && <Award className="w-7 h-7 text-primary" />}
+                  {role.title === "Lead / Delegate" && <ShieldCheck className="w-7 h-7 text-primary" />}
+                </div>
+                <h3 className="text-lg font-bold mb-3">{role.title}</h3>
+                <p className="text-sm text-muted-foreground mb-6">{role.description}</p>
+                <ul className="space-y-2 text-left mb-6">
+                  {role.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  variant={role.highlight ? "default" : "outline"}
+                  className="w-full font-bold"
+                  onClick={() => role.title === "Mobilization Agent" ? navigate("/election-form") : setShowForm(true)}
+                >
+                  Select {role.title.split(" ")[0]}
+                </Button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Membership Open To */}
       <section className="py-20 px-4 lg:px-8">
         <div className="container mx-auto">
@@ -244,56 +294,6 @@ const Onboarding = () => {
             <span className="flex items-center gap-1.5"><Check size={14} className="text-primary" /> Lead</span>
           </div>
           <Button size="lg" className="mt-8 font-bold" onClick={() => setShowForm(true)}>Register Now</Button>
-        </div>
-      </section>
-
-      {/* Choose Your Impact */}
-      <section className="py-20 px-4 lg:px-8">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
-            <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {impactRoles.map((role, i) => (
-              <motion.div
-                key={role.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`rounded-2xl p-8 border ${role.highlight ? "border-primary bg-card" : "border-border bg-card"} text-center relative`}
-              >
-                {role.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
-                    MOST ACTIVE
-                  </span>
-                )}
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                  {role.title === "Volunteer" && <Users className="w-7 h-7 text-primary" />}
-                  {role.title === "Mobilization Agent" && <Award className="w-7 h-7 text-primary" />}
-                  {role.title === "Lead / Delegate" && <ShieldCheck className="w-7 h-7 text-primary" />}
-                </div>
-                <h3 className="text-lg font-bold mb-3">{role.title}</h3>
-                <p className="text-sm text-muted-foreground mb-6">{role.description}</p>
-                <ul className="space-y-2 text-left mb-6">
-                  {role.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  variant={role.highlight ? "default" : "outline"}
-                  className="w-full font-bold"
-                  onClick={() => role.title === "Mobilization Agent" ? navigate("/election-form") : setShowForm(true)}
-                >
-                  Select {role.title.split(" ")[0]}
-                </Button>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
