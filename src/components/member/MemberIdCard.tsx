@@ -265,9 +265,13 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
               </div>
 
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center text-2xl font-bold shrink-0">
-                  {displayName[0]?.toUpperCase()}
-                </div>
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt={displayName} className="w-16 h-16 rounded-xl object-cover shrink-0 border-2 border-white/30" />
+                ) : (
+                  <div className="w-16 h-16 rounded-xl bg-white/20 flex items-center justify-center text-2xl font-bold shrink-0">
+                    {displayName[0]?.toUpperCase()}
+                  </div>
+                )}
                 <div>
                   <p className="text-lg font-black">{displayName}</p>
                   <p className="text-xs text-emerald-200">Verified Member</p>
