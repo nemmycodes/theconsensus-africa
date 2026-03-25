@@ -1,16 +1,25 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Moon, Bell, ChevronDown, LogOut } from "lucide-react";
 
 const MemberHeader = () => {
   const { user, signOut } = useAuth();
   const [time, setTime] = useState(new Date());
   const [showDropdown, setShowDropdown] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("avatar_url").eq("user_id", user.id).maybeSingle().then(({ data }) => {
+      if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+    });
+  }, [user]);
 
   const utcTime = time.toISOString().slice(11, 19);
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Member";
