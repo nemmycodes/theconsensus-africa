@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, User, Heart, MapPin, Mail, Users, GraduationCap, Briefcase, Palette, Globe, ShieldCheck, TrendingUp, MessageSquare, Award } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, User, Heart, MapPin, Mail, Users, GraduationCap, Briefcase, Palette, Globe, ShieldCheck, TrendingUp, MessageSquare, Award, Camera } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import joinusHero from "@/assets/joinus-hero.jpg";
@@ -83,6 +83,8 @@ const Onboarding = () => {
   const [lga, setLga] = useState("");
   const [ward, setWard] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
   const toggleInterest = (interest: string) => {
     setInterests((prev) => prev.includes(interest) ? prev.filter((i) => i !== interest) : [...prev, interest]);
@@ -98,9 +100,20 @@ const Onboarding = () => {
     }
   };
 
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Profile picture must be less than 5MB.", variant: "destructive" });
+      return;
+    }
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -111,10 +124,26 @@ const Onboarding = () => {
 
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Welcome!", description: "Check your email to confirm your account." });
-      navigate("/");
+      setLoading(false);
+      return;
     }
+
+    // Upload avatar if provided
+    if (avatarFile && data.user) {
+      const ext = avatarFile.name.split(".").pop();
+      const filePath = `${data.user.id}/avatar.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, avatarFile, { upsert: true });
+
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(filePath);
+        await supabase.from("profiles").update({ avatar_url: publicUrl }).eq("user_id", data.user.id);
+      }
+    }
+
+    toast({ title: "Welcome!", description: "Check your email to confirm your account." });
+    navigate("/");
     setLoading(false);
   };
 
@@ -308,6 +337,23 @@ const Onboarding = () => {
               )}
               {step === 1 && (
                 <>
+                  {/* Profile Photo Upload */}
+                  <div className="flex flex-col items-center gap-3 mb-2">
+                    <label className="relative cursor-pointer group">
+                      {avatarPreview ? (
+                        <img src={avatarPreview} alt="Preview" className="w-20 h-20 rounded-full object-cover border-4 border-primary/20" />
+                      ) : (
+                        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center border-4 border-border">
+                          <Camera className="w-6 h-6 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 w-20 h-20 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Camera className="w-5 h-5 text-white" />
+                      </div>
+                      <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+                    </label>
+                    <p className="text-xs text-muted-foreground">Upload profile photo (max 5MB)</p>
+                  </div>
                   <div className="space-y-2">
                     <Label>Full Name</Label>
                     <Input placeholder="Your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
