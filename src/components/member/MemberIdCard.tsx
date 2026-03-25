@@ -86,16 +86,45 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
       ctx.fillText("2025 – 2027", w - 40, 72);
       ctx.textAlign = "left";
 
-      // Avatar circle
-      ctx.fillStyle = "rgba(255,255,255,0.2)";
-      ctx.beginPath();
-      ctx.roundRect(40, 130, 100, 100, 16);
-      ctx.fill();
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 48px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText(displayName[0]?.toUpperCase() || "M", 90, 198);
-      ctx.textAlign = "left";
+      // Avatar
+      if (avatarUrl) {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = avatarUrl;
+        try {
+          await new Promise<void>((resolve, reject) => {
+            img.onload = () => resolve();
+            img.onerror = () => reject();
+            setTimeout(() => resolve(), 3000);
+          });
+          ctx.save();
+          ctx.beginPath();
+          ctx.roundRect(40, 130, 100, 100, 16);
+          ctx.clip();
+          ctx.drawImage(img, 40, 130, 100, 100);
+          ctx.restore();
+        } catch {
+          ctx.fillStyle = "rgba(255,255,255,0.2)";
+          ctx.beginPath();
+          ctx.roundRect(40, 130, 100, 100, 16);
+          ctx.fill();
+          ctx.fillStyle = "#ffffff";
+          ctx.font = "bold 48px Arial";
+          ctx.textAlign = "center";
+          ctx.fillText(displayName[0]?.toUpperCase() || "M", 90, 198);
+          ctx.textAlign = "left";
+        }
+      } else {
+        ctx.fillStyle = "rgba(255,255,255,0.2)";
+        ctx.beginPath();
+        ctx.roundRect(40, 130, 100, 100, 16);
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 48px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(displayName[0]?.toUpperCase() || "M", 90, 198);
+        ctx.textAlign = "left";
+      }
 
       // Name
       ctx.fillStyle = "#ffffff";
