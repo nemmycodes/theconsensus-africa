@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setIsAgent(false);
           setIsAdmin(false);
           setIsSuperAdmin(false);
+          setIsKefUser(false);
         }
         setLoading(false);
       }
@@ -95,6 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsAgent(false);
         setIsAdmin(false);
         setIsSuperAdmin(false);
+        setIsKefUser(false);
       }
       setLoading(false);
     });
@@ -109,11 +111,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAgent(false);
     setIsAdmin(false);
     setIsSuperAdmin(false);
+    setIsKefUser(false);
     await supabase.auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, rolesLoading, isAgent, isAdmin, isSuperAdmin, signOut }}>
+    <AuthContext.Provider value={{ user, session, loading, rolesLoading, isAgent, isAdmin, isSuperAdmin, isKefUser, signOut }}>
       {children}
     </AuthContext.Provider>
   );
