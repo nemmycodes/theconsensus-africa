@@ -45,7 +45,7 @@ const PARTIES = [
 ];
 
 const ELECTION_TYPES = [
-  "Presidential", "Gubernatorial", "Senatorial", "LGA Election", "Ward Council", "Party Primaries",
+  "Presidential", "Gubernatorial", "Senatorial", "House of Reps", "House of Assembly", "LGA Election", "Ward Council", "Party Primaries",
 ];
 
 const ElectionForm = () => {
