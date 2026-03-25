@@ -1,16 +1,25 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Moon, Bell, ChevronDown, LogOut } from "lucide-react";
 
 const MemberHeader = () => {
   const { user, signOut } = useAuth();
   const [time, setTime] = useState(new Date());
   const [showDropdown, setShowDropdown] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("avatar_url").eq("user_id", user.id).maybeSingle().then(({ data }) => {
+      if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+    });
+  }, [user]);
 
   const utcTime = time.toISOString().slice(11, 19);
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Member";
@@ -37,9 +46,13 @@ const MemberHeader = () => {
 
         <div className="relative">
           <button onClick={() => setShowDropdown(!showDropdown)} className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-gray-50">
-            <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">
-              {displayName[0]?.toUpperCase()}
-            </div>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt={displayName} className="w-8 h-8 rounded-full object-cover" />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold">
+                {displayName[0]?.toUpperCase()}
+              </div>
+            )}
             <div className="hidden md:block text-left">
               <p className="text-xs font-bold text-gray-900 truncate max-w-[120px]">{displayName}</p>
               <p className="text-[10px] text-gray-500">Member</p>

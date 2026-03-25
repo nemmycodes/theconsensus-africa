@@ -66,9 +66,13 @@ const MemberOverview = ({ onTabChange }: { onTabChange: (tab: string) => void })
       {/* Profile Card */}
       <div className="bg-white rounded-xl border border-gray-200 p-6">
         <div className="flex flex-col md:flex-row md:items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-emerald-600 text-white flex items-center justify-center text-2xl font-bold shrink-0">
-            {displayName[0]?.toUpperCase()}
-          </div>
+          {profile?.avatar_url ? (
+            <img src={profile.avatar_url} alt={displayName} className="w-16 h-16 rounded-full object-cover shrink-0" />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-emerald-600 text-white flex items-center justify-center text-2xl font-bold shrink-0">
+              {displayName[0]?.toUpperCase()}
+            </div>
+          )}
           <div className="flex-1 min-w-0">
             <h2 className="text-xl font-black text-gray-900">{displayName}</h2>
             <p className="text-sm text-gray-500">✉ {memberEmail}</p>
