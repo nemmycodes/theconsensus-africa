@@ -209,6 +209,7 @@ export type Database = {
           social_status: string | null
           sport_type: string | null
           sports_participation: boolean | null
+          user_id: string | null
           volunteer_availability: string | null
           volunteer_role: string | null
           ward: string | null
@@ -252,6 +253,7 @@ export type Database = {
           social_status?: string | null
           sport_type?: string | null
           sports_participation?: boolean | null
+          user_id?: string | null
           volunteer_availability?: string | null
           volunteer_role?: string | null
           ward?: string | null
@@ -295,6 +297,7 @@ export type Database = {
           social_status?: string | null
           sport_type?: string | null
           sports_participation?: boolean | null
+          user_id?: string | null
           volunteer_availability?: string | null
           volunteer_role?: string | null
           ward?: string | null
@@ -433,7 +436,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "agent" | "user" | "super_admin"
+      app_role: "admin" | "agent" | "user" | "super_admin" | "kef_user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -561,7 +564,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "agent", "user", "super_admin"],
+      app_role: ["admin", "agent", "user", "super_admin", "kef_user"],
     },
   },
 } as const
