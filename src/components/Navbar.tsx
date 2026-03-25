@@ -146,7 +146,11 @@ const Navbar = () => {
                       <Crown className="w-3.5 h-3.5" /> Super Admin
                     </Button>
                   )}
-                  <Button size="sm" variant="default" onClick={() => { navigate("/dashboard"); setMobileOpen(false); }}>Dashboard</Button>
+                  {isKefUser && !isAdmin && !isSuperAdmin ? (
+                    <Button size="sm" variant="default" onClick={() => { navigate("/kef-cares/dashboard"); setMobileOpen(false); }}>KEF Dashboard</Button>
+                  ) : (
+                    <Button size="sm" variant="default" onClick={() => { navigate("/dashboard"); setMobileOpen(false); }}>Dashboard</Button>
+                  )}
                   <Button size="sm" variant="outline" onClick={() => { handleSignOut(); setMobileOpen(false); }}>Logout</Button>
                 </>
               ) : (
