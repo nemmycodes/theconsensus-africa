@@ -78,6 +78,28 @@ const ElectionForm = () => {
   const [signatureName, setSignatureName] = useState("");
   const [signatureDate, setSignatureDate] = useState("");
   const [loading, setLoading] = useState(false);
+  const [ec8aFile, setEc8aFile] = useState<File | null>(null);
+  const [ec8aPreview, setEc8aPreview] = useState<string | null>(null);
+
+  const handleEc8aChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const allowed = ["image/jpeg", "image/png", "application/pdf"];
+    if (!allowed.includes(file.type)) {
+      toast({ title: "Invalid file type", description: "Please upload JPG, PNG, or PDF.", variant: "destructive" });
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Maximum file size is 10MB.", variant: "destructive" });
+      return;
+    }
+    setEc8aFile(file);
+    if (file.type.startsWith("image/")) {
+      setEc8aPreview(URL.createObjectURL(file));
+    } else {
+      setEc8aPreview(null);
+    }
+  };
 
   const totalPartyVotes = Object.values(partyResults).reduce((sum, v) => sum + (v || 0), 0);
 
