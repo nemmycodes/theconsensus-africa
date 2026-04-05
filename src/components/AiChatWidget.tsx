@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import { MessageCircle, X, Send, Bot, User, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -16,10 +16,19 @@ const QUICK_QUESTIONS = [
 
 const AiChatWidget = () => {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Msg[]>([]);
+  const [messages, setMessages] = useState<Msg[]>(() => {
+    try {
+      const saved = localStorage.getItem("tpc-chat-history");
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    try { localStorage.setItem("tpc-chat-history", JSON.stringify(messages)); } catch {}
+  }, [messages]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -133,6 +142,11 @@ const AiChatWidget = () => {
                 <p className="font-semibold text-sm">TPC Assistant</p>
                 <p className="text-xs opacity-80">Ask me anything about The Plateau Consensus</p>
               </div>
+              {messages.length > 0 && (
+                <button onClick={() => setMessages([])} className="hover:opacity-70 transition-opacity" title="Clear chat">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
               <button onClick={() => setOpen(false)} className="hover:opacity-70 transition-opacity">
                 <X className="w-5 h-5" />
               </button>
