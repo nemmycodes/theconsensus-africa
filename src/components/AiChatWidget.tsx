@@ -142,6 +142,15 @@ const AiChatWidget = () => {
                 <p className="font-semibold text-sm">TPC Assistant</p>
                 <p className="text-xs opacity-80">Ask me anything about The Plateau Consensus</p>
               </div>
+              {messages.length > 0 && (
+                <button onClick={() => setMessages([])} className="hover:opacity-70 transition-opacity" title="Clear chat">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+              <button onClick={() => setOpen(false)} className="hover:opacity-70 transition-opacity">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
               <button onClick={() => setOpen(false)} className="hover:opacity-70 transition-opacity">
                 <X className="w-5 h-5" />
               </button>
