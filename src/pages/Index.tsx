@@ -6,6 +6,7 @@ import NewsSection from "@/components/NewsSection";
 import CtaBanner from "@/components/CtaBanner";
 import FaqSection from "@/components/FaqSection";
 import Footer from "@/components/Footer";
+import AiChatWidget from "@/components/AiChatWidget";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
       <CtaBanner />
       <FaqSection />
       <Footer />
+      <AiChatWidget />
     </div>
   );
 };
