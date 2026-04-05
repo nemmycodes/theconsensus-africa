@@ -151,10 +151,6 @@ const AiChatWidget = () => {
                 <X className="w-5 h-5" />
               </button>
             </div>
-              <button onClick={() => setOpen(false)} className="hover:opacity-70 transition-opacity">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
 
             {/* Messages */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
