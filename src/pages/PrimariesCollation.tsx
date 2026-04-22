@@ -229,6 +229,7 @@ const PrimariesCollation = () => {
                           ))}
                       </div>
                     )}
+                    {p.latitude && p.longitude && <LocationPreview lat={p.latitude} lng={p.longitude} label={p.venue} />}
                     {p.remarks && <p className="text-xs italic text-muted-foreground mt-3">"{p.remarks}"</p>}
                   </motion.div>
                 ))}
@@ -347,6 +348,67 @@ const PrimariesCollation = () => {
         </Tabs>
       </div>
       <Footer />
+    </div>
+  );
+};
+
+// Lightweight inline SVG location preview (no external map deps).
+// Plots the point inside a bounding box around Plateau State, with a Google Maps link.
+const LocationPreview = ({ lat, lng, label }: { lat: number; lng: number; label: string }) => {
+  // Plateau State approximate bounds
+  const MIN_LAT = 8.0, MAX_LAT = 10.5, MIN_LNG = 8.5, MAX_LNG = 10.5;
+  const W = 280, H = 120;
+  const clampedLat = Math.min(MAX_LAT, Math.max(MIN_LAT, lat));
+  const clampedLng = Math.min(MAX_LNG, Math.max(MIN_LNG, lng));
+  const x = ((clampedLng - MIN_LNG) / (MAX_LNG - MIN_LNG)) * W;
+  const y = H - ((clampedLat - MIN_LAT) / (MAX_LAT - MIN_LAT)) * H;
+  const inBounds = lat >= MIN_LAT && lat <= MAX_LAT && lng >= MIN_LNG && lng <= MAX_LNG;
+
+  return (
+    <div className="mt-3 pt-3 border-t">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
+          <MapPin className="w-3 h-3" /> Venue location
+        </span>
+        <a
+          href={`https://maps.google.com/?q=${lat},${lng}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-xs text-emerald-700 hover:underline"
+        >
+          Open in Maps ↗
+        </a>
+      </div>
+      <div className="relative rounded-lg overflow-hidden border bg-emerald-50/40">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto block" role="img" aria-label={`Map of ${label}`}>
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="hsl(var(--border))" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width={W} height={H} fill="url(#grid)" />
+          {/* Stylized Plateau outline */}
+          <path
+            d="M40,30 Q90,15 150,25 T260,40 Q255,80 220,100 Q160,115 100,105 Q50,95 30,70 Z"
+            fill="hsl(142 60% 45% / 0.12)"
+            stroke="hsl(142 60% 35%)"
+            strokeWidth="1.2"
+          />
+          {inBounds && (
+            <>
+              <circle cx={x} cy={y} r={10} fill="hsl(142 70% 40% / 0.25)">
+                <animate attributeName="r" values="6;14;6" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+              </circle>
+              <circle cx={x} cy={y} r={4} fill="hsl(142 70% 35%)" stroke="white" strokeWidth="1.5" />
+            </>
+          )}
+          <text x={8} y={H - 6} fontSize="8" fill="hsl(var(--muted-foreground))">Plateau State</text>
+        </svg>
+      </div>
+      <div className="text-[10px] font-mono text-muted-foreground mt-1">
+        {lat.toFixed(5)}, {lng.toFixed(5)} {!inBounds && <span className="text-amber-600">· outside Plateau bounds</span>}
+      </div>
     </div>
   );
 };
