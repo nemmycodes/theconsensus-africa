@@ -229,6 +229,7 @@ const PrimariesCollation = () => {
                           ))}
                       </div>
                     )}
+                    {p.latitude && p.longitude && <LocationPreview lat={p.latitude} lng={p.longitude} label={p.venue} />}
                     {p.remarks && <p className="text-xs italic text-muted-foreground mt-3">"{p.remarks}"</p>}
                   </motion.div>
                 ))}
