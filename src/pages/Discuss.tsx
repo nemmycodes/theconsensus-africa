@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquare, Radio, Play, Clock, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 import discussHero from "@/assets/discuss-hero.jpg";
 
 const categories = [
