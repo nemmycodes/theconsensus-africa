@@ -62,42 +62,65 @@ const activityItems = [
 
 const SituationDashboard = () => {
   const [updates, setUpdates] = useState<SituationUpdate[]>([]);
+  const [verifiedReports, setVerifiedReports] = useState<VerifiedReport[]>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     supabase.from("situation_updates").select("*").order("created_at", { ascending: false }).then(({ data }) => {
       if (data) setUpdates(data);
     });
+    supabase.from("election_reports")
+      .select("id, state, lga, ward, polling_unit, party, candidate_name, votes_recorded, election_type, election_date")
+      .eq("status", "verified")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => { if (data) setVerifiedReports(data as VerifiedReport[]); });
 
     const channel = supabase.channel("situation-dashboard")
       .on("postgres_changes", { event: "*", schema: "public", table: "situation_updates" }, () => {
         supabase.from("situation_updates").select("*").order("created_at", { ascending: false }).then(({ data }) => {
           if (data) setUpdates(data);
         });
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "election_reports" }, () => {
+        supabase.from("election_reports")
+          .select("id, state, lga, ward, polling_unit, party, candidate_name, votes_recorded, election_type, election_date")
+          .eq("status", "verified")
+          .order("created_at", { ascending: false })
+          .then(({ data }) => { if (data) setVerifiedReports(data as VerifiedReport[]); });
       }).subscribe();
 
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-
-    return () => {
-      supabase.removeChannel(channel);
-      clearInterval(timer);
-    };
+    return () => { supabase.removeChannel(channel); clearInterval(timer); };
   }, []);
 
+  const stateOverview = useMemo(() => {
+    const map: Record<string, { votes: number; reports: number; lgas: Set<string>; wards: Set<string> }> = {};
+    verifiedReports.forEach((r) => {
+      if (!map[r.state]) map[r.state] = { votes: 0, reports: 0, lgas: new Set(), wards: new Set() };
+      map[r.state].votes += r.votes_recorded || 0;
+      map[r.state].reports += 1;
+      map[r.state].lgas.add(r.lga);
+      map[r.state].wards.add(r.ward);
+    });
+    return map;
+  }, [verifiedReports]);
+
+  const totalVerifiedVotes = verifiedReports.reduce((s, r) => s + (r.votes_recorded || 0), 0);
+
   const stats = useMemo(() => {
-    const total = updates.length;
-    const verified = updates.filter(u => u.status === "Resolved").length;
+    const total = verifiedReports.length + updates.length;
+    const verified = verifiedReports.length;
     const pending = updates.filter(u => u.status === "Monitoring" || u.status === "Info").length;
     const critical = updates.filter(u => u.status === "Active").length;
     return [
-      { label: "TOTAL REPORTS", value: total.toLocaleString(), trend: "+12%", icon: FileText, iconBg: "bg-primary/10", iconColor: "text-primary" },
-      { label: "VERIFIED REPORTS", value: verified.toLocaleString(), trend: "+8%", icon: CheckCircle, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "TOTAL REPORTS", value: total.toLocaleString(), trend: "live", icon: FileText, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "VERIFIED REPORTS", value: verified.toLocaleString(), trend: "live", icon: CheckCircle, iconBg: "bg-primary/10", iconColor: "text-primary" },
       { label: "PENDING REPORTS", value: pending.toLocaleString(), trend: "+3%", icon: Clock, iconBg: "bg-accent/10", iconColor: "text-accent" },
       { label: "CRITICAL INCIDENTS", value: critical.toLocaleString(), trend: "+5%", icon: AlertTriangle, iconBg: "bg-destructive/10", iconColor: "text-destructive" },
-      { label: "ACTIVE AGENTS", value: "384", trend: "+2%", icon: Users, iconBg: "bg-primary/10", iconColor: "text-primary" },
-      { label: "REGIONS REPORTING", value: "36/37", trend: "97%", icon: MapPin, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "TOTAL VERIFIED VOTES", value: totalVerifiedVotes.toLocaleString(), trend: "live", icon: TrendingUp, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "STATES REPORTING", value: `${Object.keys(stateOverview).length}`, trend: "live", icon: MapPin, iconBg: "bg-primary/10", iconColor: "text-primary" },
     ];
-  }, [updates]);
+  }, [updates, verifiedReports, totalVerifiedVotes, stateOverview]);
 
   return (
     <div className="min-h-screen bg-background">
