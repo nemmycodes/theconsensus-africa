@@ -1,10 +1,28 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import heroBgFallback from "@/assets/hero-bg.jpg";
 import mentorImgFallback from "@/assets/mentor-portrait.png";
+import mentor1 from "@/assets/mentor-1.jpeg";
+import mentor2 from "@/assets/mentor-2.jpeg";
+import mentor3 from "@/assets/mentor-3.jpeg";
+import mentor4 from "@/assets/mentor-4.jpeg";
 import { useSiteContent } from "@/hooks/useSiteContent";
+
+const mentorSlides = [mentor1, mentor2, mentor3, mentor4];
+
+const slideTransitions = [
+  // Fade
+  { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.9 } },
+  // Slide from right
+  { initial: { opacity: 0, x: 80 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -80 }, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const } },
+  // Zoom
+  { initial: { opacity: 0, scale: 1.15 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.95 }, transition: { duration: 1 } },
+  // Slide up with rotate
+  { initial: { opacity: 0, y: 60, rotate: -2 }, animate: { opacity: 1, y: 0, rotate: 0 }, exit: { opacity: 0, y: -40, rotate: 2 }, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const } },
+];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -27,6 +45,14 @@ const scaleIn = {
 const HeroSection = () => {
   const navigate = useNavigate();
   const { content } = useSiteContent("hero");
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % mentorSlides.length);
+    }, 2500);
+    return () => clearInterval(id);
+  }, []);
 
   // Use DB content or fallback to defaults
   const badge = content?.badge || "YOUR FUTURE IS TODAY";
@@ -37,7 +63,7 @@ const HeroSection = () => {
   const mentorName = content?.mentor_name || "Chief Kefas Ropshik Wungak";
   const tagline = content?.tagline || "Join the movement. Build your economic power. Shape the future.";
   const heroBg = content?.hero_bg_url || heroBgFallback;
-  const mentorImg = content?.mentor_img_url || mentorImgFallback;
+  const cmsMentorImg = content?.mentor_img_url || mentorImgFallback;
 
   // Split heading around highlight word
   const renderHeading = () => {
@@ -130,12 +156,26 @@ const HeroSection = () => {
             animate="visible"
             className="hidden lg:flex justify-end"
           >
-            <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-border shadow-2xl">
-              <img
-                src={mentorImg}
-                alt={mentorName}
-                className="w-full h-full object-cover"
-              />
+            <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-border shadow-2xl bg-muted">
+              <AnimatePresence mode="wait">
+                {(() => {
+                  const t = slideTransitions[slideIndex % slideTransitions.length];
+                  return (
+                    <motion.img
+                      key={slideIndex}
+                      src={mentorSlides[slideIndex]}
+                      alt={mentorName}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={t.initial}
+                      animate={t.animate}
+                      exit={t.exit}
+                      transition={t.transition}
+                    />
+                  );
+                })()}
+              </AnimatePresence>
+              {/* Fallback reference to keep CMS image valid */}
+              <link rel="preload" as="image" href={cmsMentorImg} />
             </div>
           </motion.div>
         </div>
