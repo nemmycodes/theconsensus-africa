@@ -184,6 +184,34 @@ const SituationDashboard = () => {
           ))}
         </div>
 
+        {/* State-Level Overview (verified election reports only) */}
+        {Object.keys(stateOverview).length > 0 && (
+          <div className="bg-card border border-border rounded-xl p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-primary" />
+                <h3 className="font-heading font-bold text-lg">State-Level Overview</h3>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2 py-1 rounded">Verified Only</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {Object.entries(stateOverview).map(([state, agg]) => (
+                <div key={state} className="bg-secondary/50 border border-border rounded-lg p-4">
+                  <p className="text-xs font-bold text-primary uppercase">{state}</p>
+                  <p className="text-2xl font-black mt-1">
+                    {agg.votes.toLocaleString()} <span className="text-xs font-medium text-muted-foreground">votes</span>
+                  </p>
+                  <div className="flex gap-3 text-[11px] text-muted-foreground mt-1">
+                    <span>{agg.reports} reports</span>
+                    <span>{agg.lgas.size} LGAs</span>
+                    <span>{agg.wards.size} wards</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Live Operations Map */}
         <div className="bg-card border border-border rounded-xl overflow-hidden">
           <div className="px-5 py-4 flex items-center justify-between border-b border-border">
