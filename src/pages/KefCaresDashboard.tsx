@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { LogOut, User, FileText, Bell, Edit, Save, X, Heart, Users, Target, BookOpen, Home } from "lucide-react";
+import { LogOut, User, FileText, Bell, Edit, Save, X, Heart, Users, Target, BookOpen, Home, Settings as SettingsIcon, Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
@@ -29,7 +29,7 @@ const KefCaresDashboard = () => {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<any>({});
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState<"overview" | "profile" | "updates">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "profile" | "updates" | "settings">("overview");
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -128,6 +128,7 @@ const KefCaresDashboard = () => {
             { id: "overview" as const, label: "Overview", icon: FileText },
             { id: "profile" as const, label: "My Profile", icon: User },
             { id: "updates" as const, label: "Programme Updates", icon: Bell },
+            { id: "settings" as const, label: "Settings", icon: SettingsIcon },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -170,6 +171,7 @@ const KefCaresDashboard = () => {
               />
             )}
             {activeTab === "updates" && <UpdatesTab />}
+            {activeTab === "settings" && <SettingsTab user={user} registration={registration} />}
           </>
         )}
       </div>
@@ -380,5 +382,108 @@ const UpdatesTab = () => (
     </div>
   </motion.div>
 );
+
+const SettingsTab = ({ user, registration }: { user: any; registration: any }) => {
+  const [currentPwd, setCurrentPwd] = useState("");
+  const [newPwd, setNewPwd] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
+  const [updating, setUpdating] = useState(false);
+  const [emailNotif, setEmailNotif] = useState(true);
+  const [smsNotif, setSmsNotif] = useState(false);
+
+  const handlePasswordUpdate = async () => {
+    if (!newPwd || newPwd.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+    if (newPwd !== confirmPwd) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    setUpdating(true);
+    const { error } = await supabase.auth.updateUser({ password: newPwd });
+    setUpdating(false);
+    if (error) toast.error(error.message);
+    else {
+      toast.success("Password updated successfully");
+      setCurrentPwd(""); setNewPwd(""); setConfirmPwd("");
+    }
+  };
+
+  return (
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+      <h2 className="text-lg font-black text-gray-900">Account Settings</h2>
+
+      {/* Account Info */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 className="font-bold text-sm text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+          <Mail className="w-4 h-4 text-emerald-600" /> Account Information
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-3 bg-gray-50 rounded-lg">
+            <p className="text-[10px] text-gray-400 uppercase font-medium">Email</p>
+            <p className="text-sm font-bold text-gray-900">{user?.email || "N/A"}</p>
+          </div>
+          <div className="p-3 bg-gray-50 rounded-lg">
+            <p className="text-[10px] text-gray-400 uppercase font-medium">Member ID</p>
+            <p className="text-sm font-bold text-gray-900">{registration?.member_id || "N/A"}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Password */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 className="font-bold text-sm text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+          <Lock className="w-4 h-4 text-emerald-600" /> Change Password
+        </h3>
+        <div className="space-y-4 max-w-md">
+          <div className="space-y-1.5">
+            <Label className="text-xs text-gray-500">New Password</Label>
+            <Input type="password" value={newPwd} onChange={(e) => setNewPwd(e.target.value)} placeholder="At least 6 characters" />
+          </div>
+          <div className="space-y-1.5">
+            <Label className="text-xs text-gray-500">Confirm New Password</Label>
+            <Input type="password" value={confirmPwd} onChange={(e) => setConfirmPwd(e.target.value)} />
+          </div>
+          <Button onClick={handlePasswordUpdate} disabled={updating} className="bg-emerald-600 hover:bg-emerald-700">
+            {updating ? "Updating…" : "Update Password"}
+          </Button>
+        </div>
+      </div>
+
+      {/* Notifications */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6">
+        <h3 className="font-bold text-sm text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+          <Bell className="w-4 h-4 text-emerald-600" /> Notification Preferences
+        </h3>
+        <div className="space-y-3">
+          <label className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer">
+            <div>
+              <p className="text-sm font-bold text-gray-900">Email notifications</p>
+              <p className="text-xs text-gray-500">Receive programme updates by email</p>
+            </div>
+            <Checkbox checked={emailNotif} onCheckedChange={(v) => setEmailNotif(!!v)} />
+          </label>
+          <label className="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer">
+            <div>
+              <p className="text-sm font-bold text-gray-900">SMS notifications</p>
+              <p className="text-xs text-gray-500">Receive urgent alerts via SMS</p>
+            </div>
+            <Checkbox checked={smsNotif} onCheckedChange={(v) => setSmsNotif(!!v)} />
+          </label>
+        </div>
+      </div>
+
+      {/* Privacy */}
+      <div className="bg-white rounded-xl border border-red-200 bg-red-50/30 p-6">
+        <h3 className="font-bold text-sm text-red-900 uppercase tracking-wide mb-2">Danger Zone</h3>
+        <p className="text-xs text-red-700 mb-4">Request data deletion or account removal.</p>
+        <Button variant="outline" className="border-red-300 text-red-700 hover:bg-red-100" onClick={() => toast.info("Please contact support@plateauconsensus.org to request data deletion.")}>
+          Request Account Deletion
+        </Button>
+      </div>
+    </motion.div>
+  );
+};
 
 export default KefCaresDashboard;

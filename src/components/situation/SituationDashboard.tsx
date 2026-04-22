@@ -30,35 +30,11 @@ interface VerifiedReport {
   election_date: string;
 }
 
-// Simulated map markers across Plateau State
-const mapMarkers = [
-  { lat: 9.9, lng: 8.89, status: "active", label: "Jos South" },
-  { lat: 9.95, lng: 8.85, status: "critical", label: "Jos North" },
-  { lat: 9.7, lng: 8.5, status: "warning", label: "Barkin Ladi" },
-  { lat: 9.6, lng: 9.1, status: "active", label: "Pankshin" },
-  { lat: 9.4, lng: 8.7, status: "active", label: "Shendam" },
-  { lat: 9.85, lng: 8.95, status: "active", label: "Bassa" },
-  { lat: 9.75, lng: 9.2, status: "warning", label: "Kanke" },
-  { lat: 9.5, lng: 8.9, status: "active", label: "Langtang North" },
-  { lat: 9.3, lng: 9.0, status: "active", label: "Wase" },
-  { lat: 9.65, lng: 8.6, status: "active", label: "Riyom" },
-  { lat: 9.55, lng: 9.15, status: "active", label: "Mikang" },
-  { lat: 9.45, lng: 8.55, status: "active", label: "Qua'an Pan" },
-];
-
 const markerColors: Record<string, string> = {
   active: "#22c55e",
   warning: "#f59e0b",
   critical: "#ef4444",
 };
-
-const activityItems = [
-  { icon: Users, text: "Agent Michael verified 15 new polling unit results.", time: "2 mins ago", badge: "Verified", badgeColor: "bg-emerald-500/20 text-emerald-400" },
-  { icon: AlertTriangle, text: "Incident report flagged: Logistics delay reported at Collection Center B.", time: "14 mins ago", badge: "Critical", badgeColor: "bg-red-500/20 text-red-400" },
-  { icon: Upload, text: "Sarah J. uploaded Form EC8A for collation verification.", time: "23 mins ago", badge: "Pending", badgeColor: "bg-amber-500/20 text-amber-400" },
-  { icon: TrendingUp, text: "Voter turnout stats updated. 78% turnout recorded.", time: "45 mins ago", badge: "Verified", badgeColor: "bg-emerald-500/20 text-emerald-400" },
-  { icon: Shield, text: "Security alert: Unauthorized personnel detected near collation center.", time: "1 hour ago", badge: "Critical", badgeColor: "bg-red-500/20 text-red-400" },
-];
 
 const SituationDashboard = () => {
   const [updates, setUpdates] = useState<SituationUpdate[]>([]);
