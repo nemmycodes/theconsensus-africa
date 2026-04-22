@@ -25,7 +25,7 @@ const NewsSection = () => {
       .select("id, title, excerpt, content, featured_image_url, category, created_at")
       .eq("published", true)
       .order("created_at", { ascending: false })
-      .limit(2);
+      .limit(4);
     if (data) setPosts(data);
   };
 
@@ -62,7 +62,7 @@ const NewsSection = () => {
           </button>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {posts.map((post, i) => (
             <motion.div
               key={post.id}

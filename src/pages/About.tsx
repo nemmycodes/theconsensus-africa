@@ -86,7 +86,7 @@ const About = () => {
       {/* Hero Banner */}
       <section className="relative h-[50vh] min-h-[350px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={aboutHero} alt="About us" className="w-full h-full object-cover" />
+          <img src={youthEmpowerment} alt="Youth empowerment in Plateau State" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-primary/70 mix-blend-multiply" />
           <div className="absolute inset-0 bg-background/40" />
         </div>
