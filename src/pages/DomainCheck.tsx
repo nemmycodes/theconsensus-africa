@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -139,15 +138,19 @@ const DomainCheck = () => {
     return null;
   };
 
+  useEffect(() => {
+    document.title = "Domain Verification — The Plateau Consensus";
+    const meta = document.querySelector('meta[name="description"]') || (() => {
+      const m = document.createElement("meta");
+      m.setAttribute("name", "description");
+      document.head.appendChild(m);
+      return m;
+    })();
+    meta.setAttribute("content", "Check your custom domain DNS records (A, www, TXT) and verify propagation status.");
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Domain Verification — The Plateau Consensus</title>
-        <meta
-          name="description"
-          content="Check your custom domain DNS records (A, www, TXT) and verify propagation status."
-        />
-      </Helmet>
       <Navbar />
 
       <main className="container max-w-4xl py-12 px-4">
