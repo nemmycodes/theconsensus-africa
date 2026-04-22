@@ -152,7 +152,7 @@ const MemberForum = () => {
     const ids = Array.from(new Set((data || []).map(c => c.author_id)));
     const { data: profs } = ids.length ? await supabase.from("profiles").select("user_id, full_name, avatar_url").in("user_id", ids) : { data: [] as any };
     const profMap = new Map((profs || []).map((p: any) => [p.user_id, p as Profile]));
-    const enriched: Comment[] = (data || []).map(c => ({ ...c, profile: profMap.get(c.author_id) }));
+    const enriched: Comment[] = ((data || []) as any[]).map(c => ({ ...c, profile: profMap.get(c.author_id) }));
     setOpenComments(s => ({ ...s, [postId]: enriched }));
   };
 
