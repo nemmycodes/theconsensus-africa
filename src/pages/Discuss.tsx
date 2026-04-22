@@ -68,6 +68,14 @@ const Discuss = () => {
           <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
             The civic and economic dialogue hub of <span className="text-primary font-bold">The Consensus</span>. A space designed for structured debate and collective growth.
           </p>
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <Button size="lg" className="font-bold gap-2" onClick={() => navigate("/join")}>
+              <MessageSquare size={16} /> Join the Conversation Online
+            </Button>
+            <Button size="lg" variant="outline" className="font-bold" onClick={() => navigate("/dashboard")}>
+              Member Forum
+            </Button>
+          </div>
         </motion.div>
       </section>
 
