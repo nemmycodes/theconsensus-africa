@@ -15,6 +15,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Onboarding from "./pages/Onboarding";
 import Donate from "./pages/Donate";
 import ElectionForm from "./pages/ElectionForm";
+import ElectionPrimariesForm from "./pages/ElectionPrimariesForm";
 import SituationRoom from "./pages/SituationRoom";
 import Blog from "./pages/Blog";
 import Events from "./pages/Events";
@@ -70,6 +71,7 @@ const App = () => (
             <Route path="/join" element={<Onboarding />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/election-form" element={<ElectionForm />} />
+            <Route path="/election-form/primaries" element={<ElectionPrimariesForm />} />
             <Route path="/situation-room" element={<SituationRoom />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/events" element={<Events />} />
