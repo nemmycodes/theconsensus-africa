@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import AgentSidebar from "@/components/agent/AgentSidebar";
 import AgentOverview from "@/components/agent/AgentOverview";
 import AgentSubmissions from "@/components/agent/AgentSubmissions";
+import SituationDashboard from "@/components/situation/SituationDashboard";
 
 const AgentDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -63,11 +64,9 @@ const AgentDashboard = () => {
       )}
 
       <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        {activeTab === "dashboard" ? (
-          <AgentOverview onTabChange={handleTabChange} />
-        ) : (
-          <AgentSubmissions />
-        )}
+        {activeTab === "dashboard" && <AgentOverview onTabChange={handleTabChange} />}
+        {activeTab === "submissions" && <AgentSubmissions />}
+        {activeTab === "situation" && <SituationDashboard />}
       </main>
     </div>
   );

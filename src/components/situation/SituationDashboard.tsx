@@ -17,6 +17,19 @@ interface SituationUpdate {
   author_id: string;
 }
 
+interface VerifiedReport {
+  id: string;
+  state: string;
+  lga: string;
+  ward: string;
+  polling_unit: string;
+  party: string | null;
+  candidate_name: string | null;
+  votes_recorded: number;
+  election_type: string;
+  election_date: string;
+}
+
 // Simulated map markers across Plateau State
 const mapMarkers = [
   { lat: 9.9, lng: 8.89, status: "active", label: "Jos South" },
@@ -49,42 +62,65 @@ const activityItems = [
 
 const SituationDashboard = () => {
   const [updates, setUpdates] = useState<SituationUpdate[]>([]);
+  const [verifiedReports, setVerifiedReports] = useState<VerifiedReport[]>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     supabase.from("situation_updates").select("*").order("created_at", { ascending: false }).then(({ data }) => {
       if (data) setUpdates(data);
     });
+    supabase.from("election_reports")
+      .select("id, state, lga, ward, polling_unit, party, candidate_name, votes_recorded, election_type, election_date")
+      .eq("status", "verified")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => { if (data) setVerifiedReports(data as VerifiedReport[]); });
 
     const channel = supabase.channel("situation-dashboard")
       .on("postgres_changes", { event: "*", schema: "public", table: "situation_updates" }, () => {
         supabase.from("situation_updates").select("*").order("created_at", { ascending: false }).then(({ data }) => {
           if (data) setUpdates(data);
         });
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "election_reports" }, () => {
+        supabase.from("election_reports")
+          .select("id, state, lga, ward, polling_unit, party, candidate_name, votes_recorded, election_type, election_date")
+          .eq("status", "verified")
+          .order("created_at", { ascending: false })
+          .then(({ data }) => { if (data) setVerifiedReports(data as VerifiedReport[]); });
       }).subscribe();
 
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-
-    return () => {
-      supabase.removeChannel(channel);
-      clearInterval(timer);
-    };
+    return () => { supabase.removeChannel(channel); clearInterval(timer); };
   }, []);
 
+  const stateOverview = useMemo(() => {
+    const map: Record<string, { votes: number; reports: number; lgas: Set<string>; wards: Set<string> }> = {};
+    verifiedReports.forEach((r) => {
+      if (!map[r.state]) map[r.state] = { votes: 0, reports: 0, lgas: new Set(), wards: new Set() };
+      map[r.state].votes += r.votes_recorded || 0;
+      map[r.state].reports += 1;
+      map[r.state].lgas.add(r.lga);
+      map[r.state].wards.add(r.ward);
+    });
+    return map;
+  }, [verifiedReports]);
+
+  const totalVerifiedVotes = verifiedReports.reduce((s, r) => s + (r.votes_recorded || 0), 0);
+
   const stats = useMemo(() => {
-    const total = updates.length;
-    const verified = updates.filter(u => u.status === "Resolved").length;
+    const total = verifiedReports.length + updates.length;
+    const verified = verifiedReports.length;
     const pending = updates.filter(u => u.status === "Monitoring" || u.status === "Info").length;
     const critical = updates.filter(u => u.status === "Active").length;
     return [
-      { label: "TOTAL REPORTS", value: total.toLocaleString(), trend: "+12%", icon: FileText, iconBg: "bg-primary/10", iconColor: "text-primary" },
-      { label: "VERIFIED REPORTS", value: verified.toLocaleString(), trend: "+8%", icon: CheckCircle, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "TOTAL REPORTS", value: total.toLocaleString(), trend: "live", icon: FileText, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "VERIFIED REPORTS", value: verified.toLocaleString(), trend: "live", icon: CheckCircle, iconBg: "bg-primary/10", iconColor: "text-primary" },
       { label: "PENDING REPORTS", value: pending.toLocaleString(), trend: "+3%", icon: Clock, iconBg: "bg-accent/10", iconColor: "text-accent" },
       { label: "CRITICAL INCIDENTS", value: critical.toLocaleString(), trend: "+5%", icon: AlertTriangle, iconBg: "bg-destructive/10", iconColor: "text-destructive" },
-      { label: "ACTIVE AGENTS", value: "384", trend: "+2%", icon: Users, iconBg: "bg-primary/10", iconColor: "text-primary" },
-      { label: "REGIONS REPORTING", value: "36/37", trend: "97%", icon: MapPin, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "TOTAL VERIFIED VOTES", value: totalVerifiedVotes.toLocaleString(), trend: "live", icon: TrendingUp, iconBg: "bg-primary/10", iconColor: "text-primary" },
+      { label: "STATES REPORTING", value: `${Object.keys(stateOverview).length}`, trend: "live", icon: MapPin, iconBg: "bg-primary/10", iconColor: "text-primary" },
     ];
-  }, [updates]);
+  }, [updates, verifiedReports, totalVerifiedVotes, stateOverview]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -147,6 +183,34 @@ const SituationDashboard = () => {
             </div>
           ))}
         </div>
+
+        {/* State-Level Overview (verified election reports only) */}
+        {Object.keys(stateOverview).length > 0 && (
+          <div className="bg-card border border-border rounded-xl p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-primary" />
+                <h3 className="font-heading font-bold text-lg">State-Level Overview</h3>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2 py-1 rounded">Verified Only</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {Object.entries(stateOverview).map(([state, agg]) => (
+                <div key={state} className="bg-secondary/50 border border-border rounded-lg p-4">
+                  <p className="text-xs font-bold text-primary uppercase">{state}</p>
+                  <p className="text-2xl font-black mt-1">
+                    {agg.votes.toLocaleString()} <span className="text-xs font-medium text-muted-foreground">votes</span>
+                  </p>
+                  <div className="flex gap-3 text-[11px] text-muted-foreground mt-1">
+                    <span>{agg.reports} reports</span>
+                    <span>{agg.lgas.size} LGAs</span>
+                    <span>{agg.wards.size} wards</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Live Operations Map */}
         <div className="bg-card border border-border rounded-xl overflow-hidden">

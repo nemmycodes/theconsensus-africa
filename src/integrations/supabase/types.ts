@@ -122,6 +122,87 @@ export type Database = {
         }
         Relationships: []
       }
+      election_reports: {
+        Row: {
+          agent_id: string
+          candidate_name: string | null
+          created_at: string
+          ec8a_url: string | null
+          election_date: string
+          election_type: Database["public"]["Enums"]["election_type"]
+          flagged_reason: string | null
+          id: string
+          latitude: number | null
+          lga: string
+          longitude: number | null
+          notes: string | null
+          party: string | null
+          polling_unit: string
+          registered_voters: number | null
+          rejection_reason: string | null
+          state: string
+          status: Database["public"]["Enums"]["election_report_status"]
+          total_votes_cast: number | null
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+          votes_recorded: number
+          ward: string
+        }
+        Insert: {
+          agent_id: string
+          candidate_name?: string | null
+          created_at?: string
+          ec8a_url?: string | null
+          election_date: string
+          election_type: Database["public"]["Enums"]["election_type"]
+          flagged_reason?: string | null
+          id?: string
+          latitude?: number | null
+          lga: string
+          longitude?: number | null
+          notes?: string | null
+          party?: string | null
+          polling_unit: string
+          registered_voters?: number | null
+          rejection_reason?: string | null
+          state?: string
+          status?: Database["public"]["Enums"]["election_report_status"]
+          total_votes_cast?: number | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+          votes_recorded?: number
+          ward: string
+        }
+        Update: {
+          agent_id?: string
+          candidate_name?: string | null
+          created_at?: string
+          ec8a_url?: string | null
+          election_date?: string
+          election_type?: Database["public"]["Enums"]["election_type"]
+          flagged_reason?: string | null
+          id?: string
+          latitude?: number | null
+          lga?: string
+          longitude?: number | null
+          notes?: string | null
+          party?: string | null
+          polling_unit?: string
+          registered_voters?: number | null
+          rejection_reason?: string | null
+          state?: string
+          status?: Database["public"]["Enums"]["election_report_status"]
+          total_votes_cast?: number | null
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+          votes_recorded?: number
+          ward?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           attendee_count: number | null
@@ -437,6 +518,16 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "agent" | "user" | "super_admin" | "kef_user"
+      election_report_status: "pending" | "flagged" | "verified" | "rejected"
+      election_type:
+        | "presidential"
+        | "gubernatorial"
+        | "senate"
+        | "house_of_reps"
+        | "house_of_assembly"
+        | "councillor"
+        | "chairman"
+        | "party_primary"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -565,6 +656,17 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "agent", "user", "super_admin", "kef_user"],
+      election_report_status: ["pending", "flagged", "verified", "rejected"],
+      election_type: [
+        "presidential",
+        "gubernatorial",
+        "senate",
+        "house_of_reps",
+        "house_of_assembly",
+        "councillor",
+        "chairman",
+        "party_primary",
+      ],
     },
   },
 } as const

@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 import MemberSidebar from "@/components/member/MemberSidebar";
 import MemberHeader from "@/components/member/MemberHeader";
 import MemberOverview from "@/components/member/MemberOverview";
-import MemberSituationRoom from "@/components/member/MemberSituationRoom";
+
 import MemberSubmitReport from "@/components/member/MemberSubmitReport";
 import MemberEvents from "@/components/member/MemberEvents";
 import MemberForum from "@/components/member/MemberForum";
@@ -49,7 +49,6 @@ const MemberDashboard = () => {
   const renderContent = () => {
     switch (activeTab) {
       case "dashboard": return <MemberOverview onTabChange={handleTabChange} />;
-      case "situation": return <MemberSituationRoom onTabChange={handleTabChange} />;
       case "report": return <MemberSubmitReport />;
       case "events": return <MemberEvents />;
       case "forum": return <MemberForum />;

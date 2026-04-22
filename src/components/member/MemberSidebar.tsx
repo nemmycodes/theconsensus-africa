@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  LayoutDashboard, Radio, FileText, Calendar,
+  LayoutDashboard, FileText, Calendar,
   MessageSquare, Bell, User, Settings, ChevronLeft, LogOut,
 } from "lucide-react";
 
@@ -13,7 +13,6 @@ interface MemberSidebarProps {
 
 const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "situation", label: "Situation Room", icon: Radio },
   { id: "report", label: "Submit Report", icon: FileText },
   { id: "events", label: "Events", icon: Calendar },
   { id: "forum", label: "Community Forum", icon: MessageSquare },

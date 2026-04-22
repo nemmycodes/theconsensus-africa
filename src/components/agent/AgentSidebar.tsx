@@ -1,4 +1,4 @@
-import { LayoutDashboard, FileText, LogOut } from "lucide-react";
+import { LayoutDashboard, FileText, Radio, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ interface AgentSidebarProps {
 const tabs = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "submissions", label: "Submissions", icon: FileText },
+  { id: "situation", label: "Situation Room", icon: Radio },
 ];
 
 const AgentSidebar = ({ activeTab, onTabChange }: AgentSidebarProps) => {

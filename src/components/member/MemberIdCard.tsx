@@ -282,10 +282,13 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
 
               <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-200">The Plateau</p>
-                  <p className="text-lg font-black uppercase">Consensus</p>
-                  <p className="text-[9px] text-emerald-300 uppercase tracking-wider">Membership Identification Card</p>
+                <div className="flex items-center gap-3">
+                  <img src="/brand-logo.png" alt="Consensus" className="w-12 h-12 object-contain bg-white/95 rounded-lg p-1 shrink-0" />
+                  <div>
+                    <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-200">The Plateau</p>
+                    <p className="text-lg font-black uppercase">Consensus</p>
+                    <p className="text-[9px] text-emerald-300 uppercase tracking-wider">Membership Identification Card</p>
+                  </div>
                 </div>
                 <div className="text-right">
                   <p className="text-[10px] uppercase text-emerald-200">Member Card</p>
