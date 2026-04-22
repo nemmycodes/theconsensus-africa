@@ -45,6 +45,14 @@ const scaleIn = {
 const HeroSection = () => {
   const navigate = useNavigate();
   const { content } = useSiteContent("hero");
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % mentorSlides.length);
+    }, 2500);
+    return () => clearInterval(id);
+  }, []);
 
   // Use DB content or fallback to defaults
   const badge = content?.badge || "YOUR FUTURE IS TODAY";
@@ -55,7 +63,7 @@ const HeroSection = () => {
   const mentorName = content?.mentor_name || "Chief Kefas Ropshik Wungak";
   const tagline = content?.tagline || "Join the movement. Build your economic power. Shape the future.";
   const heroBg = content?.hero_bg_url || heroBgFallback;
-  const mentorImg = content?.mentor_img_url || mentorImgFallback;
+  const cmsMentorImg = content?.mentor_img_url || mentorImgFallback;
 
   // Split heading around highlight word
   const renderHeading = () => {
