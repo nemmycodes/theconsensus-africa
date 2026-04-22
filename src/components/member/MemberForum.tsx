@@ -151,8 +151,9 @@ const MemberForum = () => {
     const { data } = await supabase.from("forum_comments").select("*").eq("post_id", postId).order("created_at", { ascending: true });
     const ids = Array.from(new Set((data || []).map(c => c.author_id)));
     const { data: profs } = ids.length ? await supabase.from("profiles").select("user_id, full_name, avatar_url").in("user_id", ids) : { data: [] as any };
-    const profMap = new Map((profs || []).map((p: any) => [p.user_id, p]));
-    setOpenComments(s => ({ ...s, [postId]: (data || []).map(c => ({ ...c, profile: profMap.get(c.author_id) })) }));
+    const profMap = new Map((profs || []).map((p: any) => [p.user_id, p as Profile]));
+    const enriched: Comment[] = (data || []).map(c => ({ ...c, profile: profMap.get(c.author_id) }));
+    setOpenComments(s => ({ ...s, [postId]: enriched }));
   };
 
   const submitComment = async (postId: string) => {
