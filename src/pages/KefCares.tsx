@@ -14,10 +14,65 @@ import { motion } from "framer-motion";
 
 type View = "landing" | "login" | "register";
 
+const KEF_SEO = {
+  title: "KEF-CARES – Join the Kefiano Community Initiative | The Plateau Consensus",
+  description:
+    "KEF-CARES: Kefiano Community Advancement, Resilience & Economic Support Initiative. Join the Central Zone Pilot empowering Plateau State youth through skills, mentorship and economic opportunity.",
+  url: "https://theconsensus.africa/kef-cares",
+  image: "https://theconsensus.africa/assets/mentor-1-DTnKDAHX.jpeg",
+};
+
+const upsertMeta = (key: "name" | "property", value: string, content: string) => {
+  let el = document.head.querySelector<HTMLMetaElement>(`meta[${key}="${value}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(key, value);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+};
+
+const upsertLink = (rel: string, href: string) => {
+  let el = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
+  if (!el) {
+    el = document.createElement("link");
+    el.setAttribute("rel", rel);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("href", href);
+};
+
 const KefCares = () => {
   const { user, loading: authLoading, isKefUser, rolesLoading } = useAuth();
   const navigate = useNavigate();
   const [view, setView] = useState<View>("landing");
+
+  // SEO metadata
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = KEF_SEO.title;
+    upsertMeta("name", "description", KEF_SEO.description);
+    upsertLink("canonical", KEF_SEO.url);
+
+    // Open Graph
+    upsertMeta("property", "og:title", KEF_SEO.title);
+    upsertMeta("property", "og:description", KEF_SEO.description);
+    upsertMeta("property", "og:type", "website");
+    upsertMeta("property", "og:url", KEF_SEO.url);
+    upsertMeta("property", "og:image", KEF_SEO.image);
+    upsertMeta("property", "og:image:alt", "KEF-CARES — Kefiano Community Initiative");
+    upsertMeta("property", "og:site_name", "The Plateau Consensus");
+
+    // Twitter Card
+    upsertMeta("name", "twitter:card", "summary_large_image");
+    upsertMeta("name", "twitter:title", KEF_SEO.title);
+    upsertMeta("name", "twitter:description", KEF_SEO.description);
+    upsertMeta("name", "twitter:image", KEF_SEO.image);
+
+    return () => {
+      document.title = previousTitle;
+    };
+  }, []);
 
   // If logged in as kef_user, redirect to dashboard
   useEffect(() => {
