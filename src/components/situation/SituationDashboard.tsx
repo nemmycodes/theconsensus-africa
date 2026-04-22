@@ -17,6 +17,19 @@ interface SituationUpdate {
   author_id: string;
 }
 
+interface VerifiedReport {
+  id: string;
+  state: string;
+  lga: string;
+  ward: string;
+  polling_unit: string;
+  party: string | null;
+  candidate_name: string | null;
+  votes_recorded: number;
+  election_type: string;
+  election_date: string;
+}
+
 // Simulated map markers across Plateau State
 const mapMarkers = [
   { lat: 9.9, lng: 8.89, status: "active", label: "Jos South" },
