@@ -4,6 +4,8 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquare, Radio, Play, Clock, Headphones } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 import discussHero from "@/assets/discuss-hero.jpg";
 
 const categories = [
@@ -48,6 +50,19 @@ const pastPodcasts = [
 
 const Discuss = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleMemberForum = () => {
+    if (user) {
+      navigate("/dashboard");
+      return;
+    }
+    toast.info("Sign in to join the Member Forum", {
+      description: "You'll be redirected to login. New here? You can create an account from there.",
+      duration: 2500,
+    });
+    setTimeout(() => navigate("/auth?redirect=/dashboard"), 1500);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,7 +87,7 @@ const Discuss = () => {
             <Button size="lg" className="font-bold gap-2" onClick={() => navigate("/join")}>
               <MessageSquare size={16} /> Join the Conversation Online
             </Button>
-            <Button size="lg" variant="outline" className="font-bold" onClick={() => navigate("/dashboard")}>
+            <Button size="lg" variant="outline" className="font-bold" onClick={handleMemberForum}>
               Member Forum
             </Button>
           </div>
