@@ -290,7 +290,12 @@ const ElectionForm = () => {
                             ? "border-primary bg-primary"
                             : "border-border"
                         }`}
-                        onClick={() => setElectionType(type)}
+                        onClick={() => {
+                          setElectionType(type);
+                          if (type === "Party Primaries") {
+                            navigate("/election-form/primaries");
+                          }
+                        }}
                       >
                         {electionType === type && (
                           <div className="w-2 h-2 rounded-full bg-primary-foreground" />
