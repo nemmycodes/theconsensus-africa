@@ -172,7 +172,17 @@ const SituationRoom = () => {
             <Button
               size="lg"
               className="font-bold"
-              onClick={() => setShowUpdates(true)}
+              onClick={() => {
+                if (!user) {
+                  toast({
+                    title: "Login required",
+                    description: "Please sign in to view collated election results in the Enter Room dashboard.",
+                  });
+                  setTimeout(() => navigate("/auth?redirect=/situation-room"), 1200);
+                  return;
+                }
+                setShowUpdates(true);
+              }}
             >
               Enter Room
             </Button>
