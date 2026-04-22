@@ -156,12 +156,26 @@ const HeroSection = () => {
             animate="visible"
             className="hidden lg:flex justify-end"
           >
-            <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-border shadow-2xl">
-              <img
-                src={mentorImg}
-                alt={mentorName}
-                className="w-full h-full object-cover"
-              />
+            <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-border shadow-2xl bg-muted">
+              <AnimatePresence mode="wait">
+                {(() => {
+                  const t = slideTransitions[slideIndex % slideTransitions.length];
+                  return (
+                    <motion.img
+                      key={slideIndex}
+                      src={mentorSlides[slideIndex]}
+                      alt={mentorName}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={t.initial}
+                      animate={t.animate}
+                      exit={t.exit}
+                      transition={t.transition}
+                    />
+                  );
+                })()}
+              </AnimatePresence>
+              {/* Fallback reference to keep CMS image valid */}
+              <link rel="preload" as="image" href={cmsMentorImg} />
             </div>
           </motion.div>
         </div>
