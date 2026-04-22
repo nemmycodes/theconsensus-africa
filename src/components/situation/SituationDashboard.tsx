@@ -211,25 +211,35 @@ const SituationDashboard = () => {
               {Array.from({ length: 13 }).map((_, i) => (
                 <line key={`v${i}`} x1={i * 40} y1="0" x2={i * 40} y2="400" stroke="hsl(var(--border))" strokeWidth="0.5" opacity="0.3" />
               ))}
-              {/* Map markers */}
-              {mapMarkers.map((m, i) => {
-                const x = ((m.lng - 8.3) / 1.2) * 500;
-                const y = 400 - ((m.lat - 9.1) / 1.0) * 400;
+              {/* Map markers from real verified reports (one per LGA) */}
+              {Array.from(new Set(verifiedReports.map(r => r.lga))).slice(0, 30).map((lga, i) => {
+                // Pseudo-random but stable position based on LGA name
+                const hash = lga.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+                const x = 60 + ((hash * 37) % 380);
+                const y = 60 + ((hash * 53) % 280);
                 return (
                   <g key={i}>
-                    <circle cx={x} cy={y} r="12" fill={markerColors[m.status]} opacity="0.15">
+                    <circle cx={x} cy={y} r="12" fill={markerColors.active} opacity="0.15">
                       <animate attributeName="r" values="12;18;12" dur="3s" repeatCount="indefinite" />
                     </circle>
-                    <circle cx={x} cy={y} r="6" fill={markerColors[m.status]} opacity="0.8" />
-                    <title>{m.label} — {m.status}</title>
+                    <circle cx={x} cy={y} r="6" fill={markerColors.active} opacity="0.8" />
+                    <title>{lga} — verified</title>
                   </g>
                 );
               })}
+              {verifiedReports.length === 0 && (
+                <text x="250" y="200" textAnchor="middle" fill="hsl(var(--muted-foreground))" fontSize="12">
+                  Awaiting verified field reports
+                </text>
+              )}
             </svg>
           </div>
           <div className="px-5 py-3 border-t border-border">
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold">Plateau State Operations</p>
-            <p className="text-sm"><span className="text-primary font-bold">94%</span> coverage active</p>
+            <p className="text-sm">
+              <span className="text-primary font-bold">{verifiedReports.length}</span> verified reports across{" "}
+              <span className="text-primary font-bold">{Object.keys(stateOverview).length}</span> states
+            </p>
           </div>
         </div>
 
@@ -240,32 +250,46 @@ const SituationDashboard = () => {
             <button className="text-xs text-primary font-bold hover:underline">View All</button>
           </div>
           <div className="divide-y divide-border">
-            {activityItems.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.08 }}
-                className="px-5 py-4 flex items-center gap-4"
-              >
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                  item.badge === "Critical" ? "bg-destructive/10" :
-                  item.badge === "Pending" ? "bg-accent/10" : "bg-primary/10"
-                }`}>
-                  <item.icon className={`w-5 h-5 ${
-                    item.badge === "Critical" ? "text-destructive" :
-                    item.badge === "Pending" ? "text-accent" : "text-primary"
-                  }`} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm">{item.text}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-muted-foreground">{item.time}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${item.badgeColor}`}>{item.badge}</span>
+            {updates.length === 0 ? (
+              <div className="px-5 py-12 text-center text-sm text-muted-foreground">
+                No field activity yet. Updates will appear here once agents submit reports.
+              </div>
+            ) : updates.slice(0, 8).map((u, i) => {
+              const badge = u.status === "Active" ? "Critical" : u.status === "Resolved" ? "Verified" : "Pending";
+              const badgeColor =
+                badge === "Critical" ? "bg-destructive/20 text-destructive" :
+                badge === "Pending" ? "bg-accent/20 text-accent" :
+                "bg-primary/20 text-primary";
+              const Icon = badge === "Critical" ? AlertTriangle : badge === "Pending" ? Clock : CheckCircle;
+              return (
+                <motion.div
+                  key={u.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="px-5 py-4 flex items-center gap-4"
+                >
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    badge === "Critical" ? "bg-destructive/10" :
+                    badge === "Pending" ? "bg-accent/10" : "bg-primary/10"
+                  }`}>
+                    <Icon className={`w-5 h-5 ${
+                      badge === "Critical" ? "text-destructive" :
+                      badge === "Pending" ? "text-accent" : "text-primary"
+                    }`} />
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm truncate">{u.title}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(u.created_at), { addSuffix: true })}
+                      </span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeColor}`}>{badge}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
 
