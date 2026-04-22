@@ -58,13 +58,26 @@ const AdminKefCares = () => {
 
   const exportCSV = () => {
     if (!registrations.length) return;
-    const headers = ["Full Name", "Gender", "Phone", "Email", "LGA", "Ward", "Community", "Economic Status", "Occupation", "Qualification", "Registered At"];
-    const rows = registrations.map(r => [
-      r.full_name, r.gender, r.phone_number, r.email || "", r.lga, r.ward || "", r.community || "",
-      r.economic_status || "", r.occupation || "", r.highest_qualification || "",
-      new Date(r.created_at).toLocaleDateString()
-    ]);
-    const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(",")).join("\n");
+    // Export ALL fields collected
+    const allKeys = Array.from(
+      registrations.reduce((set, r) => {
+        Object.keys(r).forEach((k) => set.add(k));
+        return set;
+      }, new Set<string>())
+    );
+    const headers = allKeys;
+    const rows = registrations.map((r) =>
+      headers.map((h) => {
+        const v = r[h];
+        if (v === null || v === undefined) return "";
+        if (Array.isArray(v)) return v.join("; ");
+        if (typeof v === "boolean") return v ? "Yes" : "No";
+        if (h === "created_at") return new Date(v).toLocaleString();
+        return String(v);
+      })
+    );
+    const escape = (c: string) => `"${c.replace(/"/g, '""')}"`;
+    const csv = [headers.map(escape), ...rows.map((r) => r.map(escape))].map((r) => r.join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = "kef-cares-registrations.csv"; a.click();
@@ -102,6 +115,8 @@ const AdminKefCares = () => {
                 <TableHead>Name</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>LGA</TableHead>
+                <TableHead>Marital</TableHead>
+                <TableHead>Social</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
@@ -109,12 +124,14 @@ const AdminKefCares = () => {
             </TableHeader>
             <TableBody>
               {filtered.length === 0 ? (
-                <TableRow><TableCell colSpan={6} className="text-center py-8 text-gray-400">No registrations found</TableCell></TableRow>
+                <TableRow><TableCell colSpan={8} className="text-center py-8 text-gray-400">No registrations found</TableCell></TableRow>
               ) : filtered.map(r => (
                 <TableRow key={r.id}>
                   <TableCell className="font-medium">{r.full_name}</TableCell>
                   <TableCell>{r.phone_number}</TableCell>
                   <TableCell>{r.lga}</TableCell>
+                  <TableCell className="text-sm">{r.marital_status || <span className="text-gray-400">—</span>}</TableCell>
+                  <TableCell className="text-sm">{r.social_status || <span className="text-gray-400">—</span>}</TableCell>
                   <TableCell><Badge variant={r.economic_status ? "default" : "secondary"}>{r.economic_status || "N/A"}</Badge></TableCell>
                   <TableCell className="text-sm text-gray-500">{new Date(r.created_at).toLocaleDateString()}</TableCell>
                   <TableCell className="text-right space-x-1">

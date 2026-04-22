@@ -130,7 +130,18 @@ const ElectionForm = () => {
       return;
     }
     setLoading(true);
-    // For now, store as a situation update with structured content
+
+    // 1. Upload EC8-A if present
+    let ec8aUrl: string | null = null;
+    if (ec8aFile) {
+      const path = `${user.id}/ec8a-${Date.now()}-${ec8aFile.name}`;
+      const { error: uploadErr } = await supabase.storage
+        .from("election-evidence")
+        .upload(path, ec8aFile, { upsert: false });
+      if (!uploadErr) ec8aUrl = path;
+    }
+
+    // 2. Save full report into situation_updates feed (legacy)
     const reportContent = JSON.stringify({
       electionDate,
       liveLocation,
@@ -140,21 +151,61 @@ const ElectionForm = () => {
       totalPartyVotes,
       observations,
       signature: { name: signatureName, date: signatureDate },
+      ec8aUrl,
     });
 
     const { error } = await supabase.from("situation_updates").insert({
-      title: `Election Report: ${centerName || "Unnamed Center"}`,
+      title: `Election Report: ${centerName || pollingUnit || "Unnamed Center"}`,
       content: reportContent,
       category: "Political",
       status: "Active",
       author_id: user.id,
     });
 
-    if (error) {
-      toast({ title: "Error submitting report", description: error.message, variant: "destructive" });
+    // 3. Insert one election_reports row per party so the admin verification queue picks them up
+    const electionTypeMap: Record<string, string> = {
+      "Presidential": "presidential",
+      "Gubernatorial": "gubernatorial",
+      "Senatorial": "senate",
+      "House of Reps": "house_of_reps",
+      "House of Assembly": "house_of_assembly",
+      "LGA Election": "chairman",
+      "Ward Council": "councillor",
+      "Party Primaries": "party_primary",
+    };
+    const dbElectionType = electionTypeMap[electionType] || "presidential";
+    const reportRows = Object.entries(partyResults)
+      .filter(([, votes]) => (votes || 0) > 0)
+      .map(([abbr, votes]) => ({
+        agent_id: user.id,
+        election_type: dbElectionType as any,
+        election_date: electionDate || new Date().toISOString().slice(0, 10),
+        state: state || "Plateau",
+        lga: lga || "Unknown",
+        ward: ward || "Unknown",
+        polling_unit: pollingUnit || "Unknown",
+        party: abbr,
+        votes_recorded: votes,
+        total_votes_cast: totalVotesCast,
+        registered_voters: registeredVoters,
+        ec8a_url: ec8aUrl,
+        latitude: liveLocation?.lat ?? null,
+        longitude: liveLocation?.lng ?? null,
+        notes: observations || null,
+        status: "pending" as const,
+      }));
+
+    let reportsErr: any = null;
+    if (reportRows.length > 0) {
+      const { error: rErr } = await supabase.from("election_reports").insert(reportRows);
+      reportsErr = rErr;
+    }
+
+    if (error || reportsErr) {
+      toast({ title: "Error submitting report", description: (error || reportsErr)?.message, variant: "destructive" });
     } else {
-      toast({ title: "Report submitted successfully!" });
-      navigate("/situation-room");
+      toast({ title: "Report submitted successfully!", description: "Awaiting admin verification." });
+      navigate("/agent");
     }
     setLoading(false);
   };
