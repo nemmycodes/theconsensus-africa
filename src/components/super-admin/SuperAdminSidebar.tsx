@@ -37,6 +37,8 @@ const menuGroups = [
     items: [
       { id: "system-health", label: "System Health", icon: Server },
       { id: "api-keys", label: "API Keys", icon: Key },
+    ],
+  },
   {
     label: "Account Management",
     items: [
