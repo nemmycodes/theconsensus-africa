@@ -15,13 +15,13 @@ const mentorSlides = [mentor1, mentor2, mentor3, mentor4];
 
 const slideTransitions = [
   // Fade
-  { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.9 } },
+  { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.4 } },
   // Slide from right
-  { initial: { opacity: 0, x: 80 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -80 }, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const } },
+  { initial: { opacity: 0, x: 60 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -60 }, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const } },
   // Zoom
-  { initial: { opacity: 0, scale: 1.15 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.95 }, transition: { duration: 1 } },
+  { initial: { opacity: 0, scale: 1.1 }, animate: { opacity: 1, scale: 1 }, exit: { opacity: 0, scale: 0.97 }, transition: { duration: 0.45 } },
   // Slide up with rotate
-  { initial: { opacity: 0, y: 60, rotate: -2 }, animate: { opacity: 1, y: 0, rotate: 0 }, exit: { opacity: 0, y: -40, rotate: 2 }, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const } },
+  { initial: { opacity: 0, y: 40, rotate: -1.5 }, animate: { opacity: 1, y: 0, rotate: 0 }, exit: { opacity: 0, y: -30, rotate: 1.5 }, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const } },
 ];
 
 const fadeUp = {
@@ -157,7 +157,7 @@ const HeroSection = () => {
             className="hidden lg:flex justify-end"
           >
             <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-border shadow-2xl bg-muted">
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="sync">
                 {(() => {
                   const t = slideTransitions[slideIndex % slideTransitions.length];
                   return (
