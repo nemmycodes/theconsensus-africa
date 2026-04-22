@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard, Users, Shield, Radio, BarChart3, Calendar,
-  FileText, MessageSquare, Image, Bell, Settings, ChevronLeft, LogOut, UserPlus,
+  FileText, MessageSquare, Image, Bell, Settings, ChevronLeft, LogOut, UserPlus, Trophy,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -18,6 +18,7 @@ const menuItems = [
   { id: "recruitment", label: "Agent Recruitment", icon: UserPlus },
   { id: "situation", label: "Situation Room", icon: Radio },
   { id: "election", label: "Election Collation", icon: BarChart3 },
+  { id: "primaries", label: "Primaries Collation", icon: Trophy },
   { id: "events", label: "Events & Activities", icon: Calendar },
   { id: "blog", label: "Blog & Articles", icon: FileText },
   { id: "forum", label: "Community Forum", icon: MessageSquare },

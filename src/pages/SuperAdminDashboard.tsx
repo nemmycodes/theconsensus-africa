@@ -20,6 +20,14 @@ import AdminMediaLibrary from "@/components/admin/AdminMediaLibrary";
 import AdminNotifications from "@/components/admin/AdminNotifications";
 import AdminSettings from "@/components/admin/AdminSettings";
 import AdminKefCares from "@/components/admin/AdminKefCares";
+import AdminPrimariesCollation from "@/components/admin/AdminPrimariesCollation";
+import SuperAdminAuditLog from "@/components/super-admin/SuperAdminAuditLog";
+import SuperAdminRolePermissions from "@/components/super-admin/SuperAdminRolePermissions";
+import SuperAdminBroadcasts from "@/components/super-admin/SuperAdminBroadcasts";
+import SuperAdminFeatureFlags from "@/components/super-admin/SuperAdminFeatureFlags";
+import SuperAdminSystemHealth from "@/components/super-admin/SuperAdminSystemHealth";
+import SuperAdminApiKeys from "@/components/super-admin/SuperAdminApiKeys";
+import SuperAdminImpersonation from "@/components/super-admin/SuperAdminImpersonation";
 
 const SuperAdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -65,6 +73,14 @@ const SuperAdminDashboard = () => {
       case "messages": return <SuperAdminContactMessages />;
       case "situation": return <AdminSituationRoom />;
       case "election": return <AdminElectionCollation />;
+      case "primaries": return <AdminPrimariesCollation />;
+      case "audit-log": return <SuperAdminAuditLog />;
+      case "permissions": return <SuperAdminRolePermissions />;
+      case "broadcasts": return <SuperAdminBroadcasts />;
+      case "feature-flags": return <SuperAdminFeatureFlags />;
+      case "system-health": return <SuperAdminSystemHealth />;
+      case "api-keys": return <SuperAdminApiKeys />;
+      case "impersonation": return <SuperAdminImpersonation />;
       case "events": return <AdminEvents />;
       case "blog": return <AdminBlogPosts />;
       case "forum": return <AdminCommunityForum />;

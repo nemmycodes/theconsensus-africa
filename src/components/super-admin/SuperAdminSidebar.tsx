@@ -5,7 +5,7 @@ import {
   Crown, LayoutDashboard, Users, Shield, UserCog, BarChart3,
   Globe, Radio, Calendar, FileText, MessageSquare, Image,
   Bell, Settings, ChevronLeft, LogOut, Database, Activity,
-  PenTool, Mail,
+  PenTool, Mail, Trophy, Server, Key, Megaphone, Flag, UserCheck, ShieldCheck,
 } from "lucide-react";
 
 interface SuperAdminSidebarProps {
@@ -20,6 +20,23 @@ const menuGroups = [
       { id: "overview", label: "Dashboard", icon: LayoutDashboard },
       { id: "analytics", label: "Analytics & Stats", icon: BarChart3 },
       { id: "activity", label: "Activity Log", icon: Activity },
+      { id: "audit-log", label: "Audit Log", icon: ShieldCheck },
+    ],
+  },
+  {
+    label: "Governance",
+    items: [
+      { id: "permissions", label: "Role Permissions", icon: Shield },
+      { id: "broadcasts", label: "Broadcast Center", icon: Megaphone },
+      { id: "feature-flags", label: "Feature Flags", icon: Flag },
+      { id: "impersonation", label: "Impersonation", icon: UserCheck },
+    ],
+  },
+  {
+    label: "Infrastructure",
+    items: [
+      { id: "system-health", label: "System Health", icon: Server },
+      { id: "api-keys", label: "API Keys", icon: Key },
     ],
   },
   {
@@ -38,6 +55,7 @@ const menuGroups = [
       { id: "messages", label: "Contact Messages", icon: Mail },
       { id: "situation", label: "Situation Room", icon: Radio },
       { id: "election", label: "Election Data", icon: Database },
+      { id: "primaries", label: "Primaries", icon: Trophy },
       { id: "events", label: "Events", icon: Calendar },
       { id: "blog", label: "Blog Posts", icon: FileText },
       { id: "forum", label: "Forum", icon: MessageSquare },

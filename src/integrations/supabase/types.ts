@@ -131,6 +131,75 @@ export type Database = {
         }
         Relationships: []
       }
+      api_keys: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          key_hash: string
+          label: string
+          last_used_at: string | null
+          prefix: string
+          revoked: boolean
+          scopes: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          key_hash: string
+          label: string
+          last_used_at?: string | null
+          prefix: string
+          revoked?: boolean
+          scopes?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          key_hash?: string
+          label?: string
+          last_used_at?: string | null
+          prefix?: string
+          revoked?: boolean
+          scopes?: string[] | null
+        }
+        Relationships: []
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_id: string
@@ -167,6 +236,39 @@ export type Database = {
           published?: boolean
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      broadcasts: {
+        Row: {
+          active: boolean
+          audience: string
+          body: string
+          created_at: string
+          created_by: string | null
+          id: string
+          severity: string
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          audience?: string
+          body: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          severity?: string
+          title: string
+        }
+        Update: {
+          active?: boolean
+          audience?: string
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          severity?: string
+          title?: string
         }
         Relationships: []
       }
@@ -332,6 +434,36 @@ export type Database = {
         }
         Relationships: []
       }
+      feature_flags: {
+        Row: {
+          audience: string
+          description: string | null
+          enabled: boolean
+          flag_key: string
+          id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          audience?: string
+          description?: string | null
+          enabled?: boolean
+          flag_key: string
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          audience?: string
+          description?: string | null
+          enabled?: boolean
+          flag_key?: string
+          id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       kef_cares_registrations: {
         Row: {
           artisan_skills: string[] | null
@@ -467,6 +599,128 @@ export type Database = {
         }
         Relationships: []
       }
+      primaries_collation: {
+        Row: {
+          collation_form_url: string | null
+          created_at: string
+          election_date: string
+          exco_date: string | null
+          exco_name: string
+          exco_phone: string | null
+          exco_position: string
+          id: string
+          latitude: number | null
+          lga: string | null
+          longitude: number | null
+          political_party: string
+          position_contested: string
+          remarks: string | null
+          runner_up_name: string | null
+          state: string
+          status: Database["public"]["Enums"]["primaries_status"]
+          submitted_by: string
+          total_votes: number
+          updated_at: string
+          venue: string
+          verified_at: string | null
+          verified_by: string | null
+          ward: string | null
+          winner_name: string | null
+        }
+        Insert: {
+          collation_form_url?: string | null
+          created_at?: string
+          election_date: string
+          exco_date?: string | null
+          exco_name: string
+          exco_phone?: string | null
+          exco_position: string
+          id?: string
+          latitude?: number | null
+          lga?: string | null
+          longitude?: number | null
+          political_party: string
+          position_contested: string
+          remarks?: string | null
+          runner_up_name?: string | null
+          state?: string
+          status?: Database["public"]["Enums"]["primaries_status"]
+          submitted_by: string
+          total_votes?: number
+          updated_at?: string
+          venue: string
+          verified_at?: string | null
+          verified_by?: string | null
+          ward?: string | null
+          winner_name?: string | null
+        }
+        Update: {
+          collation_form_url?: string | null
+          created_at?: string
+          election_date?: string
+          exco_date?: string | null
+          exco_name?: string
+          exco_phone?: string | null
+          exco_position?: string
+          id?: string
+          latitude?: number | null
+          lga?: string | null
+          longitude?: number | null
+          political_party?: string
+          position_contested?: string
+          remarks?: string | null
+          runner_up_name?: string | null
+          state?: string
+          status?: Database["public"]["Enums"]["primaries_status"]
+          submitted_by?: string
+          total_votes?: number
+          updated_at?: string
+          venue?: string
+          verified_at?: string | null
+          verified_by?: string | null
+          ward?: string | null
+          winner_name?: string | null
+        }
+        Relationships: []
+      }
+      primaries_contestants: {
+        Row: {
+          created_at: string
+          full_name: string
+          id: string
+          primaries_id: string
+          sex: string
+          status: Database["public"]["Enums"]["contestant_status"]
+          votes: number
+        }
+        Insert: {
+          created_at?: string
+          full_name: string
+          id?: string
+          primaries_id: string
+          sex: string
+          status?: Database["public"]["Enums"]["contestant_status"]
+          votes?: number
+        }
+        Update: {
+          created_at?: string
+          full_name?: string
+          id?: string
+          primaries_id?: string
+          sex?: string
+          status?: Database["public"]["Enums"]["contestant_status"]
+          votes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "primaries_contestants_primaries_id_fkey"
+            columns: ["primaries_id"]
+            isOneToOne: false
+            referencedRelation: "primaries_collation"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -506,6 +760,33 @@ export type Database = {
           phone?: string | null
           user_id?: string
           ward?: string | null
+        }
+        Relationships: []
+      }
+      role_permissions: {
+        Row: {
+          allowed: boolean
+          id: string
+          permission: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          allowed?: boolean
+          id?: string
+          permission: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          allowed?: boolean
+          id?: string
+          permission?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+          updated_by?: string | null
         }
         Relationships: []
       }
@@ -599,6 +880,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "agent" | "user" | "super_admin" | "kef_user"
+      contestant_status: "verified" | "not_verified"
       election_report_status: "pending" | "flagged" | "verified" | "rejected"
       election_type:
         | "presidential"
@@ -609,6 +891,7 @@ export type Database = {
         | "councillor"
         | "chairman"
         | "party_primary"
+      primaries_status: "pending" | "verified" | "not_verified"
       recruitment_status: "pending" | "approved" | "rejected" | "shortlisted"
     }
     CompositeTypes: {
@@ -738,6 +1021,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "agent", "user", "super_admin", "kef_user"],
+      contestant_status: ["verified", "not_verified"],
       election_report_status: ["pending", "flagged", "verified", "rejected"],
       election_type: [
         "presidential",
@@ -749,6 +1033,7 @@ export const Constants = {
         "chairman",
         "party_primary",
       ],
+      primaries_status: ["pending", "verified", "not_verified"],
       recruitment_status: ["pending", "approved", "rejected", "shortlisted"],
     },
   },
