@@ -16,6 +16,7 @@ import AdminMediaLibrary from "@/components/admin/AdminMediaLibrary";
 import AdminNotifications from "@/components/admin/AdminNotifications";
 import AdminSettings from "@/components/admin/AdminSettings";
 import AdminKefCares from "@/components/admin/AdminKefCares";
+import AdminAgentRecruitment from "@/components/admin/AdminAgentRecruitment";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -53,6 +54,7 @@ const AdminDashboard = () => {
       case "overview": return <AdminOverview />;
       case "users": return <AdminUsers />;
       case "agents": return <AdminAgents />;
+      case "recruitment": return <AdminAgentRecruitment />;
       case "situation": return <AdminSituationRoom />;
       case "election": return <AdminElectionCollation />;
       case "events": return <AdminEvents />;

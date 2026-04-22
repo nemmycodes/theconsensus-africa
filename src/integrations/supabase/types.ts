@@ -50,6 +50,87 @@ export type Database = {
         }
         Relationships: []
       }
+      agent_recruitment_applications: {
+        Row: {
+          agent_type: string
+          attended_inec_training: boolean
+          available_counting: boolean
+          available_voting_period: boolean
+          created_at: string
+          declaration_date: string
+          declaration_signature: string
+          email: string
+          experience_details: string | null
+          full_name: string
+          has_previous_experience: boolean
+          id: string
+          id_proof_type: string | null
+          id_proof_url: string
+          lga: string
+          phone: string
+          polling_unit: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: Database["public"]["Enums"]["recruitment_status"]
+          training_date: string | null
+          updated_at: string
+          ward: string
+        }
+        Insert: {
+          agent_type: string
+          attended_inec_training?: boolean
+          available_counting?: boolean
+          available_voting_period?: boolean
+          created_at?: string
+          declaration_date?: string
+          declaration_signature: string
+          email: string
+          experience_details?: string | null
+          full_name: string
+          has_previous_experience?: boolean
+          id?: string
+          id_proof_type?: string | null
+          id_proof_url: string
+          lga: string
+          phone: string
+          polling_unit: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["recruitment_status"]
+          training_date?: string | null
+          updated_at?: string
+          ward: string
+        }
+        Update: {
+          agent_type?: string
+          attended_inec_training?: boolean
+          available_counting?: boolean
+          available_voting_period?: boolean
+          created_at?: string
+          declaration_date?: string
+          declaration_signature?: string
+          email?: string
+          experience_details?: string | null
+          full_name?: string
+          has_previous_experience?: boolean
+          id?: string
+          id_proof_type?: string | null
+          id_proof_url?: string
+          lga?: string
+          phone?: string
+          polling_unit?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: Database["public"]["Enums"]["recruitment_status"]
+          training_date?: string | null
+          updated_at?: string
+          ward?: string
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_id: string
@@ -528,6 +609,7 @@ export type Database = {
         | "councillor"
         | "chairman"
         | "party_primary"
+      recruitment_status: "pending" | "approved" | "rejected" | "shortlisted"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -667,6 +749,7 @@ export const Constants = {
         "chairman",
         "party_primary",
       ],
+      recruitment_status: ["pending", "approved", "rejected", "shortlisted"],
     },
   },
 } as const
