@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Mail, Phone, MapPin, Send, Twitter, Facebook, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Twitter, Facebook, Instagram, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,16 +118,22 @@ const Contact = () => {
               <div className="border-t border-border pt-6">
                 <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Follow the Movement</span>
                 <div className="flex items-center gap-3 mt-4">
-                  <a href="#" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                  <a href="https://twitter.com/consensusmvt" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
                     <Twitter size={16} />
                   </a>
-                  <a href="#" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                  <a href="https://facebook.com/consensusmvt" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
                     <Facebook size={16} />
                   </a>
-                  <a href="#" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                  <a href="https://instagram.com/consensusmvt" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
                     <Instagram size={16} />
                   </a>
+                  <a href="https://whatsapp.com/channel/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                    <MessageCircle size={16} />
+                  </a>
                 </div>
+                <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
+                  Join our official WhatsApp channel for real-time movement updates and announcements.
+                </p>
               </div>
             </motion.div>
 
