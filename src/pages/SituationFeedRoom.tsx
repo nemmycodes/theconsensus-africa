@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SituationDashboard from "@/components/situation/SituationDashboard";
 import SituationFeed from "@/components/situation/SituationFeed";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -16,7 +15,6 @@ const SituationFeedRoom = () => {
           <ArrowLeft className="w-4 h-4" /> Back to Situation Room
         </Button>
       </div>
-      <SituationDashboard />
       <SituationFeed />
       <Footer />
     </div>
@@ -24,3 +22,4 @@ const SituationFeedRoom = () => {
 };
 
 export default SituationFeedRoom;
+
