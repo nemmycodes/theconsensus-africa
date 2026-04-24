@@ -57,7 +57,7 @@ const SROverview = () => {
 
   useEffect(() => {
     const load = async () => {
-      const [reportsAll, reportsVerified, reportsPending, reportsCritical, agents, lgas, posts] =
+      const [reportsAll, reportsVerified, reportsPending, reportsCritical, agents, lgas] =
         await Promise.all([
           supabase.from("election_reports").select("id", { count: "exact", head: true }),
           supabase.from("election_reports").select("id", { count: "exact", head: true }).eq("status", "verified"),
@@ -65,8 +65,7 @@ const SROverview = () => {
           supabase.from("election_reports").select("id", { count: "exact", head: true }).eq("status", "flagged"),
           supabase.from("agent_locations").select("agent_id", { count: "exact", head: true }).eq("status", "active"),
           supabase.from("election_reports").select("lga"),
-          supabase.from("situation_posts").select("id, content, created_at, location").order("created_at", { ascending: false }).limit: 6 as never,
-        ] as never);
+        ]);
 
       setStats({
         total: reportsAll.count || 0,
