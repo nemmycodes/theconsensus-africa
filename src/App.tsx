@@ -18,6 +18,7 @@ import ElectionForm from "./pages/ElectionForm";
 import ElectionPrimariesForm from "./pages/ElectionPrimariesForm";
 import SituationRoom from "./pages/SituationRoom";
 import SituationFeedRoom from "./pages/SituationFeedRoom";
+import SituationRoomLogin from "./pages/SituationRoomLogin";
 import Blog from "./pages/Blog";
 import Events from "./pages/Events";
 import Discuss from "./pages/Discuss";
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/election-form" element={<ElectionForm />} />
             <Route path="/election-form/primaries" element={<ElectionPrimariesForm />} />
             <Route path="/situation-room" element={<SituationRoom />} />
+            <Route path="/situation-room/login" element={<SituationRoomLogin />} />
             <Route path="/situation-room/feed" element={<SituationFeedRoom />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/events" element={<Events />} />

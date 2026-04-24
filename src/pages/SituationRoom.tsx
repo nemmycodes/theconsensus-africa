@@ -173,7 +173,7 @@ const SituationRoom = () => {
             <Button
               size="lg"
               className="font-bold"
-              onClick={() => navigate("/situation-room/feed")}
+              onClick={() => navigate("/situation-room/login")}
             >
               Enter Room
             </Button>

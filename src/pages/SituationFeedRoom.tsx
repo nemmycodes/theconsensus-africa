@@ -15,7 +15,14 @@ const SituationFeedRoom = () => {
   const [tab, setTab] = useState<SRTab>("home");
 
   useEffect(() => {
-    if (!loading && !user) navigate("/login");
+    if (loading) return;
+    if (!user) {
+      navigate("/situation-room/login", { replace: true });
+      return;
+    }
+    if (!sessionStorage.getItem("sr_self_role")) {
+      navigate("/situation-room/login", { replace: true });
+    }
   }, [loading, user, navigate]);
 
   if (loading || !user) return null;
