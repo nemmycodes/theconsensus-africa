@@ -168,18 +168,36 @@ const KefCaresLogin = ({ onBack }: { onBack: () => void }) => {
     e.preventDefault();
     setLoading(true);
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast({ title: "Login failed", description: error.message, variant: "destructive" });
-    } else {
-      // Check if user has kef_user role
-      const { data: hasRole } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "kef_user" });
-      if (hasRole) {
-        navigate("/kef-cares/dashboard");
-      } else {
-        toast({ title: "Access denied", description: "This account is not registered with KEF-CARES. Please create a KEF-CARES account.", variant: "destructive" });
-        await supabase.auth.signOut();
+      return;
+    }
+    // Check if user has kef_user role
+    let { data: hasRole } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "kef_user" });
+    if (!hasRole) {
+      // Auto-grant if they have a KEF-CARES registration on file
+      const { data: reg } = await supabase
+        .from("kef_cares_registrations")
+        .select("id")
+        .eq("email", email)
+        .maybeSingle();
+      if (reg) {
+        await supabase.from("user_roles").insert({ user_id: data.user.id, role: "kef_user" });
+        // Also link the registration to this user_id if missing
+        await supabase
+          .from("kef_cares_registrations")
+          .update({ user_id: data.user.id })
+          .eq("email", email);
+        hasRole = true;
       }
+    }
+    setLoading(false);
+    if (hasRole) {
+      navigate("/kef-cares/dashboard");
+    } else {
+      toast({ title: "Access denied", description: "This account is not registered with KEF-CARES. Please create a KEF-CARES account.", variant: "destructive" });
+      await supabase.auth.signOut();
     }
   };
 
@@ -248,10 +266,12 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
       return;
     }
     if (data.user) {
-      // Assign kef_user role via edge function (bypasses RLS using service role)
-      const { error: roleErr } = await supabase.functions.invoke("assign-kef-role");
+      // Self-assign kef_user role (allowed by RLS for the authenticated user)
+      const { error: roleErr } = await supabase
+        .from("user_roles")
+        .insert({ user_id: data.user.id, role: "kef_user" });
       setLoading(false);
-      if (roleErr) {
+      if (roleErr && !roleErr.message.toLowerCase().includes("duplicate")) {
         toast({
           title: "Account created, but role assignment failed",
           description: roleErr.message + " — please contact support.",
