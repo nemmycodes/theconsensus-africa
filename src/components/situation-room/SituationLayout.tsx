@@ -72,6 +72,7 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
   const initials = (user?.email || "AD").slice(0, 2).toUpperCase();
 
   const handleLogout = async () => {
+    sessionStorage.removeItem("sr_self_role");
     await signOut();
     setConfirmLogout(false);
     navigate("/situation-room");
