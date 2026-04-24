@@ -1,25 +1,39 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import SituationFeed from "@/components/situation/SituationFeed";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
+import SituationLayout, { SRTab } from "@/components/situation-room/SituationLayout";
+import SROverview from "@/components/situation-room/SROverview";
+import SRCollation from "@/components/situation-room/SRCollation";
+import SRReports from "@/components/situation-room/SRReports";
+import SRUsers from "@/components/situation-room/SRUsers";
+import SRSettings from "@/components/situation-room/SRSettings";
+import SituationFeed from "@/components/situation/SituationFeed";
 
 const SituationFeedRoom = () => {
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [tab, setTab] = useState<SRTab>("home");
+
+  useEffect(() => {
+    if (!loading && !user) navigate("/login");
+  }, [loading, user, navigate]);
+
+  if (loading || !user) return null;
+
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="container mx-auto px-4 pt-6">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/situation-room")} className="gap-2">
-          <ArrowLeft className="w-4 h-4" /> Back to Situation Room
-        </Button>
-      </div>
-      <SituationFeed />
-      <Footer />
-    </div>
+    <SituationLayout active={tab} onChange={setTab}>
+      {tab === "home" && (
+        <div className="space-y-8">
+          <SROverview />
+          <SituationFeed />
+        </div>
+      )}
+      {tab === "collation" && <SRCollation />}
+      {tab === "reports" && <SRReports />}
+      {tab === "users" && <SRUsers />}
+      {tab === "settings" && <SRSettings />}
+    </SituationLayout>
   );
 };
 
 export default SituationFeedRoom;
-
