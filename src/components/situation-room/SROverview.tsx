@@ -126,7 +126,7 @@ const SROverview = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <Stat label="Total Reports" value={stats.total.toLocaleString()} delta="+12%" icon={FileText} />
         <Stat label="Verified Reports" value={stats.verified.toLocaleString()} delta="+8%" icon={CheckCircle2} />
         <Stat label="Pending Reports" value={stats.pending.toLocaleString()} delta="+3%" icon={Clock} tone="warning" />
@@ -210,7 +210,7 @@ const SROverview = () => {
       </Card>
 
       {/* Bottom row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
         <Card className="p-5">
           <h4 className="text-sm font-bold mb-4">Collation Progress</h4>
           {[
