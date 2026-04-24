@@ -77,74 +77,93 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
     navigate("/situation-room");
   };
 
+  const sidebarBody = (onItemClick?: () => void) => (
+    <div className="h-full flex flex-col bg-white">
+      <button
+        className="px-6 py-5 border-b border-border flex items-center gap-2"
+        onClick={() => { navigate("/situation-room"); onItemClick?.(); }}
+      >
+        <img src={logo} alt="The Plateau Consensus" className="h-12 w-auto" />
+      </button>
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = active === item.key;
+          return (
+            <button
+              key={item.key}
+              onClick={() => { onChange(item.key); onItemClick?.(); }}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:bg-muted"
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              {item.label}
+            </button>
+          );
+        })}
+      </nav>
+      <div className="p-3 border-t border-border space-y-3">
+        <button
+          onClick={() => { setConfirmLogout(true); onItemClick?.(); }}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10"
+        >
+          <LogOut className="h-4 w-4" /> Log Out
+        </button>
+        <div className="flex items-center gap-3 px-3 py-2">
+          <div className="h-9 w-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+            {initials}
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold truncate">
+              {user?.user_metadata?.full_name || "Operator"}
+            </p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user?.email || "guest@situation"}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-[hsl(150,15%,97%)] text-foreground">
       <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-60 min-h-screen bg-white border-r border-border flex flex-col sticky top-0 h-screen">
-          <button
-            className="px-6 py-5 border-b border-border flex items-center gap-2"
-            onClick={() => navigate("/situation-room")}
-          >
-            <img src={logo} alt="The Plateau Consensus" className="h-12 w-auto" />
-          </button>
-          <nav className="flex-1 p-3 space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = active === item.key;
-              return (
-                <button
-                  key={item.key}
-                  onClick={() => onChange(item.key)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-muted"
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {item.label}
-                </button>
-              );
-            })}
-          </nav>
-          <div className="p-3 border-t border-border space-y-3">
-            <button
-              onClick={() => setConfirmLogout(true)}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10"
-            >
-              <LogOut className="h-4 w-4" /> Log Out
-            </button>
-            <div className="flex items-center gap-3 px-3 py-2">
-              <div className="h-9 w-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
-                {initials}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold truncate">
-                  {user?.user_metadata?.full_name || "Operator"}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {user?.email || "guest@situation"}
-                </p>
-              </div>
-            </div>
-          </div>
+        {/* Sidebar - desktop */}
+        <aside className="hidden lg:flex w-60 min-h-screen border-r border-border flex-col sticky top-0 h-screen">
+          {sidebarBody()}
         </aside>
 
         {/* Main */}
         <main className="flex-1 min-w-0">
           {/* Top bar */}
-          <div className="bg-white border-b border-border px-6 py-3 flex items-center justify-between gap-4 sticky top-0 z-20">
-            <div className="flex items-center gap-4">
-              <h1 className="text-sm font-black tracking-widest">
+          <div className="bg-white border-b border-border px-3 sm:px-6 py-3 flex items-center justify-between gap-2 sm:gap-4 sticky top-0 z-20">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+              {/* Mobile menu */}
+              <Sheet>
+                <SheetTrigger asChild>
+                  <button className="lg:hidden p-1.5 rounded-md hover:bg-muted" aria-label="Open menu">
+                    <Menu className="h-5 w-5" />
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="left" className="p-0 w-64">
+                  {sidebarBody(() => {
+                    // close handled by SheetContent overlay click; trigger close via Escape
+                  })}
+                </SheetContent>
+              </Sheet>
+              <h1 className="text-xs sm:text-sm font-black tracking-widest truncate">
                 {titleMap[active]}
               </h1>
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase px-3 py-1 rounded-full">
+              <span className="hidden sm:inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase px-3 py-1 rounded-full">
                 <Radio className="h-3 w-3 animate-pulse" /> Voting Ongoing
               </span>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="font-mono text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className="hidden sm:block font-mono text-sm text-muted-foreground">
                 {now.toISOString().substring(11, 19)} UTC
               </div>
               <div className="relative">
@@ -155,28 +174,28 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
                   </span>
                 )}
               </div>
-              <div className="h-9 w-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
+              <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
                 {initials}
               </div>
             </div>
           </div>
 
           {/* Live Alert ticker */}
-          <div className="bg-destructive/5 border-b border-destructive/20 px-6 py-2 overflow-hidden">
+          <div className="bg-destructive/5 border-b border-destructive/20 px-3 sm:px-6 py-2 overflow-hidden">
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 text-destructive text-xs font-bold whitespace-nowrap">
+              <span className="inline-flex items-center gap-1.5 text-destructive text-[10px] sm:text-xs font-bold whitespace-nowrap">
                 <span className="h-2 w-2 rounded-full bg-destructive animate-pulse" />
                 LIVE ALERT
               </span>
               <div className="overflow-hidden flex-1">
-                <p className="text-xs text-destructive/90 whitespace-nowrap animate-[ticker_40s_linear_infinite]">
+                <p className="text-[10px] sm:text-xs text-destructive/90 whitespace-nowrap animate-[ticker_40s_linear_infinite]">
                   {alerts}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="p-6 md:p-8">{children}</div>
+          <div className="p-3 sm:p-6 md:p-8">{children}</div>
         </main>
       </div>
 
