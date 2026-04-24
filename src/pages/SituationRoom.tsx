@@ -307,13 +307,6 @@ const SituationRoom = () => {
         </div>
       </section>
 
-      {/* Dashboard + Feed (shown after clicking "Enter Room") */}
-      {showUpdates && (
-        <div id="situation-feed">
-          <SituationDashboard />
-          <SituationFeed />
-        </div>
-      )}
 
       <Footer />
     </div>
