@@ -243,7 +243,7 @@ const Onboarding = () => {
       </section>
 
       {/* Choose Your Impact */}
-      <section className="py-20 px-4 lg:px-8">
+      <section id="impact-roles" className="py-20 px-4 lg:px-8">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
