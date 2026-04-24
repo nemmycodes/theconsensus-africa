@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,18 @@ import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquar
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import discussHero from "@/assets/discuss-hero.jpg";
+
+interface ForumPostRow {
+  id: string;
+  content: string;
+  category: string;
+  created_at: string;
+  author_id: string;
+  profiles?: { full_name: string | null } | null;
+  comment_count?: number;
+}
 
 const categories = [
   { icon: TrendingUp, title: "Economic Opportunities", description: "Vibrant discussions on job creation and emerging market trends." },
@@ -62,6 +74,69 @@ const Discuss = () => {
       duration: 2500,
     });
     setTimeout(() => navigate("/auth?redirect=/dashboard"), 1500);
+  };
+
+  // Live Dialogue — pulled from real forum_posts created by members
+  const [livePosts, setLivePosts] = useState<ForumPostRow[]>([]);
+  const [postsLoading, setPostsLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data: posts } = await supabase
+        .from("forum_posts")
+        .select("id, content, category, created_at, author_id")
+        .order("created_at", { ascending: false })
+        .limit(6);
+
+      if (!active || !posts) {
+        setPostsLoading(false);
+        return;
+      }
+
+      // Resolve author names + comment counts in parallel
+      const authorIds = Array.from(new Set(posts.map((p) => p.author_id)));
+      const [{ data: profiles }, commentCountsRes] = await Promise.all([
+        supabase.from("profiles").select("user_id, full_name").in("user_id", authorIds),
+        Promise.all(
+          posts.map((p) =>
+            supabase
+              .from("forum_comments")
+              .select("id", { count: "exact", head: true })
+              .eq("post_id", p.id),
+          ),
+        ),
+      ]);
+
+      const profileMap = new Map(
+        (profiles || []).map((pr) => [pr.user_id, pr.full_name]),
+      );
+
+      const enriched: ForumPostRow[] = posts.map((p, idx) => ({
+        ...p,
+        profiles: { full_name: profileMap.get(p.author_id) ?? null },
+        comment_count: commentCountsRes[idx]?.count ?? 0,
+      }));
+
+      if (active) {
+        setLivePosts(enriched);
+        setPostsLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const formatRelative = (iso: string) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1) return "just now";
+    if (m < 60) return `${m} min${m === 1 ? "" : "s"} ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h} hr${h === 1 ? "" : "s"} ago`;
+    const d = Math.floor(h / 24);
+    return `${d} day${d === 1 ? "" : "s"} ago`;
   };
 
   return (
@@ -148,40 +223,65 @@ const Discuss = () => {
         </div>
       </section>
 
-      {/* Live Dialogue */}
+      {/* Live Dialogue — real member posts from forum */}
       <section className="py-20 px-4 lg:px-8 bg-card">
         <div className="container mx-auto">
-          <div className="flex items-center gap-2 mb-8">
-            <MessageSquare className="w-5 h-5 text-primary" />
-            <h2 className="text-2xl font-black">Live Dialogue</h2>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-primary" />
+              <h2 className="text-2xl font-black">Live Dialogue</h2>
+            </div>
+            <button
+              onClick={handleMemberForum}
+              className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
+            >
+              Open Member Forum <ArrowRight size={14} />
+            </button>
           </div>
 
           <div className="space-y-4">
-            {dialogues.map((d, i) => (
-              <motion.div
-                key={d.title}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-center justify-between p-5 bg-secondary rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                    <span className="text-xs font-bold text-primary">{d.author.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm">{d.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Started by {d.author} • {d.replies} replies • {d.time}
-                    </p>
-                  </div>
-                </div>
-                <span className="text-xs font-bold tracking-wider bg-card text-foreground px-3 py-1 rounded border border-border uppercase">
-                  {d.tag}
-                </span>
-              </motion.div>
-            ))}
+            {postsLoading ? (
+              <div className="text-center py-10 text-muted-foreground text-sm">Loading discussions…</div>
+            ) : livePosts.length === 0 ? (
+              <div className="text-center py-10 text-muted-foreground text-sm">
+                No member discussions yet. Be the first —{" "}
+                <button onClick={handleMemberForum} className="text-primary underline">
+                  start a conversation
+                </button>
+                .
+              </div>
+            ) : (
+              livePosts.map((p, i) => {
+                const author = p.profiles?.full_name || "Member";
+                const preview = p.content.length > 110 ? p.content.slice(0, 110) + "…" : p.content;
+                return (
+                  <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.06 }}
+                    onClick={handleMemberForum}
+                    className="flex items-center justify-between p-5 bg-secondary rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4 min-w-0">
+                      <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-bold text-primary">{author.charAt(0).toUpperCase()}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-sm truncate">{preview}</h4>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Started by {author} • {p.comment_count ?? 0} {p.comment_count === 1 ? "reply" : "replies"} • {formatRelative(p.created_at)}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold tracking-wider bg-card text-foreground px-3 py-1 rounded border border-border uppercase shrink-0 ml-3 hidden sm:inline-block">
+                      {p.category}
+                    </span>
+                  </motion.div>
+                );
+              })
+            )}
           </div>
         </div>
       </section>

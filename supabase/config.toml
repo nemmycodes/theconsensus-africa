@@ -1,1 +1,4 @@
 project_id = "ljyoikkjkchgrreicoqf"
+
+[functions.assign-kef-role]
+verify_jwt = false

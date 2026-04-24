@@ -242,15 +242,28 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
     }
     setLoading(true);
     const { data, error } = await supabase.auth.signUp({ email, password });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-    } else if (data.user) {
-      // Assign kef_user role
-      await supabase.from("user_roles").insert({ user_id: data.user.id, role: "kef_user" as any });
+      return;
+    }
+    if (data.user) {
+      // Assign kef_user role via edge function (bypasses RLS using service role)
+      const { error: roleErr } = await supabase.functions.invoke("assign-kef-role");
+      setLoading(false);
+      if (roleErr) {
+        toast({
+          title: "Account created, but role assignment failed",
+          description: roleErr.message + " — please contact support.",
+          variant: "destructive",
+        });
+        return;
+      }
       setUserId(data.user.id);
       toast({ title: "Account created!", description: "Now complete your KEF-CARES registration form." });
       setStep("form");
+    } else {
+      setLoading(false);
     }
   };
 

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import aboutHero from "@/assets/about-hero.jpg";
@@ -72,6 +73,7 @@ const faqs = [
 ];
 
 const About = () => {
+  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { content: aboutData } = useSiteContent("about_who_we_are");
   const { content: leaderData } = useSiteContent("leader");
@@ -199,7 +201,7 @@ const About = () => {
               <p className="text-muted-foreground leading-relaxed">
                 We are building the economic engine of the youth. We serve as the project platform for our movement. The platform facilitates organization at scale.
               </p>
-              <Button className="gap-2 font-semibold">
+              <Button className="gap-2 font-semibold" onClick={() => navigate("/discuss")}>
                 Explore the Platform <ArrowRight size={16} />
               </Button>
             </motion.div>

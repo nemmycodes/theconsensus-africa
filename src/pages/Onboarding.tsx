@@ -41,12 +41,6 @@ const impactRoles = [
     features: ["Voting unit coordination", "Member verification", "Strategy meetings"],
     highlight: true,
   },
-  {
-    title: "Lead / Delegate",
-    description: "Run for internal office and represent your community in the national convention.",
-    features: ["Policy proposal rights", "Delegate voting power", "Leadership coaching"],
-    highlight: false,
-  },
 ];
 
 const LGA_OPTIONS = [
@@ -249,7 +243,7 @@ const Onboarding = () => {
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
             <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {impactRoles.map((role, i) => (
               <motion.div
                 key={role.title}
