@@ -223,40 +223,65 @@ const Discuss = () => {
         </div>
       </section>
 
-      {/* Live Dialogue */}
+      {/* Live Dialogue — real member posts from forum */}
       <section className="py-20 px-4 lg:px-8 bg-card">
         <div className="container mx-auto">
-          <div className="flex items-center gap-2 mb-8">
-            <MessageSquare className="w-5 h-5 text-primary" />
-            <h2 className="text-2xl font-black">Live Dialogue</h2>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-primary" />
+              <h2 className="text-2xl font-black">Live Dialogue</h2>
+            </div>
+            <button
+              onClick={handleMemberForum}
+              className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
+            >
+              Open Member Forum <ArrowRight size={14} />
+            </button>
           </div>
 
           <div className="space-y-4">
-            {dialogues.map((d, i) => (
-              <motion.div
-                key={d.title}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-center justify-between p-5 bg-secondary rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-                    <span className="text-xs font-bold text-primary">{d.author.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm">{d.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Started by {d.author} • {d.replies} replies • {d.time}
-                    </p>
-                  </div>
-                </div>
-                <span className="text-xs font-bold tracking-wider bg-card text-foreground px-3 py-1 rounded border border-border uppercase">
-                  {d.tag}
-                </span>
-              </motion.div>
-            ))}
+            {postsLoading ? (
+              <div className="text-center py-10 text-muted-foreground text-sm">Loading discussions…</div>
+            ) : livePosts.length === 0 ? (
+              <div className="text-center py-10 text-muted-foreground text-sm">
+                No member discussions yet. Be the first —{" "}
+                <button onClick={handleMemberForum} className="text-primary underline">
+                  start a conversation
+                </button>
+                .
+              </div>
+            ) : (
+              livePosts.map((p, i) => {
+                const author = p.profiles?.full_name || "Member";
+                const preview = p.content.length > 110 ? p.content.slice(0, 110) + "…" : p.content;
+                return (
+                  <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.06 }}
+                    onClick={handleMemberForum}
+                    className="flex items-center justify-between p-5 bg-secondary rounded-xl border border-border hover:border-primary/30 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-4 min-w-0">
+                      <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-bold text-primary">{author.charAt(0).toUpperCase()}</span>
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="font-bold text-sm truncate">{preview}</h4>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Started by {author} • {p.comment_count ?? 0} {p.comment_count === 1 ? "reply" : "replies"} • {formatRelative(p.created_at)}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold tracking-wider bg-card text-foreground px-3 py-1 rounded border border-border uppercase shrink-0 ml-3 hidden sm:inline-block">
+                      {p.category}
+                    </span>
+                  </motion.div>
+                );
+              })
+            )}
           </div>
         </div>
       </section>
