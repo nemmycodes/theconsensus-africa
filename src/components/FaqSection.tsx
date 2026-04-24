@@ -8,11 +8,6 @@ import {
 
 const faqs = [
   {
-    question: "How can I make donations to support this movement?",
-    answer:
-      "You can donate directly through our Donate page. We accept both one-time and monthly contributions. Simply click the 'Donate' button in the navigation menu or visit the Donate page to choose a preset amount or enter a custom contribution. Every donation helps advance economic freedom, political consciousness, and shared prosperity across Plateau State.",
-  },
-  {
     question: "How do I become a member of The Plateau Consensus?",
     answer:
       "Click the 'Join Us' button on our website and complete the registration form. You'll be asked for basic information including your name, LGA, ward, and areas of interest. Once registered, you'll gain access to our member dashboard, community discussions, and event notifications.",
