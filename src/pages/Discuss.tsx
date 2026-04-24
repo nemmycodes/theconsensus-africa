@@ -76,6 +76,69 @@ const Discuss = () => {
     setTimeout(() => navigate("/auth?redirect=/dashboard"), 1500);
   };
 
+  // Live Dialogue — pulled from real forum_posts created by members
+  const [livePosts, setLivePosts] = useState<ForumPostRow[]>([]);
+  const [postsLoading, setPostsLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data: posts } = await supabase
+        .from("forum_posts")
+        .select("id, content, category, created_at, author_id")
+        .order("created_at", { ascending: false })
+        .limit(6);
+
+      if (!active || !posts) {
+        setPostsLoading(false);
+        return;
+      }
+
+      // Resolve author names + comment counts in parallel
+      const authorIds = Array.from(new Set(posts.map((p) => p.author_id)));
+      const [{ data: profiles }, commentCountsRes] = await Promise.all([
+        supabase.from("profiles").select("user_id, full_name").in("user_id", authorIds),
+        Promise.all(
+          posts.map((p) =>
+            supabase
+              .from("forum_comments")
+              .select("id", { count: "exact", head: true })
+              .eq("post_id", p.id),
+          ),
+        ),
+      ]);
+
+      const profileMap = new Map(
+        (profiles || []).map((pr) => [pr.user_id, pr.full_name]),
+      );
+
+      const enriched: ForumPostRow[] = posts.map((p, idx) => ({
+        ...p,
+        profiles: { full_name: profileMap.get(p.author_id) ?? null },
+        comment_count: commentCountsRes[idx]?.count ?? 0,
+      }));
+
+      if (active) {
+        setLivePosts(enriched);
+        setPostsLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const formatRelative = (iso: string) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1) return "just now";
+    if (m < 60) return `${m} min${m === 1 ? "" : "s"} ago`;
+    const h = Math.floor(m / 60);
+    if (h < 24) return `${h} hr${h === 1 ? "" : "s"} ago`;
+    const d = Math.floor(h / 24);
+    return `${d} day${d === 1 ? "" : "s"} ago`;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
