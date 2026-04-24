@@ -36,12 +36,12 @@ const Navbar = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="fixed top-0 left-0 right-0 z-50 bg-[hsl(220,20%,8%)]/95 backdrop-blur-md border-b border-[hsl(220,15%,18%)] shadow-lg"
     >
-      <div className="container mx-auto flex items-center justify-between h-20 md:h-24 px-4 lg:px-8">
+      <div className="container mx-auto flex items-center justify-between h-24 md:h-32 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2 group" aria-label="The Plateau Consensus — Home">
           <img
             src="/brand-logo.png"
             alt="The Plateau Consensus"
-            className="h-14 md:h-20 lg:h-24 w-auto transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_8px_hsl(var(--primary)/0.35)]"
+            className="h-20 md:h-28 lg:h-32 w-auto transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_8px_hsl(var(--primary)/0.35)]"
           />
         </Link>
 
