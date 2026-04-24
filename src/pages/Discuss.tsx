@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,18 @@ import { TrendingUp, Briefcase, Landmark, Users, Heart, ArrowRight, MessageSquar
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import discussHero from "@/assets/discuss-hero.jpg";
+
+interface ForumPostRow {
+  id: string;
+  content: string;
+  category: string;
+  created_at: string;
+  author_id: string;
+  profiles?: { full_name: string | null } | null;
+  comment_count?: number;
+}
 
 const categories = [
   { icon: TrendingUp, title: "Economic Opportunities", description: "Vibrant discussions on job creation and emerging market trends." },
