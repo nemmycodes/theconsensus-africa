@@ -90,7 +90,7 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
         <img src={logo} alt="The Plateau Consensus" className="h-12 w-auto" />
       </button>
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {navItems.map((item) => {
+        {visibleNav.map((item) => {
           const Icon = item.icon;
           const isActive = active === item.key;
           return (

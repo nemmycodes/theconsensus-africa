@@ -31,8 +31,8 @@ const SituationFeedRoom = () => {
     <SituationLayout active={tab} onChange={setTab}>
       {tab === "home" && (
         <div className="space-y-8">
-          <SROverview />
           <SituationFeed />
+          <SROverview />
         </div>
       )}
       {tab === "collation" && <SRCollation />}
