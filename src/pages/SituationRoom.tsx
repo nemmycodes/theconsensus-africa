@@ -19,6 +19,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import situationHero from "@/assets/situation-hero.jpg";
 import SituationDashboard from "@/components/situation/SituationDashboard";
+import SituationFeed from "@/components/situation/SituationFeed";
 
 const statusIcons: Record<string, React.ReactNode> = {
   Active: <AlertTriangle className="h-4 w-4" />,
@@ -173,15 +174,10 @@ const SituationRoom = () => {
               size="lg"
               className="font-bold"
               onClick={() => {
-                if (!user) {
-                  toast({
-                    title: "Login required",
-                    description: "Please sign in to view collated election results in the Enter Room dashboard.",
-                  });
-                  setTimeout(() => navigate("/auth?redirect=/situation-room"), 1200);
-                  return;
-                }
                 setShowUpdates(true);
+                setTimeout(() => {
+                  document.getElementById("situation-feed")?.scrollIntoView({ behavior: "smooth" });
+                }, 100);
               }}
             >
               Enter Room
@@ -316,9 +312,12 @@ const SituationRoom = () => {
         </div>
       </section>
 
-      {/* Dashboard View (shown after clicking "Enter Room") */}
+      {/* Dashboard + Feed (shown after clicking "Enter Room") */}
       {showUpdates && (
-        <SituationDashboard />
+        <div id="situation-feed">
+          <SituationDashboard />
+          <SituationFeed />
+        </div>
       )}
 
       <Footer />
