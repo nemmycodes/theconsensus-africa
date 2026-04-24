@@ -4,12 +4,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Home, FileBarChart2, FileText, Users, Settings, LogOut, Bell,
-  Radio, ShieldOff,
+  Radio, ShieldOff, Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import logo from "/brand-logo.png";
 
 export type SRTab = "home" | "collation" | "reports" | "users" | "settings";
