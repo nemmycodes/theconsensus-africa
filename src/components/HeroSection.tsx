@@ -230,7 +230,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto tap-target hover-lift border-primary/40 text-foreground hover:bg-primary/10"
+                className="hidden sm:inline-flex w-full sm:w-auto tap-target hover-lift border-primary/40 text-foreground hover:bg-primary/10"
                 onClick={() => navigate("/situation-room")}
               >
                 Situation Room
@@ -238,7 +238,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="ghost"
-                className="w-full sm:w-auto tap-target hover-lift"
+                className="hidden sm:inline-flex w-full sm:w-auto tap-target hover-lift"
                 onClick={() => navigate("/kef-cares")}
               >
                 KEF-Cares
@@ -251,7 +251,7 @@ const HeroSection = () => {
               initial="hidden"
               animate="visible"
               custom={7}
-              className="flex flex-wrap items-center gap-x-6 gap-y-2 justify-center lg:justify-start pt-3 text-xs sm:text-sm text-muted-foreground"
+              className="hidden sm:flex flex-wrap items-center gap-x-6 gap-y-2 justify-center lg:justify-start pt-3 text-xs sm:text-sm text-muted-foreground"
             >
               <span className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Non-partisan
