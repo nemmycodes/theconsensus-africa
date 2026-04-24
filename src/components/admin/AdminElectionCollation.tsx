@@ -2,9 +2,31 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminHeader from "./AdminHeader";
 import { Button } from "@/components/ui/button";
-import { BarChart3, CheckCircle, Clock, AlertTriangle, Download, MapPin, FileText } from "lucide-react";
+import { BarChart3, CheckCircle, Clock, AlertTriangle, Download, MapPin, FileText, Vote, ExternalLink, ShieldCheck, Flag, X } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { format } from "date-fns";
+import { toast } from "sonner";
+
+interface PrimariesRow {
+  id: string;
+  political_party: string;
+  position_contested: string;
+  election_date: string;
+  venue: string;
+  state: string;
+  lga: string | null;
+  ward: string | null;
+  exco_name: string;
+  exco_position: string;
+  winner_name: string | null;
+  runner_up_name: string | null;
+  total_votes: number;
+  status: "pending" | "verified" | "not_verified";
+  collation_form_url: string | null;
+  remarks: string | null;
+  created_at: string;
+  submitted_by: string;
+}
 
 interface ElectionReport {
   id: string;
@@ -26,6 +48,9 @@ interface ElectionReport {
 const AdminElectionCollation = () => {
   const [reports, setReports] = useState<ElectionReport[]>([]);
   const [loading, setLoading] = useState(true);
+  const [primaries, setPrimaries] = useState<PrimariesRow[]>([]);
+  const [primariesLoading, setPrimariesLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "verified" | "not_verified">("all");
 
   const fetchReports = async () => {
     setLoading(true);
@@ -50,11 +75,41 @@ const AdminElectionCollation = () => {
     setLoading(false);
   };
 
+  const fetchPrimaries = async () => {
+    setPrimariesLoading(true);
+    const { data, error } = await supabase
+      .from("primaries_collation")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error && data) setPrimaries(data as PrimariesRow[]);
+    setPrimariesLoading(false);
+  };
+
+  const updatePrimariesStatus = async (id: string, status: PrimariesRow["status"]) => {
+    const { error } = await supabase
+      .from("primaries_collation")
+      .update({ status, verified_at: status === "verified" ? new Date().toISOString() : null })
+      .eq("id", id);
+    if (error) toast.error(`Failed to ${status} entry`);
+    else toast.success(`Entry ${status}`);
+  };
+
+  const viewEvidence = async (path: string) => {
+    const { data, error } = await supabase.storage.from("primaries-collation").createSignedUrl(path, 60 * 5);
+    if (error || !data) {
+      toast.error("Could not load evidence file");
+      return;
+    }
+    window.open(data.signedUrl, "_blank");
+  };
+
   useEffect(() => {
     fetchReports();
+    fetchPrimaries();
     const channel = supabase
       .channel("election-collation")
       .on("postgres_changes", { event: "*", schema: "public", table: "situation_updates" }, () => fetchReports())
+      .on("postgres_changes", { event: "*", schema: "public", table: "primaries_collation" }, () => fetchPrimaries())
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, []);
@@ -326,6 +381,142 @@ const AdminElectionCollation = () => {
           </div>
         </>
       )}
+
+      {/* ===== Primaries Collation Management ===== */}
+      <div className="mt-10">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-xl font-black text-gray-900 flex items-center gap-2">
+              <Vote className="w-5 h-5 text-emerald-600" /> Primaries Collation
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">Review, verify or reject party-primaries submissions from agents.</p>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            {(["all", "pending", "verified", "not_verified"] as const).map((s) => (
+              <button
+                key={s}
+                onClick={() => setStatusFilter(s)}
+                className={`px-3 py-1.5 rounded-full font-semibold uppercase tracking-wider transition ${
+                  statusFilter === s ? "bg-emerald-600 text-white" : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
+                }`}
+              >
+                {s === "not_verified" ? "Rejected" : s}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Primaries stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+          {[
+            { label: "TOTAL ENTRIES", value: primaries.length, bg: "bg-emerald-50", color: "text-emerald-600", icon: BarChart3 },
+            { label: "PENDING", value: primaries.filter((p) => p.status === "pending").length, bg: "bg-amber-50", color: "text-amber-600", icon: Clock },
+            { label: "VERIFIED", value: primaries.filter((p) => p.status === "verified").length, bg: "bg-emerald-50", color: "text-emerald-600", icon: CheckCircle },
+            { label: "REJECTED", value: primaries.filter((p) => p.status === "not_verified").length, bg: "bg-red-50", color: "text-red-500", icon: AlertTriangle },
+          ].map((s) => (
+            <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-4">
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{s.label}</p>
+                  <p className="text-2xl font-black text-gray-900 mt-1">{s.value}</p>
+                </div>
+                <div className={`w-9 h-9 rounded-xl ${s.bg} flex items-center justify-center`}>
+                  <s.icon className={`w-4 h-4 ${s.color}`} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          {primariesLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : (() => {
+            const filtered = statusFilter === "all" ? primaries : primaries.filter((p) => p.status === statusFilter);
+            if (filtered.length === 0) {
+              return (
+                <div className="text-center py-16 px-4">
+                  <Vote className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <h4 className="text-base font-bold text-gray-900 mb-1">No primaries entries</h4>
+                  <p className="text-sm text-gray-500">Submissions from the Election Primaries Form will appear here for review.</p>
+                </div>
+              );
+            }
+            return (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[1000px]">
+                  <thead>
+                    <tr className="border-b border-gray-200 bg-gray-50">
+                      {["Party / Position", "Location", "Date", "Winner", "Votes", "Status", "Actions"].map((h) => (
+                        <th key={h} className="text-left p-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((p) => {
+                      const statusStyle =
+                        p.status === "verified" ? "bg-emerald-50 text-emerald-700"
+                        : p.status === "pending" ? "bg-amber-50 text-amber-700"
+                        : "bg-red-50 text-red-600";
+                      const statusLabel = p.status === "not_verified" ? "Rejected" : p.status;
+                      return (
+                        <tr key={p.id} className="border-b border-gray-100 hover:bg-gray-50 align-top">
+                          <td className="p-3 max-w-[260px]">
+                            <p className="text-sm font-bold text-gray-900">{p.political_party}</p>
+                            <p className="text-xs text-gray-500 mt-0.5">{p.position_contested}</p>
+                            <p className="text-[10px] text-gray-400 mt-0.5">by {p.exco_name} · {p.exco_position}</p>
+                          </td>
+                          <td className="p-3 text-xs text-gray-700">
+                            <p className="font-semibold text-gray-900">{p.venue}</p>
+                            <p className="text-gray-500 mt-0.5">{[p.ward, p.lga, p.state].filter(Boolean).join(" · ")}</p>
+                          </td>
+                          <td className="p-3 text-xs text-gray-600 whitespace-nowrap">{format(new Date(p.election_date), "MMM d, yyyy")}</td>
+                          <td className="p-3 text-xs">
+                            <p className="font-semibold text-emerald-700">{p.winner_name || "—"}</p>
+                            {p.runner_up_name && <p className="text-gray-500 mt-0.5">vs {p.runner_up_name}</p>}
+                          </td>
+                          <td className="p-3 text-sm font-bold text-gray-900">{p.total_votes.toLocaleString()}</td>
+                          <td className="p-3">
+                            <span className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${statusStyle}`}>
+                              <span className="w-1.5 h-1.5 rounded-full bg-current" /> {statusLabel}
+                            </span>
+                          </td>
+                          <td className="p-3">
+                            <div className="flex flex-wrap items-center gap-1">
+                              {p.collation_form_url && (
+                                <Button size="sm" variant="ghost" className="h-8 px-2" onClick={() => viewEvidence(p.collation_form_url!)} title="View evidence">
+                                  <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+                                </Button>
+                              )}
+                              {p.status !== "verified" && (
+                                <Button size="sm" variant="ghost" className="h-8 px-2 text-emerald-600 hover:bg-emerald-50" onClick={() => updatePrimariesStatus(p.id, "verified")} title="Verify">
+                                  <ShieldCheck className="w-3.5 h-3.5" />
+                                </Button>
+                              )}
+                              {p.status !== "pending" && (
+                                <Button size="sm" variant="ghost" className="h-8 px-2 text-amber-600 hover:bg-amber-50" onClick={() => updatePrimariesStatus(p.id, "pending")} title="Mark pending">
+                                  <Clock className="w-3.5 h-3.5" />
+                                </Button>
+                              )}
+                              {p.status !== "not_verified" && (
+                                <Button size="sm" variant="ghost" className="h-8 px-2 text-red-500 hover:bg-red-50" onClick={() => updatePrimariesStatus(p.id, "not_verified")} title="Reject">
+                                  <X className="w-3.5 h-3.5" />
+                                </Button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            );
+          })()}
+        </div>
+      </div>
     </div>
   );
 };
