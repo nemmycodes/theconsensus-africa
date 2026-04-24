@@ -201,9 +201,6 @@ const About = () => {
               <p className="text-muted-foreground leading-relaxed">
                 We are building the economic engine of the youth. We serve as the project platform for our movement. The platform facilitates organization at scale.
               </p>
-              <Button className="gap-2 font-semibold" onClick={() => navigate("/discuss")}>
-                Explore the Platform <ArrowRight size={16} />
-              </Button>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
