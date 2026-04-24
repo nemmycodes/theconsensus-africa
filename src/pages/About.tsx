@@ -199,7 +199,7 @@ const About = () => {
               <p className="text-muted-foreground leading-relaxed">
                 We are building the economic engine of the youth. We serve as the project platform for our movement. The platform facilitates organization at scale.
               </p>
-              <Button className="gap-2 font-semibold">
+              <Button className="gap-2 font-semibold" onClick={() => navigate("/discuss")}>
                 Explore the Platform <ArrowRight size={16} />
               </Button>
             </motion.div>
