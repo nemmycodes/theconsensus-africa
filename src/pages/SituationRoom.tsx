@@ -173,12 +173,7 @@ const SituationRoom = () => {
             <Button
               size="lg"
               className="font-bold"
-              onClick={() => {
-                setShowUpdates(true);
-                setTimeout(() => {
-                  document.getElementById("situation-feed")?.scrollIntoView({ behavior: "smooth" });
-                }, 100);
-              }}
+              onClick={() => navigate("/situation-room/feed")}
             >
               Enter Room
             </Button>
