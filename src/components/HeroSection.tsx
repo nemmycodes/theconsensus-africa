@@ -46,12 +46,19 @@ const HeroSection = () => {
   const navigate = useNavigate();
   const { content } = useSiteContent("hero");
   const [slideIndex, setSlideIndex] = useState(0);
+  const [mobilePortraitIn, setMobilePortraitIn] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => {
       setSlideIndex((i) => (i + 1) % mentorSlides.length);
     }, 2500);
     return () => clearInterval(id);
+  }, []);
+
+  // Swipe the mobile portrait in after 3 seconds
+  useEffect(() => {
+    const t = setTimeout(() => setMobilePortraitIn(true), 3000);
+    return () => clearTimeout(t);
   }, []);
 
   // Use DB content or fallback to defaults
