@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import aboutHero from "@/assets/about-hero.jpg";
@@ -72,6 +73,7 @@ const faqs = [
 ];
 
 const About = () => {
+  const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { content: aboutData } = useSiteContent("about_who_we_are");
   const { content: leaderData } = useSiteContent("leader");
