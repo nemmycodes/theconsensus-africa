@@ -248,10 +248,12 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
       return;
     }
     if (data.user) {
-      // Assign kef_user role via edge function (bypasses RLS using service role)
-      const { error: roleErr } = await supabase.functions.invoke("assign-kef-role");
+      // Self-assign kef_user role (allowed by RLS for the authenticated user)
+      const { error: roleErr } = await supabase
+        .from("user_roles")
+        .insert({ user_id: data.user.id, role: "kef_user" });
       setLoading(false);
-      if (roleErr) {
+      if (roleErr && !roleErr.message.toLowerCase().includes("duplicate")) {
         toast({
           title: "Account created, but role assignment failed",
           description: roleErr.message + " — please contact support.",
