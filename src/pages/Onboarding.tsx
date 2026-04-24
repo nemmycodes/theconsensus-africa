@@ -41,12 +41,6 @@ const impactRoles = [
     features: ["Voting unit coordination", "Member verification", "Strategy meetings"],
     highlight: true,
   },
-  {
-    title: "Lead / Delegate",
-    description: "Run for internal office and represent your community in the national convention.",
-    features: ["Policy proposal rights", "Delegate voting power", "Leadership coaching"],
-    highlight: false,
-  },
 ];
 
 const LGA_OPTIONS = [
