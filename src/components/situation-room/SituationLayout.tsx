@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Home, FileBarChart2, FileText, Users, Settings, LogOut, Bell,
-  Radio, ShieldOff, Menu,
+  Radio, ShieldOff, Menu, ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -155,7 +155,22 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
                   })}
                 </SheetContent>
               </Sheet>
+              {active !== "home" && (
+                <button
+                  onClick={() => onChange("home")}
+                  className="lg:hidden inline-flex items-center gap-1 px-2 py-1 rounded-md bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wide hover:bg-primary/20"
+                  aria-label="Back to Overview"
+                >
+                  <ChevronLeft className="h-3.5 w-3.5" />
+                  Overview
+                </button>
+              )}
               <h1 className="text-xs sm:text-sm font-black tracking-widest truncate">
+                {active !== "home" && (
+                  <span className="hidden sm:inline text-muted-foreground font-medium normal-case tracking-normal mr-2">
+                    Situation Room /
+                  </span>
+                )}
                 {titleMap[active]}
               </h1>
               <span className="hidden sm:inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase px-3 py-1 rounded-full">
