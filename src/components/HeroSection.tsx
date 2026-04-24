@@ -98,42 +98,34 @@ const HeroSection = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 1.8, ease: "easeOut" }}
         />
-        {/* Layered overlays for depth & legibility on mobile */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/95 md:bg-background/85" />
+        {/* Mobile-only mentor portrait that swipes in from the right after 3s */}
+        <div className="lg:hidden absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.img
+            src={mentorSlides[slideIndex]}
+            alt={mentorName}
+            initial={{ x: "100%", opacity: 0 }}
+            animate={mobilePortraitIn ? { x: "0%", opacity: 1 } : { x: "100%", opacity: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        </div>
+
+        {/* Layered overlays for depth & legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/70 to-background/95 md:bg-background/85 lg:bg-background/85" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.18),transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,hsl(var(--accent)/0.12),transparent_55%)]" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
-          {/* Mobile portrait — appears first on small screens for visual hook */}
+          {/* Mobile portrait card — desktop only now (mobile gets the swipe-in BG instead) */}
           <motion.div
             variants={scaleIn}
             initial="hidden"
             animate="visible"
-            className="lg:hidden flex justify-center"
+            className="hidden"
           >
-            <div className="relative w-[260px] h-[320px] sm:w-[300px] sm:h-[370px] rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl bg-muted">
-              {/* Animated glow ring */}
-              <span className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-tr from-primary/40 via-accent/20 to-primary/40 blur-xl opacity-60 animate-gradient-shift" style={{ backgroundSize: "200% 200%" }} />
-              <AnimatePresence mode="sync">
-                {(() => {
-                  const t = slideTransitions[slideIndex % slideTransitions.length];
-                  return (
-                    <motion.img
-                      key={`m-${slideIndex}`}
-                      src={mentorSlides[slideIndex]}
-                      alt={mentorName}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      initial={t.initial}
-                      animate={t.animate}
-                      exit={t.exit}
-                      transition={t.transition}
-                    />
-                  );
-                })()}
-              </AnimatePresence>
-            </div>
+            <div />
           </motion.div>
 
           <div className="space-y-5 md:space-y-7 text-center lg:text-left">
