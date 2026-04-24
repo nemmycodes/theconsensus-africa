@@ -2,9 +2,31 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminHeader from "./AdminHeader";
 import { Button } from "@/components/ui/button";
-import { BarChart3, CheckCircle, Clock, AlertTriangle, Download, MapPin, FileText } from "lucide-react";
+import { BarChart3, CheckCircle, Clock, AlertTriangle, Download, MapPin, FileText, Vote, ExternalLink, ShieldCheck, Flag, X } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { format } from "date-fns";
+import { toast } from "sonner";
+
+interface PrimariesRow {
+  id: string;
+  political_party: string;
+  position_contested: string;
+  election_date: string;
+  venue: string;
+  state: string;
+  lga: string | null;
+  ward: string | null;
+  exco_name: string;
+  exco_position: string;
+  winner_name: string | null;
+  runner_up_name: string | null;
+  total_votes: number;
+  status: "pending" | "verified" | "flagged" | "rejected";
+  collation_form_url: string | null;
+  remarks: string | null;
+  created_at: string;
+  submitted_by: string;
+}
 
 interface ElectionReport {
   id: string;
