@@ -151,21 +151,99 @@ const Onboarding = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative h-[400px] flex items-center justify-center overflow-hidden">
-        <img src={joinusHero} alt="Join Us" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-background/60" />
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 text-center px-4">
-          <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tight">JOIN US</h1>
-          <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
-            We are building a future defined by collective action, youth empowerment, and sustainable governance. Be the change Nigeria deserves.
-          </p>
-          <Button size="lg" className="mt-6 font-bold" onClick={() => setShowForm(true)}>JOIN THE MOVEMENT</Button>
-        </motion.div>
+      {/* Hero — clean, modern, mobile-first */}
+      <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-gradient-to-br from-[hsl(220,20%,10%)] via-[hsl(220,22%,13%)] to-[hsl(145,40%,12%)]">
+        {/* Decorative ambient layers */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--primary)/0.25)_0%,_transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_hsl(50_90%_50%/0.12)_0%,_transparent_60%)]" />
+        <div
+          className="absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "linear-gradient(hsl(var(--primary)/0.4) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)/0.4) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+
+        <div className="relative z-10 container mx-auto px-4 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="inline-flex items-center gap-2 border border-primary/40 bg-primary/10 backdrop-blur-sm rounded-full px-4 py-1.5 mb-6"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-pulse-ring" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-primary tracking-wider uppercase">
+                Become a Founding Member
+              </span>
+            </motion.div>
+
+            <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold uppercase tracking-tight text-white leading-[0.95]">
+              Join <span className="text-primary">Us</span>
+            </h1>
+
+            <p className="mt-3 text-base sm:text-lg font-medium text-primary/90 italic tracking-wide">
+              Awaken. Unite. Lead.
+            </p>
+
+            <p className="mt-6 text-sm sm:text-base md:text-lg text-white/75 max-w-xl mx-auto leading-relaxed">
+              We are building a future defined by collective action, youth empowerment, and
+              sustainable governance. Be the change Nigeria deserves.
+            </p>
+
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button
+                size="lg"
+                className="group gap-2 font-bold text-base btn-shine hover-glow w-full sm:w-auto tap-target shadow-lg shadow-primary/30"
+                onClick={() => setShowForm(true)}
+              >
+                JOIN THE MOVEMENT
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="hidden sm:inline-flex w-full sm:w-auto tap-target border-white/20 text-white hover:bg-white/10"
+                onClick={() => {
+                  document.getElementById("impact-roles")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Explore Roles
+              </Button>
+            </div>
+
+            {/* Mini stats / trust strip */}
+            <div className="mt-10 grid grid-cols-3 gap-4 sm:gap-8 max-w-md mx-auto">
+              {[
+                { num: "6+", label: "Member Tracks" },
+                { num: "17", label: "LGAs Covered" },
+                { num: "100%", label: "Non-partisan" },
+              ].map((s) => (
+                <div key={s.label} className="text-center">
+                  <div className="font-display text-2xl sm:text-3xl font-extrabold text-primary">
+                    {s.num}
+                  </div>
+                  <div className="text-[10px] sm:text-xs uppercase tracking-wider text-white/60 mt-1">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       {/* Choose Your Impact */}
-      <section className="py-20 px-4 lg:px-8">
+      <section id="impact-roles" className="py-20 px-4 lg:px-8">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
