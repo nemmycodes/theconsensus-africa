@@ -307,6 +307,23 @@ const SituationRoom = () => {
         </div>
       </section>
 
+      {/* Public Situation Feed preview */}
+      <section className="py-12 border-t border-border bg-secondary/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-2">
+            <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-primary uppercase">
+              <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+              Live Public Feed
+            </span>
+          </div>
+          <SituationFeed />
+          <div className="text-center mt-6">
+            <Button size="lg" onClick={() => navigate("/situation-room/login")} className="font-bold">
+              Login to Enter Full Situation Room
+            </Button>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>
