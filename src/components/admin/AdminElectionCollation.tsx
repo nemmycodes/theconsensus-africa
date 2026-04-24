@@ -21,7 +21,7 @@ interface PrimariesRow {
   winner_name: string | null;
   runner_up_name: string | null;
   total_votes: number;
-  status: "pending" | "verified" | "flagged" | "rejected";
+  status: "pending" | "verified" | "not_verified";
   collation_form_url: string | null;
   remarks: string | null;
   created_at: string;
@@ -50,7 +50,7 @@ const AdminElectionCollation = () => {
   const [loading, setLoading] = useState(true);
   const [primaries, setPrimaries] = useState<PrimariesRow[]>([]);
   const [primariesLoading, setPrimariesLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "verified" | "flagged" | "rejected">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "verified" | "not_verified">("all");
 
   const fetchReports = async () => {
     setLoading(true);
