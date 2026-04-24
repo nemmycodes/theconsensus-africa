@@ -10,9 +10,10 @@ import SRSettings from "@/components/situation-room/SRSettings";
 import SituationFeed from "@/components/situation/SituationFeed";
 
 const SituationFeedRoom = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAdmin, isSuperAdmin } = useAuth();
   const navigate = useNavigate();
   const [tab, setTab] = useState<SRTab>("home");
+  const canSeeUsers = isAdmin || isSuperAdmin;
 
   useEffect(() => {
     if (loading) return;
@@ -24,6 +25,10 @@ const SituationFeedRoom = () => {
       navigate("/situation-room/login", { replace: true });
     }
   }, [loading, user, navigate]);
+
+  useEffect(() => {
+    if (tab === "users" && !canSeeUsers) setTab("home");
+  }, [tab, canSeeUsers]);
 
   if (loading || !user) return null;
 
@@ -37,7 +42,7 @@ const SituationFeedRoom = () => {
       )}
       {tab === "collation" && <SRCollation />}
       {tab === "reports" && <SRReports />}
-      {tab === "users" && <SRUsers />}
+      {tab === "users" && canSeeUsers && <SRUsers />}
       {tab === "settings" && <SRSettings />}
     </SituationLayout>
   );
