@@ -48,6 +48,9 @@ interface ElectionReport {
 const AdminElectionCollation = () => {
   const [reports, setReports] = useState<ElectionReport[]>([]);
   const [loading, setLoading] = useState(true);
+  const [primaries, setPrimaries] = useState<PrimariesRow[]>([]);
+  const [primariesLoading, setPrimariesLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState<"all" | "pending" | "verified" | "flagged" | "rejected">("all");
 
   const fetchReports = async () => {
     setLoading(true);
@@ -72,11 +75,41 @@ const AdminElectionCollation = () => {
     setLoading(false);
   };
 
+  const fetchPrimaries = async () => {
+    setPrimariesLoading(true);
+    const { data, error } = await supabase
+      .from("primaries_collation")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error && data) setPrimaries(data as PrimariesRow[]);
+    setPrimariesLoading(false);
+  };
+
+  const updatePrimariesStatus = async (id: string, status: PrimariesRow["status"]) => {
+    const { error } = await supabase
+      .from("primaries_collation")
+      .update({ status, verified_at: status === "verified" ? new Date().toISOString() : null })
+      .eq("id", id);
+    if (error) toast.error(`Failed to ${status} entry`);
+    else toast.success(`Entry ${status}`);
+  };
+
+  const viewEvidence = async (path: string) => {
+    const { data, error } = await supabase.storage.from("primaries-collation").createSignedUrl(path, 60 * 5);
+    if (error || !data) {
+      toast.error("Could not load evidence file");
+      return;
+    }
+    window.open(data.signedUrl, "_blank");
+  };
+
   useEffect(() => {
     fetchReports();
+    fetchPrimaries();
     const channel = supabase
       .channel("election-collation")
       .on("postgres_changes", { event: "*", schema: "public", table: "situation_updates" }, () => fetchReports())
+      .on("postgres_changes", { event: "*", schema: "public", table: "primaries_collation" }, () => fetchPrimaries())
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, []);
