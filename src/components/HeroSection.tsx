@@ -80,31 +80,68 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+    <section className="relative min-h-screen flex items-center pt-24 md:pt-28 pb-12 overflow-hidden">
       <div className="absolute inset-0">
         <motion.img
           src={heroBg}
-          alt="Nigerian youth community"
+          alt=""
+          aria-hidden="true"
           className="w-full h-full object-cover"
-          initial={{ scale: 1.1 }}
+          initial={{ scale: 1.15 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 1.8, ease: "easeOut" }}
         />
-        <div className="absolute inset-0 bg-background/85" />
+        {/* Layered overlays for depth & legibility on mobile */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/85 to-background/95 md:bg-background/85" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.18),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,hsl(var(--accent)/0.12),transparent_55%)]" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+          {/* Mobile portrait — appears first on small screens for visual hook */}
+          <motion.div
+            variants={scaleIn}
+            initial="hidden"
+            animate="visible"
+            className="lg:hidden flex justify-center"
+          >
+            <div className="relative w-[260px] h-[320px] sm:w-[300px] sm:h-[370px] rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl bg-muted">
+              {/* Animated glow ring */}
+              <span className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-tr from-primary/40 via-accent/20 to-primary/40 blur-xl opacity-60 animate-gradient-shift" style={{ backgroundSize: "200% 200%" }} />
+              <AnimatePresence mode="sync">
+                {(() => {
+                  const t = slideTransitions[slideIndex % slideTransitions.length];
+                  return (
+                    <motion.img
+                      key={`m-${slideIndex}`}
+                      src={mentorSlides[slideIndex]}
+                      alt={mentorName}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      initial={t.initial}
+                      animate={t.animate}
+                      exit={t.exit}
+                      transition={t.transition}
+                    />
+                  );
+                })()}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
+          <div className="space-y-6 md:space-y-8 text-center lg:text-left">
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="visible"
               custom={0}
-              className="inline-flex items-center gap-2 border border-primary/40 rounded-full px-4 py-1.5"
+              className="inline-flex items-center gap-2 border border-primary/40 bg-primary/5 backdrop-blur-sm rounded-full px-4 py-1.5 mx-auto lg:mx-0"
             >
-              <span className="w-2 h-2 rounded-full bg-primary" />
-              <span className="text-sm font-medium text-primary tracking-wide">{badge}</span>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-75 animate-pulse-ring" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+              </span>
+              <span className="text-xs sm:text-sm font-semibold text-primary tracking-wider uppercase">{badge}</span>
             </motion.div>
 
             <motion.h1
@@ -112,7 +149,7 @@ const HeroSection = () => {
               initial="hidden"
               animate="visible"
               custom={1}
-              className="text-4xl md:text-5xl lg:text-6xl font-black leading-[1.1] tracking-tight"
+              className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-[4.25rem] font-extrabold tracking-tight"
             >
               {renderHeading()}
             </motion.h1>
@@ -122,17 +159,17 @@ const HeroSection = () => {
               initial="hidden"
               animate="visible"
               custom={2}
-              className="space-y-4 text-muted-foreground text-base lg:text-lg max-w-xl"
+              className="space-y-4 text-muted-foreground text-sm sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0"
             >
               <p>{paragraph1}</p>
-              <p>{paragraph2}</p>
+              <p className="hidden sm:block">{paragraph2}</p>
             </motion.div>
 
-            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}>
-              <p className="text-foreground">
+            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3} className="px-2 sm:px-0">
+              <p className="text-foreground text-sm sm:text-base">
                 <span className="font-bold">Lead Mentor:</span> {mentorName}
               </p>
-              <p className="text-muted-foreground text-sm mt-1">{tagline}</p>
+              <p className="text-muted-foreground text-xs sm:text-sm mt-1">{tagline}</p>
             </motion.div>
 
             <motion.div
@@ -140,23 +177,43 @@ const HeroSection = () => {
               initial="hidden"
               animate="visible"
               custom={4}
-              className="flex flex-wrap gap-3"
+              className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center lg:justify-start"
             >
-              <Button size="lg" className="gap-2 font-semibold" onClick={() => navigate("/join")}>
-                JOIN US <ArrowRight size={18} />
+              <Button
+                size="lg"
+                className="gap-2 font-semibold btn-shine hover-glow w-full sm:w-auto tap-target"
+                onClick={() => navigate("/join")}
+              >
+                JOIN US <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
               </Button>
-              <Button size="lg" variant="secondary" onClick={() => navigate("/situation-room")}>Situation Room</Button>
-              <Button size="lg" variant="secondary" onClick={() => navigate("/kef-cares")}>KEF-Cares</Button>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="w-full sm:w-auto tap-target hover-lift"
+                onClick={() => navigate("/situation-room")}
+              >
+                Situation Room
+              </Button>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="w-full sm:w-auto tap-target hover-lift"
+                onClick={() => navigate("/kef-cares")}
+              >
+                KEF-Cares
+              </Button>
             </motion.div>
           </div>
 
+          {/* Desktop portrait */}
           <motion.div
             variants={scaleIn}
             initial="hidden"
             animate="visible"
             className="hidden lg:flex justify-end"
           >
-            <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-border shadow-2xl bg-muted">
+            <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl bg-muted">
+              <span className="pointer-events-none absolute -inset-2 rounded-2xl bg-gradient-to-tr from-primary/40 via-accent/20 to-primary/40 blur-2xl opacity-50 animate-gradient-shift" style={{ backgroundSize: "200% 200%" }} />
               <AnimatePresence mode="sync">
                 {(() => {
                   const t = slideTransitions[slideIndex % slideTransitions.length];
@@ -174,7 +231,19 @@ const HeroSection = () => {
                   );
                 })()}
               </AnimatePresence>
-              {/* Fallback reference to keep CMS image valid */}
+              {/* Slide indicators */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                {mentorSlides.map((_, i) => (
+                  <button
+                    key={i}
+                    aria-label={`Show slide ${i + 1}`}
+                    onClick={() => setSlideIndex(i)}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      i === slideIndex ? "w-8 bg-primary" : "w-1.5 bg-white/50 hover:bg-white/80"
+                    }`}
+                  />
+                ))}
+              </div>
               <link rel="preload" as="image" href={cmsMentorImg} />
             </div>
           </motion.div>
