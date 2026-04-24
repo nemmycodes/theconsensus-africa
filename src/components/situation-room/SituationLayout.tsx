@@ -39,7 +39,10 @@ interface Props {
 
 const SituationLayout = ({ active, onChange, children }: Props) => {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin, isSuperAdmin } = useAuth();
+  const visibleNav = navItems.filter(
+    (n) => n.key !== "users" || isAdmin || isSuperAdmin
+  );
   const [now, setNow] = useState(new Date());
   const [confirmLogout, setConfirmLogout] = useState(false);
   const [alerts, setAlerts] = useState<string>(
@@ -87,7 +90,7 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
         <img src={logo} alt="The Plateau Consensus" className="h-12 w-auto" />
       </button>
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {navItems.map((item) => {
+        {visibleNav.map((item) => {
           const Icon = item.icon;
           const isActive = active === item.key;
           return (
