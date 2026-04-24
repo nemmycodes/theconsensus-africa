@@ -34,11 +34,15 @@ const Navbar = () => {
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 bg-[hsl(220,20%,8%)]/95 backdrop-blur-md border-b border-[hsl(220,15%,18%)]"
+      className="fixed top-0 left-0 right-0 z-50 bg-[hsl(220,20%,8%)]/95 backdrop-blur-md border-b border-[hsl(220,15%,18%)] shadow-lg"
     >
-      <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
-        <Link to="/" className="flex items-center gap-2">
-          <img src="/brand-logo.png" alt="The Plateau Consensus" className="h-[76px] w-auto" />
+      <div className="container mx-auto flex items-center justify-between h-20 md:h-24 px-4 lg:px-8">
+        <Link to="/" className="flex items-center gap-2 group" aria-label="The Plateau Consensus — Home">
+          <img
+            src="/brand-logo.png"
+            alt="The Plateau Consensus"
+            className="h-14 md:h-20 lg:h-24 w-auto transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_8px_hsl(var(--primary)/0.35)]"
+          />
         </Link>
 
         <div className="hidden lg:flex items-center gap-5">
@@ -94,10 +98,12 @@ const Navbar = () => {
         </div>
 
         <button
-          className="lg:hidden text-white"
+          className="lg:hidden text-white inline-flex items-center justify-center rounded-md tap-target hover:bg-white/10 active:bg-white/20 transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
