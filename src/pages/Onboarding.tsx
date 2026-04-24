@@ -243,7 +243,7 @@ const Onboarding = () => {
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
             <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             {impactRoles.map((role, i) => (
               <motion.div
                 key={role.title}
