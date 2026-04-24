@@ -129,12 +129,38 @@ const HeroSection = () => {
             </div>
           </motion.div>
 
-          <div className="space-y-6 md:space-y-8 text-center lg:text-left">
+          <div className="space-y-5 md:space-y-7 text-center lg:text-left">
+            {/* Brand lockup — boosts logo prominence on the page itself (#9) */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="visible"
               custom={0}
+              className="flex items-center gap-3 justify-center lg:justify-start"
+            >
+              <div className="relative">
+                <span className="absolute inset-0 rounded-full bg-primary/30 blur-md animate-pulse-ring" />
+                <img
+                  src="/brand-logo.png"
+                  alt="The Plateau Consensus"
+                  className="relative h-12 sm:h-14 md:h-16 w-auto drop-shadow-[0_4px_12px_hsl(var(--primary)/0.45)]"
+                />
+              </div>
+              <div className="text-left">
+                <p className="font-display font-extrabold text-base sm:text-lg leading-tight tracking-tight">
+                  The Plateau <span className="text-primary">Consensus</span>
+                </p>
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  A Movement for the Next Generation
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={1}
               className="inline-flex items-center gap-2 border border-primary/40 bg-primary/5 backdrop-blur-sm rounded-full px-4 py-1.5 mx-auto lg:mx-0"
             >
               <span className="relative flex h-2 w-2">
@@ -148,60 +174,95 @@ const HeroSection = () => {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              custom={1}
+              custom={2}
               className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-[4.25rem] font-extrabold tracking-tight"
             >
               {renderHeading()}
             </motion.h1>
 
-            <motion.div
+            {/* Single sharpened value-prop line (clarity over volume) */}
+            <motion.p
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              custom={2}
-              className="space-y-4 text-muted-foreground text-sm sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0"
+              custom={3}
+              className="text-base sm:text-lg lg:text-xl text-foreground/90 font-medium max-w-xl mx-auto lg:mx-0"
             >
-              <p>{paragraph1}</p>
-              <p className="hidden sm:block">{paragraph2}</p>
-            </motion.div>
+              A non-partisan movement organizing Gen Z and young Millennials into a community
+              built on <span className="text-primary font-semibold">economic freedom</span>,{" "}
+              <span className="text-primary font-semibold">political consciousness</span>, and{" "}
+              <span className="text-primary font-semibold">shared prosperity</span>.
+            </motion.p>
 
-            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3} className="px-2 sm:px-0">
+            {/* Supporting paragraph — hidden on small screens to reduce noise */}
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={4}
+              className="hidden md:block text-muted-foreground text-base lg:text-lg max-w-xl mx-auto lg:mx-0"
+            >
+              {paragraph2}
+            </motion.p>
+
+            <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={5} className="px-2 sm:px-0">
               <p className="text-foreground text-sm sm:text-base">
                 <span className="font-bold">Lead Mentor:</span> {mentorName}
               </p>
               <p className="text-muted-foreground text-xs sm:text-sm mt-1">{tagline}</p>
             </motion.div>
 
+            {/* CTAs — primary stands out, secondaries are quieter */}
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              custom={4}
-              className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center lg:justify-start"
+              custom={6}
+              className="flex flex-col sm:flex-row flex-wrap gap-3 justify-center lg:justify-start pt-1"
             >
               <Button
                 size="lg"
-                className="gap-2 font-semibold btn-shine hover-glow w-full sm:w-auto tap-target"
+                className="group gap-2 font-bold text-base btn-shine hover-glow w-full sm:w-auto tap-target shadow-lg shadow-primary/30"
                 onClick={() => navigate("/join")}
               >
-                JOIN US <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                JOIN THE MOVEMENT{" "}
+                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
               </Button>
               <Button
                 size="lg"
-                variant="secondary"
-                className="w-full sm:w-auto tap-target hover-lift"
+                variant="outline"
+                className="w-full sm:w-auto tap-target hover-lift border-primary/40 text-foreground hover:bg-primary/10"
                 onClick={() => navigate("/situation-room")}
               >
                 Situation Room
               </Button>
               <Button
                 size="lg"
-                variant="secondary"
+                variant="ghost"
                 className="w-full sm:w-auto tap-target hover-lift"
                 onClick={() => navigate("/kef-cares")}
               >
                 KEF-Cares
               </Button>
+            </motion.div>
+
+            {/* Trust strip — adds credibility under the fold-line */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={7}
+              className="flex flex-wrap items-center gap-x-6 gap-y-2 justify-center lg:justify-start pt-3 text-xs sm:text-sm text-muted-foreground"
+            >
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Non-partisan
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Verified community
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Plateau Central Zone
+              </span>
             </motion.div>
           </div>
 
