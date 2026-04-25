@@ -36,7 +36,7 @@ const impactRoles = [
     highlight: false,
   },
   {
-    title: "Mobilization Agent",
+    title: "Agent",
     description: "Lead local chapters and drive registration in your constituency. Direct party coordination.",
     features: ["Voting unit coordination", "Member verification", "Strategy meetings"],
     highlight: true,
@@ -260,7 +260,7 @@ const Onboarding = () => {
                 )}
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   {role.title === "Volunteer" && <Users className="w-7 h-7 text-primary" />}
-                  {role.title === "Mobilization Agent" && <Award className="w-7 h-7 text-primary" />}
+                  {role.title === "Agent" && <Award className="w-7 h-7 text-primary" />}
                   {role.title === "Lead / Delegate" && <ShieldCheck className="w-7 h-7 text-primary" />}
                 </div>
                 <h3 className="text-lg font-bold mb-3">{role.title}</h3>
@@ -276,7 +276,7 @@ const Onboarding = () => {
                 <Button
                   variant={role.highlight ? "default" : "outline"}
                   className="w-full font-bold"
-                  onClick={() => role.title === "Mobilization Agent" ? navigate("/election-form") : setShowForm(true)}
+                  onClick={() => role.title === "Agent" ? navigate("/agent-login") : setShowForm(true)}
                 >
                   Select {role.title.split(" ")[0]}
                 </Button>
