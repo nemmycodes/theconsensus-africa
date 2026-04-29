@@ -139,7 +139,7 @@ const ElectionForm = () => {
     const reportContent = JSON.stringify({
       electionDate,
       liveLocation,
-      center: { centerName, agentCode, state, lga, electionType },
+      center: { centerName, agentCode, state, senatorialZone, lga, electionType },
       voting: { ward, pollingUnit, registeredVoters, accreditedVoters, totalVotesCast },
       partyResults,
       totalPartyVotes,
