@@ -66,7 +66,7 @@ const HeroSection = () => {
   const heading = content?.heading || "EMPOWERING NIGERIA'S YOUTH FOR A NEW ERA OF LEADERSHIP";
   const highlightWord = content?.highlight_word || "YOUTH";
   const paragraph1 = content?.paragraph1 || "The Consensus is a non-partisan civic and economic empowerment movement organizing Gen Z and young Millennial into a structured community focused on increasing economic freedom, strengthening political consciousness, and building a future defined by competence, integrity, and shared prosperity.";
-  const paragraph2 = content?.paragraph2 || "A non-partisan movement organizing Gen Z and Millennials into a community built on economic freedom, political consciousness, and shared prosperity.";
+  const paragraph2 = content?.paragraph2 || "We believe that when young people are economically empowered, families are stabilized, mothers are strengthened, and communities move forward. The movement begins with the Central Zone of Plateau State, building a verified digital community and scalable infrastructure ready for statewide expansion.";
   const mentorName = content?.mentor_name || "Chief Kefas Ropshik Wungak";
   const tagline = content?.tagline || "Join the movement. Build your economic power. Shape the future.";
   const heroBg = content?.hero_bg_url || heroBgFallback;
@@ -178,6 +178,20 @@ const HeroSection = () => {
             >
               {renderHeading()}
             </motion.h1>
+
+            {/* Single sharpened value-prop line (clarity over volume) */}
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={3}
+              className="text-base sm:text-lg lg:text-xl text-foreground/90 font-medium max-w-xl mx-auto lg:mx-0"
+            >
+              A non-partisan movement organizing Gen Z and young Millennials into a community
+              built on <span className="text-primary font-semibold">economic freedom</span>,{" "}
+              <span className="text-primary font-semibold">political consciousness</span>, and{" "}
+              <span className="text-primary font-semibold">shared prosperity</span>.
+            </motion.p>
 
             {/* Supporting paragraph — hidden on small screens to reduce noise */}
             <motion.p
