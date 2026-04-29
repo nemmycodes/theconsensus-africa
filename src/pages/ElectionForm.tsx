@@ -380,16 +380,7 @@ const ElectionForm = () => {
                 <h2 className="text-lg font-heading font-bold">2. Voting Statistics</h2>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-5 mb-5">
-                <div className="space-y-2">
-                  <Label>Ward</Label>
-                  <Input placeholder="Enter Ward" value={ward} onChange={(e) => setWard(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Polling Unit Number</Label>
-                  <Input placeholder="PU-001" value={pollingUnit} onChange={(e) => setPollingUnit(e.target.value)} />
-                </div>
-              </div>
+              <p className="text-xs text-muted-foreground mb-5">Ward: <strong>{ward || "—"}</strong> · PU: <strong>{pollingUnit || "—"}</strong> (set in Section 1)</p>
               <div className="grid md:grid-cols-3 gap-5">
                 <div className="space-y-2">
                   <Label>Registered Voters</Label>
