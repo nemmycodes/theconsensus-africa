@@ -293,7 +293,7 @@ const Onboarding = () => {
                 <Button
                   variant={role.highlight ? "default" : "outline"}
                   className="w-full font-bold"
-                  onClick={() => setShowForm(true)}
+                  onClick={() => navigate(`/join/role/${role.title.toLowerCase()}`)}
                 >
                   Register to apply
                 </Button>
