@@ -318,16 +318,24 @@ const ElectionForm = () => {
                     ))}
                   </select>
                 </div>
-                <div className="space-y-2">
-                  <Label>LGA</Label>
-                  <select
-                    value={lga}
-                    onChange={(e) => setLga(e.target.value)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <option value="">Select LGA</option>
-                  </select>
+                <div className="space-y-2 md:col-span-1">
+                  {/* LGA picker integrated below alongside Ward + PU */}
                 </div>
+              </div>
+
+              <div className="mt-5">
+                <InecLocationPicker
+                  lgaName={lga}
+                  wardName={ward}
+                  puName={pollingUnit}
+                  showPU
+                  required
+                  onChange={({ lga: l, ward: w, pu }) => {
+                    setLga(l);
+                    setWard(w);
+                    setPollingUnit(pu);
+                  }}
+                />
               </div>
 
               <div className="mt-5">
