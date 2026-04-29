@@ -41,6 +41,12 @@ const impactRoles = [
     features: ["Voting unit coordination", "Member verification", "Strategy meetings"],
     highlight: true,
   },
+  {
+    title: "Aspirant",
+    description: "For those aspiring to elective positions under the Consensus party. Step forward to lead.",
+    features: ["Candidate vetting", "Campaign support", "Policy alignment"],
+    highlight: false,
+  },
 ];
 
 const LGA_OPTIONS = [
@@ -243,7 +249,7 @@ const Onboarding = () => {
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
             <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {impactRoles.map((role, i) => (
               <motion.div
                 key={role.title}
@@ -261,7 +267,7 @@ const Onboarding = () => {
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   {role.title === "Volunteer" && <Users className="w-7 h-7 text-primary" />}
                   {role.title === "Agent" && <Award className="w-7 h-7 text-primary" />}
-                  {role.title === "Lead / Delegate" && <ShieldCheck className="w-7 h-7 text-primary" />}
+                  {role.title === "Aspirant" && <ShieldCheck className="w-7 h-7 text-primary" />}
                 </div>
                 <h3 className="text-lg font-bold mb-3">{role.title}</h3>
                 <p className="text-sm text-muted-foreground mb-6">{role.description}</p>
