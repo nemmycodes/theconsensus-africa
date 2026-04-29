@@ -13,6 +13,8 @@ import MemberForum from "@/components/member/MemberForum";
 import MemberProfile from "@/components/member/MemberProfile";
 import MemberSettings from "@/components/member/MemberSettings";
 import MemberNotifications from "@/components/member/MemberNotifications";
+import MemberApplyAgent from "@/components/member/MemberApplyAgent";
+import MemberApplyAspirant from "@/components/member/MemberApplyAspirant";
 import { useEffect } from "react";
 
 const MemberDashboard = () => {
