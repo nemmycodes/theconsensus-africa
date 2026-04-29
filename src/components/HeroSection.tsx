@@ -187,7 +187,7 @@ const HeroSection = () => {
               custom={3}
               className="text-base sm:text-lg lg:text-xl text-foreground/90 font-medium max-w-xl mx-auto lg:mx-0"
             >
-              A non-partisan movement organizing Gen Z and young Millennials into a community
+              A non-partisan movement organizing Gen Z and Millennials into a community
               built on <span className="text-primary font-semibold">economic freedom</span>,{" "}
               <span className="text-primary font-semibold">political consciousness</span>, and{" "}
               <span className="text-primary font-semibold">shared prosperity</span>.
