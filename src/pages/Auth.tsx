@@ -15,7 +15,7 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { user, loading: authLoading, isAgent, isAdmin, rolesLoading } = useAuth();
+  const { user, loading: authLoading, isAgent, isAdmin, isKefUser, rolesLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -26,11 +26,13 @@ const Auth = () => {
         navigate("/admin", { replace: true });
       } else if (isAgent) {
         navigate("/agent", { replace: true });
+      } else if (isKefUser) {
+        navigate("/kef-cares/dashboard", { replace: true });
       } else {
         navigate("/dashboard", { replace: true });
       }
     }
-  }, [user, authLoading, rolesLoading, isAdmin, isAgent, navigate]);
+  }, [user, authLoading, rolesLoading, isAdmin, isAgent, isKefUser, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
