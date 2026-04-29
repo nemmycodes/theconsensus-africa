@@ -67,14 +67,19 @@ export type Database = {
           id_proof_type: string | null
           id_proof_url: string
           lga: string
+          manifesto_summary: string | null
+          party_affiliation: string | null
           phone: string
           polling_unit: string
+          position_aspired: string | null
+          prior_office_held: string | null
           review_notes: string | null
           reviewed_at: string | null
           reviewed_by: string | null
           status: Database["public"]["Enums"]["recruitment_status"]
           training_date: string | null
           updated_at: string
+          user_id: string | null
           ward: string
         }
         Insert: {
@@ -93,14 +98,19 @@ export type Database = {
           id_proof_type?: string | null
           id_proof_url: string
           lga: string
+          manifesto_summary?: string | null
+          party_affiliation?: string | null
           phone: string
           polling_unit: string
+          position_aspired?: string | null
+          prior_office_held?: string | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: Database["public"]["Enums"]["recruitment_status"]
           training_date?: string | null
           updated_at?: string
+          user_id?: string | null
           ward: string
         }
         Update: {
@@ -119,14 +129,19 @@ export type Database = {
           id_proof_type?: string | null
           id_proof_url?: string
           lga?: string
+          manifesto_summary?: string | null
+          party_affiliation?: string | null
           phone?: string
           polling_unit?: string
+          position_aspired?: string | null
+          prior_office_held?: string | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
           status?: Database["public"]["Enums"]["recruitment_status"]
           training_date?: string | null
           updated_at?: string
+          user_id?: string | null
           ward?: string
         }
         Relationships: []
