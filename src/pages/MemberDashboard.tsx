@@ -54,6 +54,8 @@ const MemberDashboard = () => {
       case "report": return <MemberSubmitReport />;
       case "events": return <MemberEvents />;
       case "forum": return <MemberForum />;
+      case "apply-agent": return <MemberApplyAgent />;
+      case "apply-aspirant": return <MemberApplyAspirant />;
       case "notifications": return <MemberNotifications />;
       case "profile": return <MemberProfile />;
       case "settings": return <MemberSettings />;
