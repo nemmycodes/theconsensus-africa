@@ -14,15 +14,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import InecLocationPicker from "@/components/shared/InecLocationPicker";
-
-const NIGERIAN_STATES = [
-  "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue",
-  "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT",
-  "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi",
-  "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo",
-  "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara",
-];
+import ElectionLocationFilter from "@/components/shared/ElectionLocationFilter";
 
 const PARTIES = [
   { abbr: "A", name: "Accord" },
@@ -66,6 +58,7 @@ const ElectionForm = () => {
   const [centerName, setCenterName] = useState("");
   const [agentCode, setAgentCode] = useState("");
   const [state, setState] = useState("");
+  const [senatorialZone, setSenatorialZone] = useState("");
   const [lga, setLga] = useState("");
   const [electionType, setElectionType] = useState("Presidential");
 
@@ -146,7 +139,7 @@ const ElectionForm = () => {
     const reportContent = JSON.stringify({
       electionDate,
       liveLocation,
-      center: { centerName, agentCode, state, lga, electionType },
+      center: { centerName, agentCode, state, senatorialZone, lga, electionType },
       voting: { ward, pollingUnit, registeredVoters, accreditedVoters, totalVotesCast },
       partyResults,
       totalPartyVotes,
@@ -182,6 +175,7 @@ const ElectionForm = () => {
         election_type: dbElectionType as any,
         election_date: electionDate || new Date().toISOString().slice(0, 10),
         state: state || "Plateau",
+        senatorial_zone: senatorialZone || null,
         lga: lga || "Unknown",
         ward: ward || "Unknown",
         polling_unit: pollingUnit || "Unknown",
@@ -306,35 +300,20 @@ const ElectionForm = () => {
                     className="bg-secondary"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label>State</Label>
-                  <select
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <option value="">Select State</option>
-                    {NIGERIAN_STATES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="space-y-2 md:col-span-1">
-                  {/* LGA picker integrated below alongside Ward + PU */}
-                </div>
               </div>
 
               <div className="mt-5">
-                <InecLocationPicker
-                  lgaName={lga}
-                  wardName={ward}
-                  puName={pollingUnit}
+                <Label className="mb-3 block">Location Filter (cascading)</Label>
+                <ElectionLocationFilter
+                  value={{ state, senatorialZone, lga, ward, pu: pollingUnit }}
                   showPU
                   required
-                  onChange={({ lga: l, ward: w, pu }) => {
-                    setLga(l);
-                    setWard(w);
-                    setPollingUnit(pu);
+                  onChange={(v) => {
+                    setState(v.state);
+                    setSenatorialZone(v.senatorialZone);
+                    setLga(v.lga);
+                    setWard(v.ward);
+                    setPollingUnit(v.pu);
                   }}
                 />
               </div>

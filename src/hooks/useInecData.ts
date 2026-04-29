@@ -1,19 +1,34 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export interface InecLga { id: string; name: string; code: string }
+export interface InecState { id: string; name: string; code: string; geo_zone: string; senatorial_zones: string[] }
+export interface InecLga { id: string; name: string; code: string; senatorial_zone: string | null }
 export interface InecWard { id: string; lga_id: string; name: string; code: string }
 export interface InecPollingUnit { id: string; ward_id: string; name: string; code: string }
 
-export const useInecLgas = () => {
-  const [lgas, setLgas] = useState<InecLga[]>([]);
+export const useInecStates = () => {
+  const [states, setStates] = useState<InecState[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    supabase.from("inec_lgas").select("id,name,code").order("name").then(({ data }) => {
-      setLgas(data || []);
+    supabase.from("inec_states").select("id,name,code,geo_zone,senatorial_zones").order("name").then(({ data }) => {
+      setStates((data as InecState[]) || []);
       setLoading(false);
     });
   }, []);
+  return { states, loading };
+};
+
+export const useInecLgas = (filterSenatorialZone?: string | null) => {
+  const [lgas, setLgas] = useState<InecLga[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let q = supabase.from("inec_lgas").select("id,name,code,senatorial_zone").order("name");
+    if (filterSenatorialZone) q = q.eq("senatorial_zone", filterSenatorialZone);
+    q.then(({ data }) => {
+      setLgas((data as InecLga[]) || []);
+      setLoading(false);
+    });
+  }, [filterSenatorialZone]);
   return { lgas, loading };
 };
 
