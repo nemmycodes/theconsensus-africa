@@ -323,6 +323,7 @@ export type Database = {
           polling_unit: string
           registered_voters: number | null
           rejection_reason: string | null
+          senatorial_zone: string | null
           state: string
           status: Database["public"]["Enums"]["election_report_status"]
           total_votes_cast: number | null
@@ -349,6 +350,7 @@ export type Database = {
           polling_unit: string
           registered_voters?: number | null
           rejection_reason?: string | null
+          senatorial_zone?: string | null
           state?: string
           status?: Database["public"]["Enums"]["election_report_status"]
           total_votes_cast?: number | null
@@ -375,6 +377,7 @@ export type Database = {
           polling_unit?: string
           registered_voters?: number | null
           rejection_reason?: string | null
+          senatorial_zone?: string | null
           state?: string
           status?: Database["public"]["Enums"]["election_report_status"]
           total_votes_cast?: number | null
@@ -564,6 +567,7 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          senatorial_zone: string | null
           state: string
         }
         Insert: {
@@ -571,6 +575,7 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
+          senatorial_zone?: string | null
           state?: string
         }
         Update: {
@@ -578,6 +583,7 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
+          senatorial_zone?: string | null
           state?: string
         }
         Relationships: []
@@ -613,6 +619,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      inec_states: {
+        Row: {
+          code: string
+          created_at: string
+          geo_zone: string
+          id: string
+          name: string
+          senatorial_zones: string[]
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          geo_zone: string
+          id?: string
+          name: string
+          senatorial_zones?: string[]
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          geo_zone?: string
+          id?: string
+          name?: string
+          senatorial_zones?: string[]
+        }
+        Relationships: []
       }
       inec_wards: {
         Row: {
