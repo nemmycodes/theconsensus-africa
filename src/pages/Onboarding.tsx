@@ -104,7 +104,7 @@ const Onboarding = () => {
               <Button
                 size="lg"
                 className="group gap-2 font-bold text-base btn-shine hover-glow w-full sm:w-auto tap-target shadow-lg shadow-primary/30"
-                onClick={() => setShowForm(true)}
+                onClick={scrollToRoles}
               >
                 JOIN THE MOVEMENT
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
@@ -113,9 +113,7 @@ const Onboarding = () => {
                 size="lg"
                 variant="outline"
                 className="hidden sm:inline-flex w-full sm:w-auto tap-target border-white/20 text-white hover:bg-white/10"
-                onClick={() => {
-                  document.getElementById("impact-roles")?.scrollIntoView({ behavior: "smooth" });
-                }}
+                onClick={scrollToRoles}
               >
                 Explore Roles
               </Button>
@@ -149,7 +147,7 @@ const Onboarding = () => {
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
             <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
             <p className="text-xs text-primary font-semibold mt-3 uppercase tracking-wider">
-              First, register as a member below. After signup, apply for a specialised role from your dashboard.
+              Choose one role, complete its form first, then create your account.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -184,10 +182,10 @@ const Onboarding = () => {
                 </ul>
                 <p className="text-[11px] text-muted-foreground mb-3 italic">
                   {role.title === "Volunteer"
-                    ? "Available to every member by default."
+                    ? "Fill the volunteer form before account creation."
                     : role.title === "Agent"
-                    ? "Apply from your dashboard after registering."
-                    : "Apply from your dashboard after registering."}
+                    ? "Fill the polling unit agent form before account creation."
+                    : "Fill the aspirant nomination form before account creation."}
                 </p>
                 <Button
                   variant={role.highlight ? "default" : "outline"}
@@ -281,128 +279,9 @@ const Onboarding = () => {
             <span className="flex items-center gap-1.5"><Check size={14} className="text-primary" /> Grow</span>
             <span className="flex items-center gap-1.5"><Check size={14} className="text-primary" /> Lead</span>
           </div>
-          <Button size="lg" className="mt-8 font-bold" onClick={() => setShowForm(true)}>Register Now</Button>
+          <Button size="lg" className="mt-8 font-bold" onClick={scrollToRoles}>Register Now</Button>
         </div>
       </section>
-
-      {/* Registration Modal / Form */}
-      {showForm && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-card border border-border rounded-2xl p-8 w-full max-w-lg max-h-[90vh] overflow-y-auto"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-black">Join the Movement</h2>
-              <button onClick={() => setShowForm(false)} className="text-muted-foreground hover:text-foreground">✕</button>
-            </div>
-
-            {/* Progress Steps */}
-            <div className="flex items-center justify-center gap-2 mb-8">
-              {steps.map((s, i) => (
-                <div key={s.label} className="flex items-center gap-2">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${i <= step ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                    {i < step ? <Check className="h-4 w-4" /> : <s.icon className="h-4 w-4" />}
-                  </div>
-                  {i < steps.length - 1 && <div className={`w-8 h-0.5 ${i < step ? "bg-primary" : "bg-muted"}`} />}
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-4">
-              {step === 0 && (
-                <>
-                  <div className="space-y-2">
-                    <Label>Email Address</Label>
-                    <Input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Password</Label>
-                    <Input type="password" placeholder="Min. 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} minLength={6} />
-                  </div>
-                </>
-              )}
-              {step === 1 && (
-                <>
-                  {/* Profile Photo Upload */}
-                  <div className="flex flex-col items-center gap-3 mb-2">
-                    <label className="relative cursor-pointer group">
-                      {avatarPreview ? (
-                        <img src={avatarPreview} alt="Preview" className="w-20 h-20 rounded-full object-cover border-4 border-primary/20" />
-                      ) : (
-                        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center border-4 border-border">
-                          <Camera className="w-6 h-6 text-muted-foreground" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 w-20 h-20 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Camera className="w-5 h-5 text-white" />
-                      </div>
-                      <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
-                    </label>
-                    <p className="text-xs text-muted-foreground">Upload profile photo (max 5MB)</p>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Full Name</Label>
-                    <Input placeholder="Your full name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Phone Number (optional)</Label>
-                    <Input placeholder="+234..." value={phone} onChange={(e) => setPhone(e.target.value)} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Date of Birth (optional)</Label>
-                    <Input type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="bg-background" />
-                  </div>
-                </>
-              )}
-              {step === 2 && (
-                <div className="flex flex-wrap gap-2">
-                  {INTEREST_OPTIONS.map((interest) => (
-                    <button
-                      key={interest}
-                      type="button"
-                      onClick={() => toggleInterest(interest)}
-                      className={`px-3 py-2 rounded-full text-sm font-medium border transition-colors ${interests.includes(interest) ? "bg-primary text-primary-foreground border-primary" : "bg-card text-muted-foreground border-border hover:border-primary/50"}`}
-                    >
-                      {interest}
-                    </button>
-                  ))}
-                </div>
-              )}
-              {step === 3 && (
-                <InecLocationPicker
-                  lgaName={lga}
-                  wardName={ward}
-                  required
-                  onChange={({ lga: l, ward: w }) => { setLga(l); setWard(w); }}
-                />
-              )}
-            </div>
-
-            <div className="flex items-center justify-between mt-8">
-              <Button variant="ghost" onClick={() => step === 0 ? setShowForm(false) : setStep(step - 1)} className="gap-1">
-                <ArrowLeft className="h-4 w-4" /> {step === 0 ? "Cancel" : "Back"}
-              </Button>
-              {step < steps.length - 1 ? (
-                <Button onClick={() => setStep(step + 1)} disabled={!canProceed()} className="gap-1">
-                  Next <ArrowRight className="h-4 w-4" />
-                </Button>
-              ) : (
-                <Button onClick={handleSubmit} disabled={!canProceed() || loading} className="gap-1">
-                  {loading ? "Creating..." : "Complete Signup"} <Check className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-
-            <div className="mt-6 text-center">
-              <button onClick={() => { setShowForm(false); navigate("/auth"); }} className="text-sm text-muted-foreground hover:text-foreground">
-                Already have an account? Sign in
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
 
       <Footer />
     </div>
