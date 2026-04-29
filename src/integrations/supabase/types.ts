@@ -52,30 +52,40 @@ export type Database = {
       }
       agent_recruitment_applications: {
         Row: {
+          address: string | null
+          agent_sub_role: string | null
           agent_type: string
+          aspirant_level: string | null
           attended_inec_training: boolean
           available_counting: boolean
           available_voting_period: boolean
           created_at: string
+          date_of_birth: string | null
           declaration_date: string
           declaration_signature: string
           email: string
           experience_details: string | null
           full_name: string
           has_previous_experience: boolean
+          highest_qualification: string | null
           id: string
           id_proof_type: string | null
           id_proof_url: string
+          institution: string | null
           lga: string
           manifesto_summary: string | null
           party_affiliation: string | null
+          party_membership_number: string | null
           phone: string
+          place_of_birth: string | null
           polling_unit: string
           position_aspired: string | null
           prior_office_held: string | null
+          qualification_year: number | null
           review_notes: string | null
           reviewed_at: string | null
           reviewed_by: string | null
+          state_of_origin: string | null
           status: Database["public"]["Enums"]["recruitment_status"]
           training_date: string | null
           updated_at: string
@@ -83,30 +93,40 @@ export type Database = {
           ward: string
         }
         Insert: {
+          address?: string | null
+          agent_sub_role?: string | null
           agent_type: string
+          aspirant_level?: string | null
           attended_inec_training?: boolean
           available_counting?: boolean
           available_voting_period?: boolean
           created_at?: string
+          date_of_birth?: string | null
           declaration_date?: string
           declaration_signature: string
           email: string
           experience_details?: string | null
           full_name: string
           has_previous_experience?: boolean
+          highest_qualification?: string | null
           id?: string
           id_proof_type?: string | null
           id_proof_url: string
+          institution?: string | null
           lga: string
           manifesto_summary?: string | null
           party_affiliation?: string | null
+          party_membership_number?: string | null
           phone: string
+          place_of_birth?: string | null
           polling_unit: string
           position_aspired?: string | null
           prior_office_held?: string | null
+          qualification_year?: number | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          state_of_origin?: string | null
           status?: Database["public"]["Enums"]["recruitment_status"]
           training_date?: string | null
           updated_at?: string
@@ -114,30 +134,40 @@ export type Database = {
           ward: string
         }
         Update: {
+          address?: string | null
+          agent_sub_role?: string | null
           agent_type?: string
+          aspirant_level?: string | null
           attended_inec_training?: boolean
           available_counting?: boolean
           available_voting_period?: boolean
           created_at?: string
+          date_of_birth?: string | null
           declaration_date?: string
           declaration_signature?: string
           email?: string
           experience_details?: string | null
           full_name?: string
           has_previous_experience?: boolean
+          highest_qualification?: string | null
           id?: string
           id_proof_type?: string | null
           id_proof_url?: string
+          institution?: string | null
           lga?: string
           manifesto_summary?: string | null
           party_affiliation?: string | null
+          party_membership_number?: string | null
           phone?: string
+          place_of_birth?: string | null
           polling_unit?: string
           position_aspired?: string | null
           prior_office_held?: string | null
+          qualification_year?: number | null
           review_notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
+          state_of_origin?: string | null
           status?: Database["public"]["Enums"]["recruitment_status"]
           training_date?: string | null
           updated_at?: string
@@ -1167,6 +1197,87 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      volunteer_registrations: {
+        Row: {
+          availability_areas: string[]
+          availability_hours_per_week: number | null
+          availability_other: string | null
+          candidates_supporting: string | null
+          created_at: string
+          declaration_date: string
+          declaration_signature: string
+          email: string
+          full_name: string
+          id: string
+          lga: string
+          motivation: string | null
+          phone: string
+          previous_experience: string | null
+          relevant_skills: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          skills: string[]
+          skills_other: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+          ward: string | null
+        }
+        Insert: {
+          availability_areas?: string[]
+          availability_hours_per_week?: number | null
+          availability_other?: string | null
+          candidates_supporting?: string | null
+          created_at?: string
+          declaration_date?: string
+          declaration_signature: string
+          email: string
+          full_name: string
+          id?: string
+          lga: string
+          motivation?: string | null
+          phone: string
+          previous_experience?: string | null
+          relevant_skills?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          skills?: string[]
+          skills_other?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          ward?: string | null
+        }
+        Update: {
+          availability_areas?: string[]
+          availability_hours_per_week?: number | null
+          availability_other?: string | null
+          candidates_supporting?: string | null
+          created_at?: string
+          declaration_date?: string
+          declaration_signature?: string
+          email?: string
+          full_name?: string
+          id?: string
+          lga?: string
+          motivation?: string | null
+          phone?: string
+          previous_experience?: string | null
+          relevant_skills?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          skills?: string[]
+          skills_other?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          ward?: string | null
         }
         Relationships: []
       }
