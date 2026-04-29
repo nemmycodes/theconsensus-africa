@@ -11,11 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ShieldCheck, Upload, CheckCircle2, Clock, XCircle, Vote } from "lucide-react";
 import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
-const POSITIONS = [
-  "President", "Vice President", "Governor", "Deputy Governor",
-  "Senator", "House of Representatives Member", "State House of Assembly Member",
-  "Local Government Chairman", "Vice Chairman", "Councillor",
-];
+const LEVELS = ["Local Government", "State", "Federal"];
 
 interface ExistingApp {
   id: string;
@@ -31,16 +27,41 @@ const MemberApplyAspirant = () => {
   const [loading, setLoading] = useState(false);
   const [existing, setExisting] = useState<ExistingApp | null>(null);
 
+  // 1. Office Sought
+  const [office, setOffice] = useState("");
+  const [level, setLevel] = useState(LEVELS[0]);
+  const [party, setParty] = useState("The Consensus");
+
+  // 2. Candidate Details
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+
+  // 3. Personal Details
+  const [dob, setDob] = useState("");
+  const [pob, setPob] = useState("");
+  const [stateOrigin, setStateOrigin] = useState("");
   const [lga, setLga] = useState("");
   const [ward, setWard] = useState("");
   const [pollingUnit, setPollingUnit] = useState("");
-  const [position, setPosition] = useState(POSITIONS[0]);
-  const [partyAffiliation, setPartyAffiliation] = useState("The Consensus");
+
+  // 4. Education
+  const [qualification, setQualification] = useState("");
+  const [institution, setInstitution] = useState("");
+  const [year, setYear] = useState<string>("");
+
+  // 5. Party Membership
+  const [membershipNumber, setMembershipNumber] = useState("");
+
+  // 6. Previous Experience
   const [priorOffice, setPriorOffice] = useState("");
+  const [otherExperience, setOtherExperience] = useState("");
+
+  // 7. Manifesto
   const [manifesto, setManifesto] = useState("");
+
+  // ID + Declaration
   const [idType, setIdType] = useState("National ID (NIN)");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [signature, setSignature] = useState("");
@@ -67,7 +88,12 @@ const MemberApplyAspirant = () => {
 
   const handleSubmit = async () => {
     if (!user) return;
-    if (!fullName || !phone || !lga || !position || !manifesto || !signature) {
+    const wordCount = manifesto.trim().split(/\s+/).filter(Boolean).length;
+    if (wordCount > 500) {
+      toast({ title: "Manifesto too long", description: `Max 500 words (currently ${wordCount}).`, variant: "destructive" });
+      return;
+    }
+    if (!fullName || !phone || !office || !level || !party || !lga || !manifesto || !signature) {
       toast({ title: "Missing fields", description: "Please complete the required fields.", variant: "destructive" });
       return;
     }
@@ -90,16 +116,25 @@ const MemberApplyAspirant = () => {
       full_name: fullName,
       email,
       phone,
+      address,
       lga,
       ward: ward || "N/A",
       polling_unit: pollingUnit || "N/A",
       agent_type: "aspirant",
-      position_aspired: position,
-      party_affiliation: partyAffiliation,
+      position_aspired: office,
+      aspirant_level: level,
+      party_affiliation: party,
+      party_membership_number: membershipNumber || null,
+      date_of_birth: dob || null,
+      place_of_birth: pob || null,
+      state_of_origin: stateOrigin || null,
+      highest_qualification: qualification || null,
+      institution: institution || null,
+      qualification_year: year ? parseInt(year, 10) : null,
       prior_office_held: priorOffice || null,
       manifesto_summary: manifesto,
       has_previous_experience: !!priorOffice,
-      experience_details: priorOffice || null,
+      experience_details: otherExperience || priorOffice || null,
       attended_inec_training: false,
       available_voting_period: false,
       available_counting: false,
@@ -134,7 +169,7 @@ const MemberApplyAspirant = () => {
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <ShieldCheck className="w-7 h-7 text-emerald-600" />
-          <h2 className="text-2xl font-black">Aspirant Application</h2>
+          <h2 className="text-2xl font-black">Elective Office Application</h2>
         </div>
         <Card className="p-8 text-center max-w-2xl">
           <SIcon className="w-12 h-12 mx-auto mb-3 text-emerald-600" />
@@ -158,40 +193,59 @@ const MemberApplyAspirant = () => {
       <div className="flex items-center gap-3">
         <ShieldCheck className="w-7 h-7 text-emerald-600" />
         <div>
-          <h2 className="text-2xl font-black">Aspirant Application</h2>
+          <h2 className="text-2xl font-black">Elective Office Nomination</h2>
           <p className="text-sm text-muted-foreground">
-            Declare your intent to contest an elective position under the Consensus banner. Our vetting committee will review.
+            Declare your intent to contest under the Consensus banner. Our vetting committee will review.
           </p>
         </div>
       </div>
 
-      <Card className="p-6 space-y-5">
-        <h3 className="font-bold">Personal Details</h3>
-        <div className="grid md:grid-cols-2 gap-4">
-          <div><Label>Full Name *</Label><Input value={fullName} onChange={e => setFullName(e.target.value)} /></div>
-          <div><Label>Email</Label><Input value={email} disabled /></div>
-          <div><Label>Phone *</Label><Input value={phone} onChange={e => setPhone(e.target.value)} /></div>
-        </div>
-      </Card>
-
-      <Card className="p-6 space-y-5">
-        <h3 className="font-bold flex items-center gap-2"><Vote className="w-4 h-4" /> Position Sought</h3>
+      {/* 1. Office Sought */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold flex items-center gap-2"><Vote className="w-4 h-4" /> 1. Office Sought</h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <Label>Position Aspired *</Label>
-            <select value={position} onChange={e => setPosition(e.target.value)}
+            <Label>Elective Office *</Label>
+            <Input value={office} onChange={e => setOffice(e.target.value)} placeholder="e.g. Governor, Senator, Councillor" />
+          </div>
+          <div>
+            <Label>Level *</Label>
+            <select value={level} onChange={e => setLevel(e.target.value)}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-              {POSITIONS.map(p => <option key={p}>{p}</option>)}
+              {LEVELS.map(l => <option key={l}>{l}</option>)}
             </select>
           </div>
           <div>
-            <Label>Party Affiliation</Label>
-            <Input value={partyAffiliation} onChange={e => setPartyAffiliation(e.target.value)} />
+            <Label>Party *</Label>
+            <Input value={party} onChange={e => setParty(e.target.value)} />
           </div>
         </div>
+      </Card>
+
+      {/* 2. Candidate Details */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold">2. Candidate Details</h3>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div><Label>Name *</Label><Input value={fullName} onChange={e => setFullName(e.target.value)} /></div>
+          <div><Label>Email</Label><Input value={email} disabled /></div>
+          <div><Label>Phone Number *</Label><Input value={phone} onChange={e => setPhone(e.target.value)} /></div>
+        </div>
         <div>
-          <Label>Constituency / Catchment Area *</Label>
-          <p className="text-xs text-muted-foreground mb-2">Select the LGA/Ward representing your aspired constituency.</p>
+          <Label>Address</Label>
+          <Textarea value={address} onChange={e => setAddress(e.target.value)} rows={2} />
+        </div>
+      </Card>
+
+      {/* 3. Personal Details */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold">3. Personal Details</h3>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div><Label>Date of Birth</Label><Input type="date" value={dob} onChange={e => setDob(e.target.value)} /></div>
+          <div><Label>Place of Birth</Label><Input value={pob} onChange={e => setPob(e.target.value)} /></div>
+          <div><Label>State of Origin</Label><Input value={stateOrigin} onChange={e => setStateOrigin(e.target.value)} /></div>
+        </div>
+        <div>
+          <Label>Local Government / Ward *</Label>
           <InecLocationPicker
             lgaName={lga}
             wardName={ward}
@@ -201,16 +255,49 @@ const MemberApplyAspirant = () => {
             onChange={({ lga: l, ward: w, pu }) => { setLga(l); setWard(w); setPollingUnit(pu); }}
           />
         </div>
+      </Card>
+
+      {/* 4. Education */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold">4. Education</h3>
+        <div className="grid md:grid-cols-3 gap-4">
+          <div><Label>Highest Qualification</Label><Input value={qualification} onChange={e => setQualification(e.target.value)} placeholder="e.g. B.Sc, M.Sc" /></div>
+          <div><Label>Institution</Label><Input value={institution} onChange={e => setInstitution(e.target.value)} /></div>
+          <div><Label>Year</Label><Input type="number" value={year} onChange={e => setYear(e.target.value)} placeholder="e.g. 2018" /></div>
+        </div>
+      </Card>
+
+      {/* 5. Party Membership */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold">5. Party Membership</h3>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div><Label>Party</Label><Input value={party} onChange={e => setParty(e.target.value)} /></div>
+          <div><Label>Membership Number</Label><Input value={membershipNumber} onChange={e => setMembershipNumber(e.target.value)} /></div>
+        </div>
+      </Card>
+
+      {/* 6. Previous Experience */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold">6. Previous Experience</h3>
         <div>
-          <Label>Prior Public Office or Leadership Role (optional)</Label>
-          <Input value={priorOffice} onChange={e => setPriorOffice(e.target.value)}
-            placeholder="e.g. Councillor 2019–2023; SUG President 2017" />
+          <Label>Previous elective offices held</Label>
+          <Input value={priorOffice} onChange={e => setPriorOffice(e.target.value)} placeholder="e.g. Councillor 2019–2023" />
         </div>
         <div>
-          <Label>Manifesto Summary *</Label>
-          <Textarea rows={5} value={manifesto} onChange={e => setManifesto(e.target.value)}
-            placeholder="In 3–6 sentences, describe what you intend to deliver if elected." />
+          <Label>Other relevant experience</Label>
+          <Textarea value={otherExperience} onChange={e => setOtherExperience(e.target.value)} rows={3} />
         </div>
+      </Card>
+
+      {/* 7. Manifesto */}
+      <Card className="p-6 space-y-3">
+        <h3 className="font-bold">7. Manifesto *</h3>
+        <p className="text-xs text-muted-foreground">Brief manifesto, max 500 words.</p>
+        <Textarea rows={6} value={manifesto} onChange={e => setManifesto(e.target.value)}
+          placeholder="Outline your priorities and what you intend to deliver if elected." />
+        <p className="text-xs text-muted-foreground text-right">
+          {manifesto.trim().split(/\s+/).filter(Boolean).length} / 500 words
+        </p>
       </Card>
 
       <Card className="p-6 space-y-4">
@@ -242,8 +329,8 @@ const MemberApplyAspirant = () => {
       <Card className="p-6 space-y-4">
         <h3 className="font-bold flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> Declaration *</h3>
         <p className="text-sm text-muted-foreground">
-          I declare that I am of sound mind, free from disqualifying convictions, and committed to
-          contesting this position under the values of The Consensus.
+          I declare that the information provided is true and accurate. I understand that providing
+          false information may lead to disqualification.
         </p>
         <div>
           <Label>Sign by typing your full name</Label>

@@ -12,6 +12,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Award, ShieldCheck, Upload, CheckCircle2, Clock, XCircle } from "lucide-react";
 import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
+const AGENT_ROLES = [
+  "Presiding Officer",
+  "Assistant Presiding Officer",
+  "Poll Clerk",
+  "Security Officer",
+];
+
 interface ExistingApp {
   id: string;
   status: string;
@@ -33,9 +40,11 @@ const MemberApplyAgent = () => {
   const [lga, setLga] = useState("");
   const [ward, setWard] = useState("");
   const [pollingUnit, setPollingUnit] = useState("");
+  const [agentRole, setAgentRole] = useState(AGENT_ROLES[0]);
   const [hasExperience, setHasExperience] = useState(false);
   const [experienceDetails, setExperienceDetails] = useState("");
   const [attendedTraining, setAttendedTraining] = useState(false);
+  const [trainingDate, setTrainingDate] = useState("");
   const [availableVoting, setAvailableVoting] = useState(false);
   const [availableCounting, setAvailableCounting] = useState(false);
   const [idType, setIdType] = useState("National ID (NIN)");
@@ -48,7 +57,7 @@ const MemberApplyAgent = () => {
     supabase.from("agent_recruitment_applications")
       .select("id,status,agent_type,created_at,review_notes")
       .eq("user_id", user.id)
-      .in("agent_type", ["mobilization_agent", "field_agent"])
+      .in("agent_type", ["mobilization_agent", "field_agent", "polling_unit_agent"])
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle()
@@ -76,7 +85,6 @@ const MemberApplyAgent = () => {
     }
     setLoading(true);
 
-    // Upload ID
     const path = `${user.id}/agent-${Date.now()}-${idFile.name}`;
     const { error: upErr } = await supabase.storage.from("agent-recruitment-ids").upload(path, idFile, { upsert: false });
     if (upErr) {
@@ -93,10 +101,12 @@ const MemberApplyAgent = () => {
       lga,
       ward,
       polling_unit: pollingUnit,
-      agent_type: "mobilization_agent",
+      agent_type: "polling_unit_agent",
+      agent_sub_role: agentRole,
       has_previous_experience: hasExperience,
       experience_details: hasExperience ? experienceDetails : null,
       attended_inec_training: attendedTraining,
+      training_date: attendedTraining && trainingDate ? trainingDate : null,
       available_voting_period: availableVoting,
       available_counting: availableCounting,
       id_proof_type: idType,
@@ -112,7 +122,7 @@ const MemberApplyAgent = () => {
       toast({ title: "Application submitted", description: "Admin will review and contact you shortly." });
       const { data } = await supabase.from("agent_recruitment_applications")
         .select("id,status,agent_type,created_at,review_notes")
-        .eq("user_id", user.id).in("agent_type", ["mobilization_agent","field_agent"])
+        .eq("user_id", user.id).in("agent_type", ["mobilization_agent","field_agent","polling_unit_agent"])
         .order("created_at",{ascending:false}).limit(1).maybeSingle();
       if (data) setExisting(data as ExistingApp);
     }
@@ -130,7 +140,7 @@ const MemberApplyAgent = () => {
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <Award className="w-7 h-7 text-emerald-600" />
-          <h2 className="text-2xl font-black">Mobilization Agent Application</h2>
+          <h2 className="text-2xl font-black">Polling Unit Agent Application</h2>
         </div>
         <Card className="p-8 text-center max-w-2xl">
           <SIcon className="w-12 h-12 mx-auto mb-3 text-emerald-600" />
@@ -155,44 +165,71 @@ const MemberApplyAgent = () => {
       <div className="flex items-center gap-3">
         <Award className="w-7 h-7 text-emerald-600" />
         <div>
-          <h2 className="text-2xl font-black">Become a Mobilization Agent</h2>
+          <h2 className="text-2xl font-black">Polling Unit Agent Recruitment</h2>
           <p className="text-sm text-muted-foreground">
-            Apply to coordinate ground operations, member verification, and election-day reporting.
+            Apply to serve at your polling unit on election day under the Consensus.
           </p>
         </div>
       </div>
 
+      {/* 1. Personal Details */}
       <Card className="p-6 space-y-5">
-        <h3 className="font-bold">Personal Details</h3>
+        <h3 className="font-bold">1. Personal Details</h3>
         <div className="grid md:grid-cols-2 gap-4">
-          <div><Label>Full Name *</Label><Input value={fullName} onChange={e => setFullName(e.target.value)} /></div>
+          <div><Label>Name *</Label><Input value={fullName} onChange={e => setFullName(e.target.value)} /></div>
           <div><Label>Email</Label><Input value={email} disabled /></div>
-          <div><Label>Phone *</Label><Input value={phone} onChange={e => setPhone(e.target.value)} /></div>
+          <div><Label>Phone Number *</Label><Input value={phone} onChange={e => setPhone(e.target.value)} /></div>
+        </div>
+        <div>
+          <Label>Local Government / Ward / Polling Unit *</Label>
+          <p className="text-xs text-muted-foreground mb-2">Select the polling unit you can cover on election day.</p>
+          <InecLocationPicker
+            lgaName={lga}
+            wardName={ward}
+            puName={pollingUnit}
+            showPU
+            required
+            onChange={({ lga: l, ward: w, pu }) => { setLga(l); setWard(w); setPollingUnit(pu); }}
+          />
         </div>
       </Card>
 
+      {/* 2. Agent Type */}
       <Card className="p-6 space-y-4">
-        <h3 className="font-bold">Polling Unit Assignment *</h3>
-        <p className="text-xs text-muted-foreground">Select the polling unit you can cover on election day.</p>
-        <InecLocationPicker
-          lgaName={lga}
-          wardName={ward}
-          puName={pollingUnit}
-          showPU
-          required
-          onChange={({ lga: l, ward: w, pu }) => { setLga(l); setWard(w); setPollingUnit(pu); }}
-        />
+        <h3 className="font-bold">2. Agent Type *</h3>
+        <div className="grid md:grid-cols-2 gap-2">
+          {AGENT_ROLES.map(r => (
+            <label key={r} className={`flex items-center gap-2 px-3 py-2 rounded-md border cursor-pointer ${agentRole === r ? "border-emerald-600 bg-emerald-50" : "border-input"}`}>
+              <input type="radio" name="agent-role" value={r} checked={agentRole === r} onChange={() => setAgentRole(r)} />
+              <span className="text-sm">{r}</span>
+            </label>
+          ))}
+        </div>
       </Card>
 
-      <Card className="p-6 space-y-4">
-        <h3 className="font-bold">Experience & Availability</h3>
+      {/* 3. Availability */}
+      <Card className="p-6 space-y-3">
+        <h3 className="font-bold">3. Availability</h3>
+        <div className="flex items-center gap-2">
+          <Checkbox checked={availableVoting} onCheckedChange={v => setAvailableVoting(!!v)} id="av" />
+          <Label htmlFor="av">Available for the entire voting period</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox checked={availableCounting} onCheckedChange={v => setAvailableCounting(!!v)} id="ac" />
+          <Label htmlFor="ac">Available for counting and collation</Label>
+        </div>
+      </Card>
+
+      {/* 4. Experience */}
+      <Card className="p-6 space-y-3">
+        <h3 className="font-bold">4. Experience</h3>
         <div className="flex items-start gap-2">
           <Checkbox checked={hasExperience} onCheckedChange={v => setHasExperience(!!v)} id="exp" className="mt-1" />
           <div className="flex-1">
-            <Label htmlFor="exp">I have previous election or political-party agent experience</Label>
+            <Label htmlFor="exp">I have previous experience as a polling unit agent</Label>
             {hasExperience && (
               <Textarea
-                placeholder="Describe your previous experience…"
+                placeholder="If yes, provide details…"
                 value={experienceDetails}
                 onChange={e => setExperienceDetails(e.target.value)}
                 className="mt-2"
@@ -200,22 +237,26 @@ const MemberApplyAgent = () => {
             )}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Checkbox checked={attendedTraining} onCheckedChange={v => setAttendedTraining(!!v)} id="tr" />
-          <Label htmlFor="tr">I have attended INEC or party agent training</Label>
-        </div>
-        <div className="flex items-center gap-2">
-          <Checkbox checked={availableVoting} onCheckedChange={v => setAvailableVoting(!!v)} id="av" />
-          <Label htmlFor="av">I am available throughout the voting period</Label>
-        </div>
-        <div className="flex items-center gap-2">
-          <Checkbox checked={availableCounting} onCheckedChange={v => setAvailableCounting(!!v)} id="ac" />
-          <Label htmlFor="ac">I am available to stay through counting and result collation</Label>
-        </div>
       </Card>
 
+      {/* 5. Training */}
+      <Card className="p-6 space-y-3">
+        <h3 className="font-bold">5. Training</h3>
+        <div className="flex items-center gap-2">
+          <Checkbox checked={attendedTraining} onCheckedChange={v => setAttendedTraining(!!v)} id="tr" />
+          <Label htmlFor="tr">I have attended INEC training</Label>
+        </div>
+        {attendedTraining && (
+          <div className="max-w-xs">
+            <Label>Date of training</Label>
+            <Input type="date" value={trainingDate} onChange={e => setTrainingDate(e.target.value)} />
+          </div>
+        )}
+      </Card>
+
+      {/* 6. Identification */}
       <Card className="p-6 space-y-4">
-        <h3 className="font-bold flex items-center gap-2"><Upload className="w-4 h-4" /> ID Verification *</h3>
+        <h3 className="font-bold flex items-center gap-2"><Upload className="w-4 h-4" /> 6. Identification *</h3>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <Label>ID Type</Label>
@@ -228,7 +269,7 @@ const MemberApplyAgent = () => {
             </select>
           </div>
           <div>
-            <Label>Upload ID (image/PDF, max 10MB)</Label>
+            <Label>Upload ID proof (image/PDF, max 10MB)</Label>
             <Input type="file" accept="image/*,application/pdf"
               onChange={e => {
                 const f = e.target.files?.[0]; if (!f) return;
@@ -240,11 +281,12 @@ const MemberApplyAgent = () => {
         </div>
       </Card>
 
+      {/* Declaration */}
       <Card className="p-6 space-y-4">
         <h3 className="font-bold flex items-center gap-2"><ShieldCheck className="w-4 h-4" /> Declaration *</h3>
         <p className="text-sm text-muted-foreground">
-          I declare that the information provided is true and that I will discharge my duties as
-          a Mobilization Agent of The Consensus with integrity and impartiality.
+          I declare that the information provided is true and accurate. I understand that providing
+          false information may lead to disqualification.
         </p>
         <div>
           <Label>Sign by typing your full name</Label>

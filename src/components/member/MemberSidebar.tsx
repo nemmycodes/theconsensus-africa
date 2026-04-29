@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard, FileText, Calendar,
   MessageSquare, Bell, User, Settings, ChevronLeft, LogOut,
-  Award, ShieldCheck,
+  Award, ShieldCheck, HeartHandshake,
 } from "lucide-react";
 
 interface MemberSidebarProps {
@@ -17,8 +17,9 @@ const menuItems = [
   { id: "report", label: "Submit Report", icon: FileText },
   { id: "events", label: "Events", icon: Calendar },
   { id: "forum", label: "Community Forum", icon: MessageSquare },
-  { id: "apply-agent", label: "Become an Agent", icon: Award },
-  { id: "apply-aspirant", label: "Aspirant Application", icon: ShieldCheck },
+  { id: "apply-agent", label: "Polling Unit Agent", icon: Award },
+  { id: "apply-aspirant", label: "Elective Office", icon: ShieldCheck },
+  { id: "apply-volunteer", label: "Volunteer", icon: HeartHandshake },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "profile", label: "My Profile", icon: User },
   { id: "settings", label: "Settings", icon: Settings },

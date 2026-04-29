@@ -15,6 +15,7 @@ import MemberSettings from "@/components/member/MemberSettings";
 import MemberNotifications from "@/components/member/MemberNotifications";
 import MemberApplyAgent from "@/components/member/MemberApplyAgent";
 import MemberApplyAspirant from "@/components/member/MemberApplyAspirant";
+import MemberApplyVolunteer from "@/components/member/MemberApplyVolunteer";
 import { useEffect } from "react";
 
 const MemberDashboard = () => {
@@ -56,6 +57,7 @@ const MemberDashboard = () => {
       case "forum": return <MemberForum />;
       case "apply-agent": return <MemberApplyAgent />;
       case "apply-aspirant": return <MemberApplyAspirant />;
+      case "apply-volunteer": return <MemberApplyVolunteer />;
       case "notifications": return <MemberNotifications />;
       case "profile": return <MemberProfile />;
       case "settings": return <MemberSettings />;
