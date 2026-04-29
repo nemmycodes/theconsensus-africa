@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard, Users, Shield, Radio, BarChart3, Calendar,
   FileText, MessageSquare, Image, Bell, Settings, ChevronLeft, LogOut,
+  ClipboardCheck,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -15,6 +16,7 @@ const menuItems = [
   { id: "overview", label: "Dashboard Overview", icon: LayoutDashboard },
   { id: "users", label: "Users", icon: Users },
   { id: "agents", label: "Agents", icon: Shield },
+  { id: "applications", label: "Applications", icon: ClipboardCheck },
   { id: "situation", label: "Situation Room", icon: Radio },
   { id: "election", label: "Election Collation", icon: BarChart3 },
   { id: "events", label: "Events & Activities", icon: Calendar },
