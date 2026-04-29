@@ -66,7 +66,7 @@ const HeroSection = () => {
   const heading = content?.heading || "EMPOWERING NIGERIA'S YOUTH FOR A NEW ERA OF LEADERSHIP";
   const highlightWord = content?.highlight_word || "YOUTH";
   const paragraph1 = content?.paragraph1 || "The Consensus is a non-partisan civic and economic empowerment movement organizing Gen Z and young Millennial into a structured community focused on increasing economic freedom, strengthening political consciousness, and building a future defined by competence, integrity, and shared prosperity.";
-  const paragraph2 = content?.paragraph2 || "A non-partisan movement organizing Gen Z and Millennials into a community built on economic freedom, political consciousness, and shared prosperity.";
+  const paragraph2 = content?.paragraph2 || "We believe that when young people are economically empowered, families are stabilized, mothers are strengthened, and communities move forward. The movement begins with the Central Zone of Plateau State, building a verified digital community and scalable infrastructure ready for statewide expansion.";
   const mentorName = content?.mentor_name || "Chief Kefas Ropshik Wungak";
   const tagline = content?.tagline || "Join the movement. Build your economic power. Shape the future.";
   const heroBg = content?.hero_bg_url || heroBgFallback;
