@@ -461,19 +461,12 @@ const Onboarding = () => {
                 </div>
               )}
               {step === 3 && (
-                <>
-                  <div className="space-y-2">
-                    <Label>Local Government Area (LGA)</Label>
-                    <select value={lga} onChange={(e) => setLga(e.target.value)} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                      <option value="">Select LGA</option>
-                      {LGA_OPTIONS.map((l) => <option key={l} value={l}>{l}</option>)}
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Ward (optional)</Label>
-                    <Input placeholder="Your ward" value={ward} onChange={(e) => setWard(e.target.value)} />
-                  </div>
-                </>
+                <InecLocationPicker
+                  lgaName={lga}
+                  wardName={ward}
+                  required
+                  onChange={({ lga: l, ward: w }) => { setLga(l); setWard(w); }}
+                />
               )}
             </div>
 
