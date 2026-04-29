@@ -391,16 +391,12 @@ const AdminAgents = () => {
                 <Input type="date" value={editForm.dob} onChange={(e) => setEditForm({ ...editForm, dob: e.target.value })} />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label>LGA</Label>
-                <Input value={editForm.lga} onChange={(e) => setEditForm({ ...editForm, lga: e.target.value })} />
-              </div>
-              <div className="space-y-1.5">
-                <Label>Ward</Label>
-                <Input value={editForm.ward} onChange={(e) => setEditForm({ ...editForm, ward: e.target.value })} />
-              </div>
-            </div>
+            <InecLocationPicker
+              lgaName={editForm.lga}
+              wardName={editForm.ward}
+              onChange={({ lga, ward }) => setEditForm({ ...editForm, lga, ward })}
+              labels={{ lga: "Assigned LGA", ward: "Assigned Ward" }}
+            />
             <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={handleEditSave} disabled={saving}>
               {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
               {saving ? "Saving…" : "Save Changes"}
