@@ -41,6 +41,12 @@ const impactRoles = [
     features: ["Voting unit coordination", "Member verification", "Strategy meetings"],
     highlight: true,
   },
+  {
+    title: "Aspirant",
+    description: "For those aspiring to elective positions under the Consensus party. Step forward to lead.",
+    features: ["Candidate vetting", "Campaign support", "Policy alignment"],
+    highlight: false,
+  },
 ];
 
 const LGA_OPTIONS = [
