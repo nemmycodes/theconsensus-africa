@@ -175,6 +175,7 @@ const ElectionForm = () => {
         election_type: dbElectionType as any,
         election_date: electionDate || new Date().toISOString().slice(0, 10),
         state: state || "Plateau",
+        senatorial_zone: senatorialZone || null,
         lga: lga || "Unknown",
         ward: ward || "Unknown",
         polling_unit: pollingUnit || "Unknown",
