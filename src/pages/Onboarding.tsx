@@ -267,7 +267,7 @@ const Onboarding = () => {
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   {role.title === "Volunteer" && <Users className="w-7 h-7 text-primary" />}
                   {role.title === "Agent" && <Award className="w-7 h-7 text-primary" />}
-                  {role.title === "Lead / Delegate" && <ShieldCheck className="w-7 h-7 text-primary" />}
+                  {role.title === "Aspirant" && <ShieldCheck className="w-7 h-7 text-primary" />}
                 </div>
                 <h3 className="text-lg font-bold mb-3">{role.title}</h3>
                 <p className="text-sm text-muted-foreground mb-6">{role.description}</p>
