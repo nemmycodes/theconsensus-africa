@@ -179,6 +179,20 @@ const HeroSection = () => {
               {renderHeading()}
             </motion.h1>
 
+            {/* Single sharpened value-prop line (clarity over volume) */}
+            <motion.p
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={3}
+              className="text-base sm:text-lg lg:text-xl text-foreground/90 font-medium max-w-xl mx-auto lg:mx-0"
+            >
+              A non-partisan movement organizing Gen Z and young Millennials into a community
+              built on <span className="text-primary font-semibold">economic freedom</span>,{" "}
+              <span className="text-primary font-semibold">political consciousness</span>, and{" "}
+              <span className="text-primary font-semibold">shared prosperity</span>.
+            </motion.p>
+
             {/* Supporting paragraph — hidden on small screens to reduce noise */}
             <motion.p
               variants={fadeUp}
