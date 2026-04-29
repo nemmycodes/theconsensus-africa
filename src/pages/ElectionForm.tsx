@@ -299,35 +299,20 @@ const ElectionForm = () => {
                     className="bg-secondary"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label>State</Label>
-                  <select
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <option value="">Select State</option>
-                    {NIGERIAN_STATES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="space-y-2 md:col-span-1">
-                  {/* LGA picker integrated below alongside Ward + PU */}
-                </div>
               </div>
 
               <div className="mt-5">
-                <InecLocationPicker
-                  lgaName={lga}
-                  wardName={ward}
-                  puName={pollingUnit}
+                <Label className="mb-3 block">Location Filter (cascading)</Label>
+                <ElectionLocationFilter
+                  value={{ state, senatorialZone, lga, ward, pu: pollingUnit }}
                   showPU
                   required
-                  onChange={({ lga: l, ward: w, pu }) => {
-                    setLga(l);
-                    setWard(w);
-                    setPollingUnit(pu);
+                  onChange={(v) => {
+                    setState(v.state);
+                    setSenatorialZone(v.senatorialZone);
+                    setLga(v.lga);
+                    setWard(v.ward);
+                    setPollingUnit(v.pu);
                   }}
                 />
               </div>
