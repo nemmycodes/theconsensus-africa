@@ -10,6 +10,7 @@ import { ArrowLeft, ArrowRight, Check, User, Heart, MapPin, Mail, Users, Graduat
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import joinusHero from "@/assets/joinus-hero.jpg";
+import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const membershipTypes = [
   { icon: Users, title: "Gen Z & Young Millennials", description: "The vibrant heart of Africa's digital and social transformation." },
