@@ -58,6 +58,7 @@ const ElectionForm = () => {
   const [centerName, setCenterName] = useState("");
   const [agentCode, setAgentCode] = useState("");
   const [state, setState] = useState("");
+  const [senatorialZone, setSenatorialZone] = useState("");
   const [lga, setLga] = useState("");
   const [electionType, setElectionType] = useState("Presidential");
 
