@@ -256,17 +256,44 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
       return;
     }
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({ email, password });
+
+    // Try to sign up first
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/kef-cares/dashboard` },
+    });
+
+    let activeUserId: string | null = data?.user?.id ?? null;
+
     if (error) {
-      setLoading(false);
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-      return;
+      const msg = error.message.toLowerCase();
+      // If the email is already registered on the platform, try to sign in instead so the user can attach KEF-Cares to their existing account
+      if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
+        const { data: signInData, error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+        if (signInErr) {
+          setLoading(false);
+          toast({
+            title: "Email already in use",
+            description: "An account with this email already exists. Enter the existing password to link it to KEF-CARES, or use a different email.",
+            variant: "destructive",
+          });
+          return;
+        }
+        activeUserId = signInData.user.id;
+        toast({ title: "Existing account linked", description: "We've connected your existing account to KEF-CARES." });
+      } else {
+        setLoading(false);
+        toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+        return;
+      }
     }
-    if (data.user) {
+
+    if (activeUserId) {
       // Self-assign kef_user role (allowed by RLS for the authenticated user)
       const { error: roleErr } = await supabase
         .from("user_roles")
-        .insert({ user_id: data.user.id, role: "kef_user" });
+        .insert({ user_id: activeUserId, role: "kef_user" });
       setLoading(false);
       if (roleErr && !roleErr.message.toLowerCase().includes("duplicate")) {
         toast({
@@ -276,11 +303,12 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
         });
         return;
       }
-      setUserId(data.user.id);
-      toast({ title: "Account created!", description: "Now complete your KEF-CARES registration form." });
+      setUserId(activeUserId);
+      toast({ title: "Account ready!", description: "Now complete your KEF-CARES registration form." });
       setStep("form");
     } else {
       setLoading(false);
+      toast({ title: "Check your email", description: "Please confirm your email to continue." });
     }
   };
 
