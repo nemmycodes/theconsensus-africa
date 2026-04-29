@@ -21,16 +21,40 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
         toast({ title: "Login failed", description: error.message, variant: "destructive" });
         return;
       }
 
+      // Verify the user actually has admin or super_admin role before redirecting
+      const userId = data.user?.id;
+      if (!userId) {
+        toast({ title: "Login failed", description: "Could not verify session.", variant: "destructive" });
+        return;
+      }
+
+      const [adminRes, superRes] = await Promise.all([
+        supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "super_admin" }),
+      ]);
+
+      const isAdminUser = !!adminRes.data || !!superRes.data;
+
+      if (!isAdminUser) {
+        await supabase.auth.signOut();
+        toast({
+          title: "Access denied",
+          description: "This account does not have administrator privileges.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       toast({ title: "Welcome, Administrator" });
-      // Role validation now happens in /admin guard via useAuth
-      navigate("/admin", { replace: true });
+      // Hard reload so AuthProvider picks up roles cleanly before the guard runs
+      window.location.href = "/admin";
     } catch {
       toast({
         title: "Login error",
