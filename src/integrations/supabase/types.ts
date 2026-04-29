@@ -558,6 +558,94 @@ export type Database = {
         }
         Relationships: []
       }
+      inec_lgas: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          name: string
+          state: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          name: string
+          state?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          state?: string
+        }
+        Relationships: []
+      }
+      inec_polling_units: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          name: string
+          ward_id: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          name: string
+          ward_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          name?: string
+          ward_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inec_polling_units_ward_id_fkey"
+            columns: ["ward_id"]
+            isOneToOne: false
+            referencedRelation: "inec_wards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inec_wards: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          lga_id: string
+          name: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          lga_id: string
+          name: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          lga_id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inec_wards_lga_id_fkey"
+            columns: ["lga_id"]
+            isOneToOne: false
+            referencedRelation: "inec_lgas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       kef_cares_registrations: {
         Row: {
           artisan_skills: string[] | null

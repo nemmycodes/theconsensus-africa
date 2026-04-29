@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const NIGERIAN_STATES = [
   "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue",
@@ -318,16 +319,24 @@ const ElectionForm = () => {
                     ))}
                   </select>
                 </div>
-                <div className="space-y-2">
-                  <Label>LGA</Label>
-                  <select
-                    value={lga}
-                    onChange={(e) => setLga(e.target.value)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    <option value="">Select LGA</option>
-                  </select>
+                <div className="space-y-2 md:col-span-1">
+                  {/* LGA picker integrated below alongside Ward + PU */}
                 </div>
+              </div>
+
+              <div className="mt-5">
+                <InecLocationPicker
+                  lgaName={lga}
+                  wardName={ward}
+                  puName={pollingUnit}
+                  showPU
+                  required
+                  onChange={({ lga: l, ward: w, pu }) => {
+                    setLga(l);
+                    setWard(w);
+                    setPollingUnit(pu);
+                  }}
+                />
               </div>
 
               <div className="mt-5">
@@ -371,16 +380,7 @@ const ElectionForm = () => {
                 <h2 className="text-lg font-heading font-bold">2. Voting Statistics</h2>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-5 mb-5">
-                <div className="space-y-2">
-                  <Label>Ward</Label>
-                  <Input placeholder="Enter Ward" value={ward} onChange={(e) => setWard(e.target.value)} />
-                </div>
-                <div className="space-y-2">
-                  <Label>Polling Unit Number</Label>
-                  <Input placeholder="PU-001" value={pollingUnit} onChange={(e) => setPollingUnit(e.target.value)} />
-                </div>
-              </div>
+              <p className="text-xs text-muted-foreground mb-5">Ward: <strong>{ward || "—"}</strong> · PU: <strong>{pollingUnit || "—"}</strong> (set in Section 1)</p>
               <div className="grid md:grid-cols-3 gap-5">
                 <div className="space-y-2">
                   <Label>Registered Voters</Label>

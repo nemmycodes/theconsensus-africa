@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import InecLocationPicker from "@/components/shared/InecLocationPicker";
 import {
   Dialog,
   DialogContent,
@@ -257,20 +258,16 @@ const AdminAgents = () => {
                   </button>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label>Phone</Label>
-                  <Input placeholder="Phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-                </div>
-                <div className="space-y-1.5">
-                  <Label>LGA</Label>
-                  <Input placeholder="Local Govt Area" value={form.lga} onChange={(e) => setForm({ ...form, lga: e.target.value })} />
-                </div>
-              </div>
               <div className="space-y-1.5">
-                <Label>Ward</Label>
-                <Input placeholder="Assigned ward" value={form.ward} onChange={(e) => setForm({ ...form, ward: e.target.value })} />
+                <Label>Phone</Label>
+                <Input placeholder="Phone number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
               </div>
+              <InecLocationPicker
+                lgaName={form.lga}
+                wardName={form.ward}
+                onChange={({ lga, ward }) => setForm({ ...form, lga, ward })}
+                labels={{ lga: "Assigned LGA", ward: "Assigned Ward" }}
+              />
               <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={handleCreate} disabled={creating}>
                 {creating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                 {creating ? "Creating…" : "Create Agent Account"}
@@ -394,16 +391,12 @@ const AdminAgents = () => {
                 <Input type="date" value={editForm.dob} onChange={(e) => setEditForm({ ...editForm, dob: e.target.value })} />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label>LGA</Label>
-                <Input value={editForm.lga} onChange={(e) => setEditForm({ ...editForm, lga: e.target.value })} />
-              </div>
-              <div className="space-y-1.5">
-                <Label>Ward</Label>
-                <Input value={editForm.ward} onChange={(e) => setEditForm({ ...editForm, ward: e.target.value })} />
-              </div>
-            </div>
+            <InecLocationPicker
+              lgaName={editForm.lga}
+              wardName={editForm.ward}
+              onChange={({ lga, ward }) => setEditForm({ ...editForm, lga, ward })}
+              labels={{ lga: "Assigned LGA", ward: "Assigned Ward" }}
+            />
             <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={handleEditSave} disabled={saving}>
               {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
               {saving ? "Saving…" : "Save Changes"}
