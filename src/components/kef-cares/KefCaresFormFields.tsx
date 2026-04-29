@@ -3,8 +3,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
-const lgaOptions = ["Pankshin", "Mangu", "Bokkos", "Kanam", "Kanke", "Others"];
 const genderOptions = ["Male", "Female", "Prefer not to say", "Others"];
 const maritalStatusOptions = ["Married", "Divorced", "Widow", "Single"];
 const socialStatusOptions = ["Orphan", "Physically Challenged", "Internally Displaced Person", "Homeless", "Working", "Not Working"];
