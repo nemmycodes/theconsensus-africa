@@ -104,7 +104,7 @@ const Onboarding = () => {
               <Button
                 size="lg"
                 className="group gap-2 font-bold text-base btn-shine hover-glow w-full sm:w-auto tap-target shadow-lg shadow-primary/30"
-                onClick={() => setShowForm(true)}
+                onClick={scrollToRoles}
               >
                 JOIN THE MOVEMENT
                 <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
@@ -113,9 +113,7 @@ const Onboarding = () => {
                 size="lg"
                 variant="outline"
                 className="hidden sm:inline-flex w-full sm:w-auto tap-target border-white/20 text-white hover:bg-white/10"
-                onClick={() => {
-                  document.getElementById("impact-roles")?.scrollIntoView({ behavior: "smooth" });
-                }}
+                onClick={scrollToRoles}
               >
                 Explore Roles
               </Button>
@@ -149,7 +147,7 @@ const Onboarding = () => {
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
             <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
             <p className="text-xs text-primary font-semibold mt-3 uppercase tracking-wider">
-              First, register as a member below. After signup, apply for a specialised role from your dashboard.
+              Choose one role, complete its form first, then create your account.
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -184,10 +182,10 @@ const Onboarding = () => {
                 </ul>
                 <p className="text-[11px] text-muted-foreground mb-3 italic">
                   {role.title === "Volunteer"
-                    ? "Available to every member by default."
+                    ? "Fill the volunteer form before account creation."
                     : role.title === "Agent"
-                    ? "Apply from your dashboard after registering."
-                    : "Apply from your dashboard after registering."}
+                    ? "Fill the polling unit agent form before account creation."
+                    : "Fill the aspirant nomination form before account creation."}
                 </p>
                 <Button
                   variant={role.highlight ? "default" : "outline"}
