@@ -52,10 +52,15 @@ const KefCaresFormFields = ({ form, setForm, toggleArrayItem }: KefCaresFormFiel
       <fieldset className="space-y-4">
         <legend className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 border-b pb-2 mb-4 w-full">2. Location Information (Central Zone)</legend>
         <p className="text-sm text-muted-foreground">State: <strong>Plateau State</strong> | Zone: <strong>Central Zone</strong></p>
+        <InecLocationPicker
+          lgaName={form.lga}
+          wardName={form.ward}
+          puName={form.polling_unit}
+          showPU
+          required
+          onChange={({ lga, ward, pu }) => setForm(p => ({ ...p, lga, ward, polling_unit: pu }))}
+        />
         <div className="grid md:grid-cols-2 gap-4">
-          <div><Label>LGA *</Label><Select value={form.lga} onValueChange={v => setForm(p => ({ ...p, lga: v }))}><SelectTrigger><SelectValue placeholder="Select LGA" /></SelectTrigger><SelectContent>{lgaOptions.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent></Select></div>
-          <div><Label>Ward</Label><Input value={form.ward} onChange={e => setForm(p => ({ ...p, ward: e.target.value }))} /></div>
-          <div><Label>Polling Unit Name</Label><Input value={form.polling_unit} onChange={e => setForm(p => ({ ...p, polling_unit: e.target.value }))} /></div>
           <div><Label>Community / Settlement</Label><Input value={form.community} onChange={e => setForm(p => ({ ...p, community: e.target.value }))} /></div>
         </div>
       </fieldset>
