@@ -1,16 +1,9 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Check, User, Heart, MapPin, Mail, Users, GraduationCap, Briefcase, Palette, Globe, ShieldCheck, TrendingUp, MessageSquare, Award, Camera } from "lucide-react";
+import { ArrowRight, Check, Users, GraduationCap, Briefcase, Palette, Globe, ShieldCheck, TrendingUp, MessageSquare, Award } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import joinusHero from "@/assets/joinus-hero.jpg";
-import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const membershipTypes = [
   { icon: Users, title: "Gen Z & Young Millennials", description: "The vibrant heart of Africa's digital and social transformation." },
@@ -50,103 +43,9 @@ const impactRoles = [
   },
 ];
 
-const LGA_OPTIONS = [
-  "Jos North", "Jos South", "Jos East", "Barkin Ladi", "Bassa", "Bokkos",
-  "Kanke", "Kanam", "Langtang North", "Langtang South", "Mangu", "Mikang",
-  "Pankshin", "Qua'an Pan", "Riyom", "Shendam", "Wase",
-];
-
-const INTEREST_OPTIONS = [
-  "Youth Empowerment", "Economic Development", "Education", "Healthcare",
-  "Security & Peace", "Agriculture", "Infrastructure", "Governance",
-  "Technology & Innovation", "Culture & Tourism",
-];
-
-const steps = [
-  { label: "Account", icon: Mail },
-  { label: "Personal", icon: User },
-  { label: "Interests", icon: Heart },
-  { label: "Location", icon: MapPin },
-];
-
 const Onboarding = () => {
-  const [step, setStep] = useState(0);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [dob, setDob] = useState("");
-  const [interests, setInterests] = useState<string[]>([]);
-  const [lga, setLga] = useState("");
-  const [ward, setWard] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-
-  const toggleInterest = (interest: string) => {
-    setInterests((prev) => prev.includes(interest) ? prev.filter((i) => i !== interest) : [...prev, interest]);
-  };
-
-  const canProceed = () => {
-    switch (step) {
-      case 0: return email.length > 0 && password.length >= 6;
-      case 1: return fullName.length > 0;
-      case 2: return interests.length > 0;
-      case 3: return lga.length > 0;
-      default: return true;
-    }
-  };
-
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      toast({ title: "File too large", description: "Profile picture must be less than 5MB.", variant: "destructive" });
-      return;
-    }
-    setAvatarFile(file);
-    setAvatarPreview(URL.createObjectURL(file));
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName, phone, dob, interests, lga, ward },
-        emailRedirectTo: window.location.origin,
-      },
-    });
-
-    if (error) {
-      toast({ title: "Signup failed", description: error.message, variant: "destructive" });
-      setLoading(false);
-      return;
-    }
-
-    // Upload avatar if provided
-    if (avatarFile && data.user) {
-      const ext = avatarFile.name.split(".").pop();
-      const filePath = `${data.user.id}/avatar.${ext}`;
-      const { error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(filePath, avatarFile, { upsert: true });
-
-      if (!uploadError) {
-        const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(filePath);
-        await supabase.from("profiles").update({ avatar_url: publicUrl }).eq("user_id", data.user.id);
-      }
-    }
-
-    toast({ title: "Welcome!", description: "Check your email to confirm your account." });
-    navigate("/");
-    setLoading(false);
-  };
+  const scrollToRoles = () => document.getElementById("impact-roles")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <div className="min-h-screen bg-background">
