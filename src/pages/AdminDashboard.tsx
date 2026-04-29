@@ -54,6 +54,7 @@ const AdminDashboard = () => {
       case "overview": return <AdminOverview />;
       case "users": return <AdminUsers />;
       case "agents": return <AdminAgents />;
+      case "applications": return <AdminApplications />;
       case "situation": return <AdminSituationRoom />;
       case "election": return <AdminElectionCollation />;
       case "events": return <AdminEvents />;
