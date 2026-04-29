@@ -243,12 +243,15 @@ const Onboarding = () => {
         </div>
       </section>
 
-      {/* Choose Your Impact */}
+      {/* Choose Your Impact - informational only; everyone signs up first */}
       <section id="impact-roles" className="py-20 px-4 lg:px-8">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-4">
             <h2 className="text-3xl md:text-4xl font-black">Choose Your Impact</h2>
             <p className="text-muted-foreground mt-2">Every role matters in the Consensus movement.</p>
+            <p className="text-xs text-primary font-semibold mt-3 uppercase tracking-wider">
+              First, register as a member below. After signup, apply for a specialised role from your dashboard.
+            </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {impactRoles.map((role, i) => (
@@ -280,12 +283,19 @@ const Onboarding = () => {
                     </li>
                   ))}
                 </ul>
+                <p className="text-[11px] text-muted-foreground mb-3 italic">
+                  {role.title === "Volunteer"
+                    ? "Available to every member by default."
+                    : role.title === "Agent"
+                    ? "Apply from your dashboard after registering."
+                    : "Apply from your dashboard after registering."}
+                </p>
                 <Button
                   variant={role.highlight ? "default" : "outline"}
                   className="w-full font-bold"
-                  onClick={() => role.title === "Agent" ? navigate("/agent-login") : setShowForm(true)}
+                  onClick={() => setShowForm(true)}
                 >
-                  Select {role.title.split(" ")[0]}
+                  Register to apply
                 </Button>
               </motion.div>
             ))}
