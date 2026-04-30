@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Users, UserCheck, CalendarCheck, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import aboutMarket from "@/assets/about-market.jpg";
 import aboutYouthCard from "@/assets/about-youth-card.jpg";
 
@@ -136,8 +137,8 @@ const AboutSection = () => {
             </motion.ul>
 
             <motion.div variants={fadeInUp}>
-              <Button size="lg" className="font-semibold mt-2">
-                Read Our Manifesto
+              <Button asChild size="lg" className="font-semibold mt-2">
+                <Link to="/manifesto">Read Our Manifesto</Link>
               </Button>
             </motion.div>
           </motion.div>

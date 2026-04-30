@@ -368,7 +368,7 @@ const Discuss = () => {
             </h2>
             <div className="flex items-center justify-center gap-4 mt-8">
               <Button size="lg" className="font-bold" onClick={() => navigate("/join")}>Join the Dialogue</Button>
-              <Button size="lg" variant="outline" className="font-bold" onClick={() => navigate("/about")}>Read the Manifesto</Button>
+              <Button size="lg" variant="outline" className="font-bold" onClick={() => navigate("/manifesto")}>Read the Manifesto</Button>
             </div>
             <p className="text-sm text-muted-foreground mt-4">Join 12,000+ members organizing for change.</p>
           </motion.div>

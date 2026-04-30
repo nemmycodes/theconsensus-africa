@@ -31,6 +31,7 @@ import MemberDashboard from "./pages/MemberDashboard";
 import SuperAdminLogin from "./pages/SuperAdminLogin";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import KefCares from "./pages/KefCares";
+import Manifesto from "./pages/Manifesto";
 import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
 
@@ -66,6 +67,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
+            <Route path="/manifesto" element={<Manifesto />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<LoginPortal />} />
             <Route path="/auth" element={<Auth />} />
