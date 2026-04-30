@@ -86,12 +86,23 @@ const AdminElectionCollation = () => {
   };
 
   const updatePrimariesStatus = async (id: string, status: PrimariesRow["status"]) => {
+    const verified_at = status === "verified" ? new Date().toISOString() : null;
+    // Optimistic local update so UI reflects change immediately
+    setPrimaries((prev) => prev.map((p) => (p.id === id ? { ...p, status, verified_at } : p)));
     const { error } = await supabase
       .from("primaries_collation")
-      .update({ status, verified_at: status === "verified" ? new Date().toISOString() : null })
-      .eq("id", id);
-    if (error) toast.error(`Failed to ${status} entry`);
-    else toast.success(`Entry ${status}`);
+      .update({ status, verified_at })
+      .eq("id", id)
+      .select();
+    if (error) {
+      toast.error(`Failed to ${status} entry: ${error.message}`);
+      // Revert by refetching
+      fetchPrimaries();
+    } else {
+      toast.success(`Entry ${status}`);
+      // Ensure server-truth is loaded (covers realtime hiccups)
+      fetchPrimaries();
+    }
   };
 
   const viewEvidence = async (path: string) => {
