@@ -166,6 +166,14 @@ const AgentLogin = () => {
               </Button>
             </form>
 
+            {/* Divider + Google */}
+            <div className="flex items-center gap-4 my-6">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground tracking-widest uppercase">Or continue with</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+            <GoogleSignInButton label="Continue with Google" className="w-full" redirectTo={`${window.location.origin}/agent`} />
+
             {/* Trouble box */}
             <div className="mt-8 p-5 bg-card border border-border rounded-xl">
               <div className="flex items-start gap-3">
