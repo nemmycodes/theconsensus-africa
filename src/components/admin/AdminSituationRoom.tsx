@@ -377,13 +377,15 @@ const AdminSituationRoom = () => {
 
           {/* Reports list */}
           <div className="space-y-3">
-            {filteredReports.length === 0 ? (
+            {submissionGroups.length === 0 ? (
               <p className="text-center text-gray-500 py-12 border border-dashed border-gray-200 rounded-xl">
                 No {verificationFilter === "all" ? "" : verificationFilter} election reports yet.
               </p>
             ) : (
-              filteredReports.map((r) => (
-                <div key={r.id} className="bg-white border border-gray-200 rounded-xl p-4">
+              submissionGroups.map((group) => {
+                const r = group.primary;
+                return (
+                <div key={group.key} className="bg-white border border-gray-200 rounded-xl p-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -402,11 +404,32 @@ const AdminSituationRoom = () => {
                         {r.status === "rejected" && <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700">REJECTED</span>}
                       </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-700 mb-2">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-700 mb-3">
                         <div><span className="text-gray-400 uppercase tracking-wider text-[10px] font-bold block">Date</span>{format(new Date(r.election_date), "MMM d, yyyy")}</div>
-                        {r.party && <div><span className="text-gray-400 uppercase tracking-wider text-[10px] font-bold block">Party</span>{r.party}</div>}
-                        {r.candidate_name && <div><span className="text-gray-400 uppercase tracking-wider text-[10px] font-bold block">Candidate</span>{r.candidate_name}</div>}
-                        <div><span className="text-gray-400 uppercase tracking-wider text-[10px] font-bold block">Votes</span><span className="font-bold">{r.votes_recorded.toLocaleString()}</span></div>
+                        <div><span className="text-gray-400 uppercase tracking-wider text-[10px] font-bold block">Registered Voters</span>{r.registered_voters?.toLocaleString() || "—"}</div>
+                        <div><span className="text-gray-400 uppercase tracking-wider text-[10px] font-bold block">Total Votes Cast</span>{r.total_votes_cast?.toLocaleString() || "—"}</div>
+                        <div><span className="text-gray-400 uppercase tracking-wider text-[10px] font-bold block">Party Votes</span><span className="font-bold">{group.totalPartyVotes.toLocaleString()}</span></div>
+                      </div>
+
+                      <div className="overflow-x-auto rounded-lg border border-gray-100 mb-3">
+                        <table className="w-full text-xs">
+                          <thead className="bg-gray-50 text-[10px] uppercase tracking-wider text-gray-500">
+                            <tr>
+                              <th className="text-left px-3 py-2">Party</th>
+                              <th className="text-left px-3 py-2">Candidate</th>
+                              <th className="text-right px-3 py-2">Votes</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {group.reports.map((item) => (
+                              <tr key={item.id} className="border-t border-gray-100">
+                                <td className="px-3 py-2 font-bold text-gray-800">{item.party || "—"}</td>
+                                <td className="px-3 py-2 text-gray-600">{item.candidate_name || "—"}</td>
+                                <td className="px-3 py-2 text-right font-black text-gray-900">{item.votes_recorded.toLocaleString()}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
 
                       {r.notes && <p className="text-xs text-gray-600 mb-2 italic">"{r.notes}"</p>}
@@ -426,30 +449,15 @@ const AdminSituationRoom = () => {
                         {r.ec8a_url && (
                           <button
                             type="button"
-                            onClick={async (e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              // ec8a_url stores the storage path inside the private "election-evidence" bucket.
-                              // If a full URL was ever saved, just open it. Otherwise sign it on demand.
-                              if (/^https?:\/\//i.test(r.ec8a_url!)) {
-                                window.open(r.ec8a_url!, "_blank", "noopener,noreferrer");
-                                return;
-                              }
-                              const { data, error } = await supabase
-                                .storage
-                                .from("election-evidence")
-                                .createSignedUrl(r.ec8a_url!, 3600);
-                              if (error || !data?.signedUrl) {
-                                alert("Could not open EC8-A: " + (error?.message || "file not found"));
-                                return;
-                              }
-                              window.open(data.signedUrl, "_blank", "noopener,noreferrer");
-                            }}
+                            onClick={() => viewEc8a(r.ec8a_url!)}
                             className="text-emerald-700 hover:underline flex items-center gap-1"
                           >
                             <FileText className="w-3 h-3" /> View EC8-A
                           </button>
                         )}
+                        <button type="button" onClick={() => downloadSubmission(group)} className="text-emerald-700 hover:underline flex items-center gap-1">
+                          <Download className="w-3 h-3" /> Download details
+                        </button>
                         {r.latitude && r.longitude && (
                           <span className="flex items-center gap-1">
                             <MapPin className="w-3 h-3" />
@@ -462,7 +470,7 @@ const AdminSituationRoom = () => {
 
                     {(r.status === "pending" || r.status === "flagged") && (
                       <div className="flex flex-col gap-1 shrink-0">
-                        <Button size="sm" onClick={() => verifyReport(r.id)} className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1 h-8">
+                        <Button size="sm" onClick={() => group.reports.forEach((item) => verifyReport(item.id))} className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1 h-8">
                           <CheckCircle className="w-3.5 h-3.5" /> Verify
                         </Button>
                         {r.status === "pending" && (
@@ -477,7 +485,8 @@ const AdminSituationRoom = () => {
                     )}
                   </div>
                 </div>
-              ))
+                );
+              })
             )}
           </div>
         </>
