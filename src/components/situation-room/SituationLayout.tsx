@@ -41,8 +41,9 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
   const navigate = useNavigate();
   const { user, signOut, isAdmin, isSuperAdmin } = useAuth();
   const isPrivileged = isAdmin || isSuperAdmin;
+  const restrictedKeys: SRTab[] = ["users", "settings", "collation", "reports"];
   const visibleNav = navItems.filter(
-    (n) => (n.key !== "users" && n.key !== "settings") || isPrivileged
+    (n) => !restrictedKeys.includes(n.key) || isPrivileged
   );
   const [now, setNow] = useState(new Date());
   const [confirmLogout, setConfirmLogout] = useState(false);
