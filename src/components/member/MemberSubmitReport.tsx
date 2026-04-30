@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { AlertTriangle, Shield, Eye, CheckCircle } from "lucide-react";
+import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const reportTypes = [
   { id: "incident", label: "Incident Report", desc: "Report security issues, violence, or threats", icon: AlertTriangle, color: "text-amber-600 bg-amber-50" },
