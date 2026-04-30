@@ -71,6 +71,14 @@ const AgentOverview = ({ onTabChange }: { onTabChange: (tab: string) => void }) 
             Welcome back, Agent. Here is your current status for{" "}
             <span className="text-emerald-600 font-semibold">{profile?.ward || "your ward"}</span>.
           </p>
+          {profile?.agent_code && (
+            <p className="text-xs text-gray-500 mt-2">
+              Agent Code:{" "}
+              <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 font-mono font-bold tracking-wide">
+                {profile.agent_code}
+              </span>
+            </p>
+          )}
         </div>
         <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[#0d1f15] text-white text-sm">
           <Clock className="w-4 h-4" />
