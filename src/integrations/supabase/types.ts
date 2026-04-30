@@ -1025,6 +1025,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          agent_code: string | null
           avatar_url: string | null
           created_at: string
           dob: string | null
@@ -1038,6 +1039,7 @@ export type Database = {
           ward: string | null
         }
         Insert: {
+          agent_code?: string | null
           avatar_url?: string | null
           created_at?: string
           dob?: string | null
@@ -1051,6 +1053,7 @@ export type Database = {
           ward?: string | null
         }
         Update: {
+          agent_code?: string | null
           avatar_url?: string | null
           created_at?: string
           dob?: string | null
@@ -1349,6 +1352,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_agent_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
