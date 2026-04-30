@@ -9,7 +9,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   LogOut, User, FileText, Bell, Edit, Save, X, Heart, Target, Home,
-  Settings as SettingsIcon, Lock, Mail
+  Settings as SettingsIcon, Lock, Mail, Camera, MapPin, Briefcase,
+  Calendar, Phone, Sparkles, ImageIcon
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
