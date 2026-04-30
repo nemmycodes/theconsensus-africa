@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { AlertTriangle, Shield, Eye, CheckCircle } from "lucide-react";
+import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const reportTypes = [
   { id: "incident", label: "Incident Report", desc: "Report security issues, violence, or threats", icon: AlertTriangle, color: "text-amber-600 bg-amber-50" },
@@ -82,20 +83,19 @@ const MemberSubmitReport = () => {
           {/* Location */}
           <div className="bg-white rounded-xl border border-gray-200 p-5">
             <h3 className="font-bold text-sm text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2">📍 Location Details</h3>
-            <div className="grid grid-cols-3 gap-3">
-              <div>
-                <label className="text-xs font-medium text-gray-500 uppercase">LGA</label>
-                <Input value={lga} onChange={(e) => setLga(e.target.value)} className="mt-1" />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-gray-500 uppercase">Ward</label>
-                <Input value={ward} onChange={(e) => setWard(e.target.value)} placeholder="e.g. Ward 5" className="mt-1" />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-gray-500 uppercase">Polling Unit</label>
-                <Input value={pollingUnit} onChange={(e) => setPollingUnit(e.target.value)} placeholder="e.g. PU-034" className="mt-1" />
-              </div>
-            </div>
+            <InecLocationPicker
+              lgaName={lga}
+              wardName={ward}
+              puName={pollingUnit}
+              showWard
+              showPU
+              onChange={({ lga: l, ward: w, pu }) => {
+                setLga(l);
+                setWard(w);
+                setPollingUnit(pu);
+              }}
+            />
+            <p className="text-[11px] text-gray-400 mt-2">Select your LGA, Ward, and Polling Unit from the official INEC directory.</p>
           </div>
 
           {/* Report Details */}
