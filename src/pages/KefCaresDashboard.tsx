@@ -177,26 +177,32 @@ const KefCaresDashboard = () => {
       </div>
 
       <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6">
-        {!registration ? (
-          <CompleteRegistrationInline user={user} onComplete={fetchRegistration} />
-        ) : (
-          <>
-            {activeTab === "overview" && <OverviewTab registration={registration} />}
-            {activeTab === "profile" && (
-              <ProfileTab
-                registration={registration}
-                form={form}
-                setForm={setForm}
-                editing={editing}
-                setEditing={setEditing}
-                saving={saving}
-                onSave={handleSave}
-              />
-            )}
-            {activeTab === "updates" && <UpdatesTab />}
-            {activeTab === "settings" && <SettingsTab user={user} registration={registration} />}
-          </>
+        {activeTab === "overview" && (
+          <OverviewTab
+            registration={registration}
+            user={user}
+            onGoToProfile={() => setActiveTab("profile")}
+          />
         )}
+        {activeTab === "profile" && (
+          !registration ? (
+            <CompleteRegistrationInline user={user} onComplete={fetchRegistration} />
+          ) : (
+            <ProfileTab
+              registration={registration}
+              setRegistration={setRegistration}
+              form={form}
+              setForm={setForm}
+              editing={editing}
+              setEditing={setEditing}
+              saving={saving}
+              onSave={handleSave}
+              user={user}
+            />
+          )
+        )}
+        {activeTab === "updates" && <UpdatesTab />}
+        {activeTab === "settings" && <SettingsTab user={user} registration={registration} />}
       </div>
     </div>
   );
