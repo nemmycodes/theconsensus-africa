@@ -49,6 +49,8 @@ const MemberApplyAgent = () => {
   const [availableCounting, setAvailableCounting] = useState(false);
   const [idType, setIdType] = useState("National ID (NIN)");
   const [idFile, setIdFile] = useState<File | null>(null);
+  const [portraitFile, setPortraitFile] = useState<File | null>(null);
+  const [portraitPreview, setPortraitPreview] = useState<string>("");
   const [signature, setSignature] = useState("");
 
   useEffect(() => {
