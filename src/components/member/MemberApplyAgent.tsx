@@ -294,6 +294,36 @@ const MemberApplyAgent = () => {
             {idFile && <p className="text-xs text-emerald-600 mt-1">✓ {idFile.name}</p>}
           </div>
         </div>
+
+        <div className="border-t pt-4">
+          <h4 className="font-semibold flex items-center gap-2 mb-1"><Camera className="w-4 h-4 text-emerald-600" /> Portrait Photo *</h4>
+          <p className="text-xs text-muted-foreground mb-3">
+            Upload a clear, recent passport-style photo of yourself. The admin team needs to see your face before inviting you for an interview.
+          </p>
+          <div className="flex items-start gap-4">
+            {portraitPreview ? (
+              <img src={portraitPreview} alt="Portrait preview" className="w-24 h-24 rounded-lg object-cover border-2 border-emerald-200 shrink-0" />
+            ) : (
+              <div className="w-24 h-24 rounded-lg bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center shrink-0">
+                <Camera className="w-7 h-7 text-muted-foreground/50" />
+              </div>
+            )}
+            <div className="flex-1">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={e => {
+                  const f = e.target.files?.[0]; if (!f) return;
+                  if (f.size > 5*1024*1024) { toast({title:"Photo too large",description:"Max 5MB",variant:"destructive"}); return; }
+                  setPortraitFile(f);
+                  setPortraitPreview(URL.createObjectURL(f));
+                }}
+              />
+              {portraitFile && <p className="text-xs text-emerald-600 mt-1">✓ {portraitFile.name}</p>}
+              <p className="text-[11px] text-muted-foreground mt-1">JPG or PNG, max 5MB. Face clearly visible, plain background preferred.</p>
+            </div>
+          </div>
+        </div>
       </Card>
 
       {/* Declaration */}
