@@ -595,7 +595,7 @@ const BioBlock = ({ bio, onSave }: { bio: string | null; onSave: (b: string) => 
   );
 };
 
-const EditableField = ({ label, value, editing, onChange }: { label: string; value: string; editing: boolean; onChange: (v: string) => void }) => {
+const EditableField = ({ label, value, editing, onChange, icon: Icon }: { label: string; value: string; editing: boolean; onChange: (v: string) => void; icon?: any }) => {
   if (editing) {
     return (
       <div className="space-y-1.5">
