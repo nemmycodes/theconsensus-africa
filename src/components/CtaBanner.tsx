@@ -36,7 +36,7 @@ const CtaBanner = () => {
                 size="lg"
                 variant="outline"
                 className="border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 font-semibold px-8"
-                onClick={() => navigate("/election-form")}
+                onClick={() => navigate("/join/role/agent")}
               >
                 Become an Agent
               </Button>
