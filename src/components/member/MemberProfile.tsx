@@ -9,7 +9,11 @@ import { CreditCard, Edit, User, Mail, Phone, Calendar, MapPin, Award, FileText,
 import MemberIdCard from "./MemberIdCard";
 import { toast } from "sonner";
 
-const LGAS = ["Pankshin", "Mangu", "Bokkos", "Kanam", "Kanke"];
+const LGAS = [
+  "Barkin Ladi", "Bassa", "Bokkos", "Jos East", "Jos North", "Jos South",
+  "Kanam", "Kanke", "Langtang North", "Langtang South", "Mangu", "Mikang",
+  "Pankshin", "Qua'an Pan", "Riyom", "Shendam", "Wase",
+];
 
 const MemberProfile = () => {
   const { user } = useAuth();
