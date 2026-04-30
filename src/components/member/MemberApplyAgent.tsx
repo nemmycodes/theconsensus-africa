@@ -125,6 +125,7 @@ const MemberApplyAgent = () => {
       available_counting: availableCounting,
       id_proof_type: idType,
       id_proof_url: path,
+      portrait_photo_url: portraitPath,
       declaration_signature: signature,
       status: "pending",
     } as any);
