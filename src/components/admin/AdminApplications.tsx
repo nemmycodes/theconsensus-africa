@@ -293,6 +293,22 @@ const AdminApplications = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4 text-sm">
+                {portraitUrl && (
+                  <div className="flex items-center gap-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                    <img
+                      src={portraitUrl}
+                      alt={`Portrait of ${selected.full_name}`}
+                      className="w-24 h-24 rounded-lg object-cover border-2 border-emerald-300 shrink-0"
+                    />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-emerald-700 font-bold">Applicant Portrait</p>
+                      <p className="font-semibold text-base text-gray-900">{selected.full_name}</p>
+                      <a href={portraitUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 inline-flex items-center gap-1 mt-1">
+                        Open full size <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  </div>
+                )}
                 <div className="grid grid-cols-2 gap-3">
                   <div><strong>Email:</strong> {selected.email}</div>
                   <div><strong>Phone:</strong> {selected.phone}</div>
