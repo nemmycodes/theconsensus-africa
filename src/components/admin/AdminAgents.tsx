@@ -40,6 +40,7 @@ interface AgentProfile {
   ward: string | null;
   dob: string | null;
   avatar_url: string | null;
+  agent_code: string | null;
   created_at: string;
 }
 
