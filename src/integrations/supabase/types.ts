@@ -1199,6 +1199,7 @@ export type Database = {
       }
       situation_updates: {
         Row: {
+          attachment_url: string | null
           author_id: string
           category: string
           content: string
@@ -1209,6 +1210,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          attachment_url?: string | null
           author_id: string
           category?: string
           content: string
@@ -1219,6 +1221,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          attachment_url?: string | null
           author_id?: string
           category?: string
           content?: string
