@@ -30,6 +30,7 @@ interface App {
   available_counting: boolean;
   id_proof_type: string | null;
   id_proof_url: string;
+  portrait_photo_url: string | null;
   declaration_signature: string;
   status: string;
   review_notes: string | null;
