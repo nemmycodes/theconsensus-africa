@@ -98,6 +98,10 @@ const AdminApplications = () => {
       const { data } = await supabase.storage.from("agent-recruitment-ids").createSignedUrl(app.id_proof_url, 3600);
       setIdUrl(data?.signedUrl || null);
     } else setIdUrl(null);
+    if (app.portrait_photo_url) {
+      const { data } = await supabase.storage.from("agent-recruitment-ids").createSignedUrl(app.portrait_photo_url, 3600);
+      setPortraitUrl(data?.signedUrl || null);
+    } else setPortraitUrl(null);
   };
 
   const openVolunteer = (v: VolunteerApp) => {
