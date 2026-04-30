@@ -1,0 +1,1 @@
+ALTER TABLE public.agent_recruitment_applications ADD COLUMN IF NOT EXISTS portrait_photo_url text;

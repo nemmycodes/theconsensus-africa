@@ -30,6 +30,7 @@ interface App {
   available_counting: boolean;
   id_proof_type: string | null;
   id_proof_url: string;
+  portrait_photo_url: string | null;
   declaration_signature: string;
   status: string;
   review_notes: string | null;
@@ -70,6 +71,7 @@ const AdminApplications = () => {
   const [selectedVol, setSelectedVol] = useState<VolunteerApp | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
   const [idUrl, setIdUrl] = useState<string | null>(null);
+  const [portraitUrl, setPortraitUrl] = useState<string | null>(null);
 
   const fetchAll = async () => {
     const [agentsRes, volsRes] = await Promise.all([
@@ -96,6 +98,10 @@ const AdminApplications = () => {
       const { data } = await supabase.storage.from("agent-recruitment-ids").createSignedUrl(app.id_proof_url, 3600);
       setIdUrl(data?.signedUrl || null);
     } else setIdUrl(null);
+    if (app.portrait_photo_url) {
+      const { data } = await supabase.storage.from("agent-recruitment-ids").createSignedUrl(app.portrait_photo_url, 3600);
+      setPortraitUrl(data?.signedUrl || null);
+    } else setPortraitUrl(null);
   };
 
   const openVolunteer = (v: VolunteerApp) => {
@@ -287,6 +293,22 @@ const AdminApplications = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4 text-sm">
+                {portraitUrl && (
+                  <div className="flex items-center gap-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                    <img
+                      src={portraitUrl}
+                      alt={`Portrait of ${selected.full_name}`}
+                      className="w-24 h-24 rounded-lg object-cover border-2 border-emerald-300 shrink-0"
+                    />
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-emerald-700 font-bold">Applicant Portrait</p>
+                      <p className="font-semibold text-base text-gray-900">{selected.full_name}</p>
+                      <a href={portraitUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-600 inline-flex items-center gap-1 mt-1">
+                        Open full size <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  </div>
+                )}
                 <div className="grid grid-cols-2 gap-3">
                   <div><strong>Email:</strong> {selected.email}</div>
                   <div><strong>Phone:</strong> {selected.phone}</div>

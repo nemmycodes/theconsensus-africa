@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Award, ShieldCheck, Upload, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { Award, ShieldCheck, Upload, CheckCircle2, Clock, XCircle, Camera } from "lucide-react";
 import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const AGENT_ROLES = [
@@ -49,6 +49,8 @@ const MemberApplyAgent = () => {
   const [availableCounting, setAvailableCounting] = useState(false);
   const [idType, setIdType] = useState("National ID (NIN)");
   const [idFile, setIdFile] = useState<File | null>(null);
+  const [portraitFile, setPortraitFile] = useState<File | null>(null);
+  const [portraitPreview, setPortraitPreview] = useState<string>("");
   const [signature, setSignature] = useState("");
 
   useEffect(() => {
@@ -83,12 +85,24 @@ const MemberApplyAgent = () => {
       toast({ title: "ID proof required", description: "Please upload a valid ID document.", variant: "destructive" });
       return;
     }
+    if (!portraitFile) {
+      toast({ title: "Portrait photo required", description: "Please upload a clear portrait photo of yourself.", variant: "destructive" });
+      return;
+    }
     setLoading(true);
 
     const path = `${user.id}/agent-${Date.now()}-${idFile.name}`;
     const { error: upErr } = await supabase.storage.from("agent-recruitment-ids").upload(path, idFile, { upsert: false });
     if (upErr) {
       toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+      setLoading(false);
+      return;
+    }
+
+    const portraitPath = `${user.id}/portrait-${Date.now()}-${portraitFile.name}`;
+    const { error: pErr } = await supabase.storage.from("agent-recruitment-ids").upload(portraitPath, portraitFile, { upsert: false });
+    if (pErr) {
+      toast({ title: "Portrait upload failed", description: pErr.message, variant: "destructive" });
       setLoading(false);
       return;
     }
@@ -111,6 +125,7 @@ const MemberApplyAgent = () => {
       available_counting: availableCounting,
       id_proof_type: idType,
       id_proof_url: path,
+      portrait_photo_url: portraitPath,
       declaration_signature: signature,
       status: "pending",
     } as any);
@@ -277,6 +292,36 @@ const MemberApplyAgent = () => {
                 setIdFile(f);
               }} />
             {idFile && <p className="text-xs text-emerald-600 mt-1">✓ {idFile.name}</p>}
+          </div>
+        </div>
+
+        <div className="border-t pt-4">
+          <h4 className="font-semibold flex items-center gap-2 mb-1"><Camera className="w-4 h-4 text-emerald-600" /> Portrait Photo *</h4>
+          <p className="text-xs text-muted-foreground mb-3">
+            Upload a clear, recent passport-style photo of yourself. The admin team needs to see your face before inviting you for an interview.
+          </p>
+          <div className="flex items-start gap-4">
+            {portraitPreview ? (
+              <img src={portraitPreview} alt="Portrait preview" className="w-24 h-24 rounded-lg object-cover border-2 border-emerald-200 shrink-0" />
+            ) : (
+              <div className="w-24 h-24 rounded-lg bg-muted border-2 border-dashed border-muted-foreground/30 flex items-center justify-center shrink-0">
+                <Camera className="w-7 h-7 text-muted-foreground/50" />
+              </div>
+            )}
+            <div className="flex-1">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={e => {
+                  const f = e.target.files?.[0]; if (!f) return;
+                  if (f.size > 5*1024*1024) { toast({title:"Photo too large",description:"Max 5MB",variant:"destructive"}); return; }
+                  setPortraitFile(f);
+                  setPortraitPreview(URL.createObjectURL(f));
+                }}
+              />
+              {portraitFile && <p className="text-xs text-emerald-600 mt-1">✓ {portraitFile.name}</p>}
+              <p className="text-[11px] text-muted-foreground mt-1">JPG or PNG, max 5MB. Face clearly visible, plain background preferred.</p>
+            </div>
           </div>
         </div>
       </Card>
