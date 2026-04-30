@@ -27,7 +27,8 @@ const SituationFeedRoom = () => {
   }, [loading, user, navigate]);
 
   useEffect(() => {
-    if ((tab === "users" || tab === "settings") && !canSeeUsers) setTab("home");
+    const restricted: SRTab[] = ["users", "settings", "collation", "reports"];
+    if (restricted.includes(tab) && !canSeeUsers) setTab("home");
   }, [tab, canSeeUsers]);
 
   if (loading || !user) return null;
@@ -40,8 +41,8 @@ const SituationFeedRoom = () => {
           <SROverview />
         </div>
       )}
-      {tab === "collation" && <SRCollation />}
-      {tab === "reports" && <SRReports />}
+      {tab === "collation" && canSeeUsers && <SRCollation />}
+      {tab === "reports" && canSeeUsers && <SRReports />}
       {tab === "users" && canSeeUsers && <SRUsers />}
       {tab === "settings" && canSeeUsers && <SRSettings />}
     </SituationLayout>
