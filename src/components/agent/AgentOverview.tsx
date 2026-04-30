@@ -16,7 +16,7 @@ interface PollingUnit {
 const AgentOverview = ({ onTabChange }: { onTabChange: (tab: string) => void }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<{ full_name: string | null; ward: string | null } | null>(null);
+  const [profile, setProfile] = useState<{ full_name: string | null; ward: string | null; agent_code: string | null } | null>(null);
   const [stats, setStats] = useState({ pending: 0, verified: 0, flagged: 0 });
   const [now, setNow] = useState(new Date());
 
@@ -27,7 +27,7 @@ const AgentOverview = ({ onTabChange }: { onTabChange: (tab: string) => void }) 
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("full_name, ward").eq("user_id", user.id).single()
+    supabase.from("profiles").select("full_name, ward, agent_code").eq("user_id", user.id).single()
       .then(({ data }) => setProfile(data));
 
     // Fetch situation updates by this agent as proxy for submissions
