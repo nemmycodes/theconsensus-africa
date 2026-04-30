@@ -179,6 +179,54 @@ const AdminSituationRoom = () => {
     fetchElectionReports();
   };
 
+  const viewEc8a = async (path: string) => {
+    if (/^https?:\/\//i.test(path)) {
+      window.open(path, "_blank", "noopener,noreferrer");
+      return;
+    }
+    const { data, error } = await supabase.storage.from("election-evidence").createSignedUrl(path, 3600);
+    if (error || !data?.signedUrl) {
+      toast({ title: "Could not open EC8-A", description: error?.message || "File not found", variant: "destructive" });
+      return;
+    }
+    window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const downloadSubmission = (group: ElectionSubmissionGroup) => {
+    const r = group.primary;
+    const rows = [
+      ["Field", "Value"],
+      ["Submission ID", group.key],
+      ["Status", r.status],
+      ["Election Type", r.election_type.replace(/_/g, " ")],
+      ["Election Date", r.election_date],
+      ["State", r.state],
+      ["Senatorial Zone", r.senatorial_zone || ""],
+      ["LGA", r.lga],
+      ["Ward", r.ward],
+      ["Polling Unit", r.polling_unit],
+      ["Registered Voters", r.registered_voters ?? ""],
+      ["Total Votes Cast", r.total_votes_cast ?? ""],
+      ["Total Party Votes", group.totalPartyVotes],
+      ["Latitude", r.latitude ?? ""],
+      ["Longitude", r.longitude ?? ""],
+      ["Notes", r.notes || ""],
+      ["EC8-A File", r.ec8a_url || ""],
+      ["Submitted", r.created_at],
+      [],
+      ["Party", "Candidate", "Votes"],
+      ...group.reports.map((item) => [item.party || "", item.candidate_name || "", item.votes_recorded]),
+    ];
+    const csv = rows.map((row) => row.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `election-submission-${r.polling_unit.replace(/[^a-z0-9]+/gi, "-")}-${new Date(r.created_at).getTime()}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // -------- Derived data --------
   const filtered = activeFilter === "All" ? updates : updates.filter((u) => u.status === activeFilter);
   const activeCount = updates.filter((u) => u.status === "Active").length;
@@ -194,6 +242,24 @@ const AdminSituationRoom = () => {
     verified: electionReports.filter((r) => r.status === "verified").length,
     rejected: electionReports.filter((r) => r.status === "rejected").length,
   };
+
+  const groupedReports = filteredReports.reduce((acc, report) => {
+    const key = [
+      report.agent_id,
+      report.election_type,
+      report.election_date,
+      report.state,
+      report.lga,
+      report.ward,
+      report.polling_unit,
+      report.created_at,
+    ].join("|");
+    if (!acc[key]) acc[key] = { key, reports: [], primary: report, totalPartyVotes: 0 };
+    acc[key].reports.push(report);
+    acc[key].totalPartyVotes += report.votes_recorded || 0;
+    return acc;
+  }, {} as Record<string, ElectionSubmissionGroup>);
+  const submissionGroups = Object.values(groupedReports);
 
   // State-level overview for verified results
   const stateOverview = electionReports
