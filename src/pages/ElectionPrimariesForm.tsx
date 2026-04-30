@@ -158,12 +158,61 @@ const ElectionPrimariesForm = () => {
 
     const { error: reportsErr } = await supabase.from("election_reports").insert(reportRows);
 
+    // 3. Insert into primaries_collation (powers Admin → Election Collation → Primaries view)
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("full_name, phone")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    const { data: primary, error: primaryErr } = await supabase
+      .from("primaries_collation")
+      .insert({
+        political_party: party,
+        position_contested: position,
+        election_date: date,
+        venue,
+        state: "Plateau",
+        lga: venue,
+        ward: null,
+        latitude: liveLocation?.lat ?? null,
+        longitude: liveLocation?.lng ?? null,
+        collation_form_url: ec8aUrl,
+        exco_name: profile?.full_name || "Field Agent",
+        exco_position: "Field Agent",
+        exco_phone: profile?.phone || null,
+        exco_date: date,
+        total_votes: totalVotes,
+        winner_name: winner?.name || null,
+        runner_up_name: runnerUp?.name || null,
+        remarks: observations || null,
+        submitted_by: user.id,
+      })
+      .select("id")
+      .single();
+
+    let contestantsErr: any = null;
+    if (primary?.id) {
+      const contestantRows = candidates
+        .filter((c) => c.name)
+        .map((c) => ({
+          primaries_id: primary.id,
+          full_name: c.name,
+          sex: c.sex || "Unknown",
+          votes: c.votes || 0,
+        }));
+      if (contestantRows.length) {
+        const { error } = await supabase.from("primaries_contestants").insert(contestantRows);
+        contestantsErr = error;
+      }
+    }
+
     setSubmitting(false);
 
-    if (updateErr || reportsErr) {
+    if (updateErr || reportsErr || primaryErr || contestantsErr) {
       toast({
         title: "Error submitting primary",
-        description: (updateErr || reportsErr)?.message,
+        description: (updateErr || reportsErr || primaryErr || contestantsErr)?.message,
         variant: "destructive",
       });
       return;
