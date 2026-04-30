@@ -760,9 +760,12 @@ export type Database = {
       kef_cares_registrations: {
         Row: {
           artisan_skills: string[] | null
+          avatar_url: string | null
+          bio: string | null
           business_type: string | null
           community: string | null
           consent_given: boolean
+          cover_url: string | null
           created_at: string
           creative_skills: string[] | null
           date_of_birth: string | null
@@ -804,9 +807,12 @@ export type Database = {
         }
         Insert: {
           artisan_skills?: string[] | null
+          avatar_url?: string | null
+          bio?: string | null
           business_type?: string | null
           community?: string | null
           consent_given?: boolean
+          cover_url?: string | null
           created_at?: string
           creative_skills?: string[] | null
           date_of_birth?: string | null
@@ -848,9 +854,12 @@ export type Database = {
         }
         Update: {
           artisan_skills?: string[] | null
+          avatar_url?: string | null
+          bio?: string | null
           business_type?: string | null
           community?: string | null
           consent_given?: boolean
+          cover_url?: string | null
           created_at?: string
           creative_skills?: string[] | null
           date_of_birth?: string | null
