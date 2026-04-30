@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { AlertTriangle, Shield, Eye, CheckCircle } from "lucide-react";
+import { AlertTriangle, Shield, Eye, CheckCircle, ImagePlus, X } from "lucide-react";
 import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const reportTypes = [
@@ -27,20 +27,54 @@ const MemberSubmitReport = () => {
   const [lga, setLga] = useState(user?.user_metadata?.lga || "");
   const [ward, setWard] = useState(user?.user_metadata?.ward || "");
   const [pollingUnit, setPollingUnit] = useState("");
+  const [attachment, setAttachment] = useState<File | null>(null);
+  const [attachmentPreview, setAttachmentPreview] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (f.size > 10 * 1024 * 1024) {
+      toast({ title: "File too large", description: "Max 10MB", variant: "destructive" });
+      return;
+    }
+    setAttachment(f);
+    if (f.type.startsWith("image/")) setAttachmentPreview(URL.createObjectURL(f));
+    else setAttachmentPreview("");
+  };
+
+  const clearAttachment = () => {
+    setAttachment(null);
+    setAttachmentPreview("");
+  };
 
   const displayName = user?.user_metadata?.full_name || user?.email?.split("@")[0] || "Member";
 
   const handleSubmit = async () => {
     if (!title || !description || !user) return;
     setLoading(true);
+
+    let attachmentUrl: string | null = null;
+    if (attachment) {
+      const path = `${user.id}/${Date.now()}-${attachment.name}`;
+      const { error: upErr } = await supabase.storage.from("report-attachments").upload(path, attachment);
+      if (upErr) {
+        toast({ title: "Attachment upload failed", description: upErr.message, variant: "destructive" });
+        setLoading(false);
+        return;
+      }
+      const { data } = supabase.storage.from("report-attachments").getPublicUrl(path);
+      attachmentUrl = data.publicUrl;
+    }
+
     const { error } = await supabase.from("situation_updates").insert({
       title: `[${severity}] ${title}`,
       content: `Type: ${reportType}\nSeverity: ${severity}\nLocation: ${lga}, ${ward}, ${pollingUnit}\n\n${description}`,
       category: reportType === "incident" ? "Incident" : reportType === "irregularity" ? "Electoral" : "General",
       author_id: user.id,
       status: "Active",
-    });
+      attachment_url: attachmentUrl,
+    } as any);
     if (error) {
       toast({ title: "Failed to submit", description: error.message, variant: "destructive" });
     } else {
@@ -48,6 +82,7 @@ const MemberSubmitReport = () => {
       setTitle("");
       setDescription("");
       setPollingUnit("");
+      clearAttachment();
     }
     setLoading(false);
   };
