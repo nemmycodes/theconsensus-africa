@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import aboutMarket from "@/assets/about-market.jpg";
 import aboutYouthCard from "@/assets/about-youth-card.jpg";
+import aboutMovementVideo from "@/assets/about-movement.mp4.asset.json";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -86,11 +87,14 @@ const AboutSection = () => {
             </motion.div>
             <motion.div
               variants={fadeInUp}
-              className="w-1/2 rounded-2xl overflow-hidden shadow-xl -mt-8"
+              className="w-1/2 rounded-2xl overflow-hidden shadow-xl -mt-8 relative bg-black"
             >
-              <img
-                src={aboutMarket}
-                alt="Economic empowerment in action"
+              <video
+                src={aboutMovementVideo.url}
+                autoPlay
+                muted
+                loop
+                playsInline
                 className="w-full h-[280px] md:h-[340px] object-cover"
               />
             </motion.div>
