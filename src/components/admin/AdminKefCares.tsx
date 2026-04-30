@@ -3,10 +3,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
-import { Search, Eye, Trash2, Download, Users } from "lucide-react";
+import { Search, Eye, Trash2, Download, Users, Bell, Plus, Edit3 } from "lucide-react";
 
 interface Registration {
   id: string;
@@ -25,7 +29,37 @@ interface Registration {
   [key: string]: any;
 }
 
+interface ProgramUpdate {
+  id: string;
+  title: string;
+  body: string;
+  date_label: string | null;
+  published: boolean;
+  created_at: string;
+}
+
 const AdminKefCares = () => {
+  return (
+    <div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <Users className="w-6 h-6 text-emerald-600" /> KEF-CARES Management
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">Central Zone Pilot — manage registrations and programme updates.</p>
+      </div>
+      <Tabs defaultValue="registrations" className="w-full">
+        <TabsList className="mb-4">
+          <TabsTrigger value="registrations" className="gap-2"><Users className="w-4 h-4" /> Registrations</TabsTrigger>
+          <TabsTrigger value="updates" className="gap-2"><Bell className="w-4 h-4" /> Programme Updates</TabsTrigger>
+        </TabsList>
+        <TabsContent value="registrations"><RegistrationsView /></TabsContent>
+        <TabsContent value="updates"><UpdatesManager /></TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
+const RegistrationsView = () => {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -58,7 +92,6 @@ const AdminKefCares = () => {
 
   const exportCSV = () => {
     if (!registrations.length) return;
-    // Export ALL fields collected
     const allKeys = Array.from(
       registrations.reduce((set, r) => {
         Object.keys(r).forEach((k) => set.add(k));
@@ -92,12 +125,9 @@ const AdminKefCares = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="w-6 h-6 text-emerald-600" /> KEF-CARES Registrations</h1>
-          <p className="text-sm text-muted-foreground mt-1">Central Zone Pilot – {registrations.length} total registrations</p>
-        </div>
-        <Button variant="outline" onClick={exportCSV} className="gap-2"><Download className="w-4 h-4" /> Export CSV</Button>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <p className="text-sm text-muted-foreground">{registrations.length} total registrations</p>
+        <Button variant="outline" onClick={exportCSV} className="gap-2 self-start sm:self-auto"><Download className="w-4 h-4" /> Export CSV</Button>
       </div>
 
       <div className="relative mb-4">
@@ -108,7 +138,7 @@ const AdminKefCares = () => {
       {loading ? (
         <div className="text-center py-12"><div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" /></div>
       ) : (
-        <div className="border rounded-lg overflow-hidden">
+        <div className="border rounded-lg overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -194,6 +224,153 @@ const AdminKefCares = () => {
               <DetailRow label="Availability" value={selected.volunteer_availability} />
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+/* ─── Programme Updates Manager ─── */
+const UpdatesManager = () => {
+  const [updates, setUpdates] = useState<ProgramUpdate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<ProgramUpdate | null>(null);
+  const [showDialog, setShowDialog] = useState(false);
+  const [form, setForm] = useState({ title: "", body: "", date_label: "", published: true });
+  const [saving, setSaving] = useState(false);
+
+  const fetchUpdates = async () => {
+    setLoading(true);
+    const { data } = await supabase
+      .from("kef_cares_program_updates")
+      .select("*")
+      .order("created_at", { ascending: false });
+    setUpdates((data as any) || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetchUpdates(); }, []);
+
+  const openNew = () => {
+    setEditing(null);
+    setForm({ title: "", body: "", date_label: "", published: true });
+    setShowDialog(true);
+  };
+
+  const openEdit = (u: ProgramUpdate) => {
+    setEditing(u);
+    setForm({ title: u.title, body: u.body, date_label: u.date_label || "", published: u.published });
+    setShowDialog(true);
+  };
+
+  const handleSave = async () => {
+    if (!form.title || !form.body) {
+      toast({ title: "Title and body required", variant: "destructive" });
+      return;
+    }
+    setSaving(true);
+    let error;
+    if (editing) {
+      ({ error } = await supabase.from("kef_cares_program_updates").update(form).eq("id", editing.id));
+    } else {
+      ({ error } = await supabase.from("kef_cares_program_updates").insert([form]));
+    }
+    setSaving(false);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else {
+      toast({ title: editing ? "Update saved" : "Update published" });
+      setShowDialog(false);
+      fetchUpdates();
+    }
+  };
+
+  const togglePublished = async (u: ProgramUpdate) => {
+    const { error } = await supabase
+      .from("kef_cares_program_updates")
+      .update({ published: !u.published })
+      .eq("id", u.id);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else fetchUpdates();
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Delete this programme update?")) return;
+    const { error } = await supabase.from("kef_cares_program_updates").delete().eq("id", id);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else { toast({ title: "Deleted" }); fetchUpdates(); }
+  };
+
+  return (
+    <div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+        <p className="text-sm text-muted-foreground">{updates.length} programme updates — visible to KEF-CARES users.</p>
+        <Button onClick={openNew} className="gap-2 bg-emerald-600 hover:bg-emerald-700 self-start sm:self-auto">
+          <Plus className="w-4 h-4" /> New Update
+        </Button>
+      </div>
+
+      {loading ? (
+        <div className="text-center py-12"><div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" /></div>
+      ) : updates.length === 0 ? (
+        <div className="text-center py-12 border rounded-lg">
+          <Bell className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+          <p className="text-sm text-gray-500">No programme updates yet. Create the first one.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {updates.map(u => (
+            <div key={u.id} className="bg-white rounded-lg border border-gray-200 p-4">
+              <div className="flex items-start justify-between gap-3 flex-wrap">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-bold text-sm">{u.title}</h4>
+                    {u.published
+                      ? <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 text-[10px]">Published</Badge>
+                      : <Badge variant="secondary" className="text-[10px]">Draft</Badge>}
+                  </div>
+                  {u.date_label && <p className="text-xs text-gray-500 mt-1">{u.date_label}</p>}
+                  <p className="text-sm text-gray-600 mt-2 whitespace-pre-wrap">{u.body}</p>
+                </div>
+                <div className="flex items-center gap-1 shrink-0">
+                  <div className="flex items-center gap-2 mr-2">
+                    <Switch checked={u.published} onCheckedChange={() => togglePublished(u)} />
+                  </div>
+                  <Button size="icon" variant="ghost" onClick={() => openEdit(u)}><Edit3 className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" className="text-red-500" onClick={() => handleDelete(u.id)}><Trash2 className="w-4 h-4" /></Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader><DialogTitle>{editing ? "Edit" : "New"} Programme Update</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label>Title</Label>
+              <Input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Date Label (e.g. "March 2026", "Q3 2026")</Label>
+              <Input value={form.date_label} onChange={(e) => setForm({ ...form, date_label: e.target.value })} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Body</Label>
+              <Textarea rows={5} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} />
+            </div>
+            <label className="flex items-center gap-2 text-sm">
+              <Switch checked={form.published} onCheckedChange={(v) => setForm({ ...form, published: v })} />
+              Published (visible to users)
+            </label>
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="outline" onClick={() => setShowDialog(false)}>Cancel</Button>
+              <Button onClick={handleSave} disabled={saving} className="bg-emerald-600 hover:bg-emerald-700">
+                {saving ? "Saving…" : "Save"}
+              </Button>
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
