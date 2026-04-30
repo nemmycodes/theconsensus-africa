@@ -75,12 +75,13 @@ const KefCares = () => {
     };
   }, []);
 
-  // If logged in as kef_user, redirect to dashboard
+  // Any signed-in user is sent to the dashboard, which handles
+  // role assignment + inline registration if missing (covers Google sign-in).
   useEffect(() => {
-    if (!authLoading && !rolesLoading && user && isKefUser) {
+    if (!authLoading && user) {
       navigate("/kef-cares/dashboard");
     }
-  }, [authLoading, rolesLoading, user, isKefUser, navigate]);
+  }, [authLoading, user, navigate]);
 
   if (view === "login") return <KefCaresLogin onBack={() => setView("landing")} />;
   if (view === "register") {

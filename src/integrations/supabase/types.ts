@@ -724,6 +724,39 @@ export type Database = {
           },
         ]
       }
+      kef_cares_program_updates: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string | null
+          date_label: string | null
+          id: string
+          published: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          created_by?: string | null
+          date_label?: string | null
+          id?: string
+          published?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          date_label?: string | null
+          id?: string
+          published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       kef_cares_registrations: {
         Row: {
           artisan_skills: string[] | null
