@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import {
   Radio, AlertTriangle, CheckCircle, Clock, Plus, Edit, Trash2,
-  ShieldCheck, Flag, XCircle, MapPin, FileText,
+  ShieldCheck, Flag, XCircle, MapPin, FileText, Download,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -46,6 +46,13 @@ interface ElectionReport {
   rejection_reason: string | null;
   flagged_reason: string | null;
   created_at: string;
+}
+
+interface ElectionSubmissionGroup {
+  key: string;
+  reports: ElectionReport[];
+  primary: ElectionReport;
+  totalPartyVotes: number;
 }
 
 const statusConfig: Record<string, { color: string; iconBg: string; iconColor: string; icon: typeof AlertTriangle }> = {
