@@ -6,6 +6,7 @@ import aboutHero from "@/assets/about-hero.jpg";
 import aboutWhoWeAreFallback from "@/assets/about-whoweare2.jpg";
 import mentorKefasFallback from "@/assets/chief-kefas.png";
 import youthEmpowerment from "@/assets/youth-empowerment-photo.jpg";
+import empoweringYouth from "@/assets/empowering-youth.jpg";
 import josYouthVideo from "@/assets/jos-youth-hero.mp4.asset.json";
 import { Button } from "@/components/ui/button";
 import {
@@ -319,7 +320,7 @@ const About = () => {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <img src={youthEmpowerment} alt="Youth empowerment" className="w-full h-[400px] object-cover rounded-2xl shadow-xl" />
+              <img src={empoweringYouth} alt="Empowering Plateau youth raising hands in unity" loading="lazy" width={1280} height={896} className="w-full h-[400px] object-cover rounded-2xl shadow-xl" />
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-6">
               <h2 className="text-3xl md:text-4xl font-black">Empowering the Next Generation</h2>
