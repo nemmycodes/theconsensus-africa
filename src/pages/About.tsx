@@ -6,6 +6,7 @@ import aboutHero from "@/assets/about-hero.jpg";
 import aboutWhoWeAreFallback from "@/assets/about-whoweare2.jpg";
 import mentorKefasFallback from "@/assets/chief-kefas.png";
 import youthEmpowerment from "@/assets/youth-empowerment-photo.jpg";
+import aboutYouthVideo from "@/assets/about-youth-loop.mp4.asset.json";
 import { Button } from "@/components/ui/button";
 import {
   ShieldCheck, Target, Lightbulb, Eye, TrendingUp, BookOpen,
@@ -88,9 +89,17 @@ const About = () => {
       {/* Hero Banner */}
       <section className="relative h-[50vh] min-h-[350px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={youthEmpowerment} alt="Youth empowerment in Plateau State" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-primary/70 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-background/40" />
+          <video
+            src={aboutYouthVideo.url}
+            poster={youthEmpowerment}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-primary/60 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-background/20 to-transparent" />
         </div>
         <div className="container mx-auto px-4 lg:px-8 relative z-10 pb-16">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
