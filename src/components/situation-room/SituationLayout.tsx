@@ -40,8 +40,9 @@ interface Props {
 const SituationLayout = ({ active, onChange, children }: Props) => {
   const navigate = useNavigate();
   const { user, signOut, isAdmin, isSuperAdmin } = useAuth();
+  const isPrivileged = isAdmin || isSuperAdmin;
   const visibleNav = navItems.filter(
-    (n) => n.key !== "users" || isAdmin || isSuperAdmin
+    (n) => (n.key !== "users" && n.key !== "settings") || isPrivileged
   );
   const [now, setNow] = useState(new Date());
   const [confirmLogout, setConfirmLogout] = useState(false);
