@@ -34,6 +34,7 @@ import KefCares from "./pages/KefCares";
 import Manifesto from "./pages/Manifesto";
 import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <CtrlQListener />
           <Routes>
             <Route path="/" element={<Index />} />
