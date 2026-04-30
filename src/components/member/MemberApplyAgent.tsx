@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Award, ShieldCheck, Upload, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { Award, ShieldCheck, Upload, CheckCircle2, Clock, XCircle, Camera } from "lucide-react";
 import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const AGENT_ROLES = [
