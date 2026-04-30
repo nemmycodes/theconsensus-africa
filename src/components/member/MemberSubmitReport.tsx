@@ -150,10 +150,36 @@ const MemberSubmitReport = () => {
               <label className="text-xs font-medium text-gray-500 uppercase mb-2 block">Report Title</label>
               <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Brief title describing the report..." />
             </div>
-            <div className="mb-2">
+            <div className="mb-4">
               <label className="text-xs font-medium text-gray-500 uppercase mb-2 block">Description</label>
               <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Provide detailed information about the situation..." rows={6} />
               <p className="text-xs text-gray-400 mt-1">{description.length}/2000 characters</p>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-500 uppercase mb-2 block">Photo / Evidence (Optional)</label>
+              {attachment ? (
+                <div className="flex items-start gap-3 p-3 border border-emerald-200 bg-emerald-50/50 rounded-lg">
+                  {attachmentPreview ? (
+                    <img src={attachmentPreview} alt="preview" className="w-20 h-20 rounded object-cover border border-emerald-200" />
+                  ) : (
+                    <div className="w-20 h-20 rounded bg-white border border-emerald-200 flex items-center justify-center text-xs text-gray-500">FILE</div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{attachment.name}</p>
+                    <p className="text-xs text-gray-500">{(attachment.size / 1024).toFixed(0)} KB</p>
+                  </div>
+                  <button type="button" onClick={clearAttachment} className="p-1.5 hover:bg-red-100 rounded text-red-600">
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <label className="flex flex-col items-center justify-center gap-2 px-4 py-6 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-emerald-400 hover:bg-emerald-50/30 transition-colors">
+                  <ImagePlus className="w-7 h-7 text-gray-400" />
+                  <span className="text-sm font-medium text-gray-700">Click to upload an image or file</span>
+                  <span className="text-[11px] text-gray-400">JPG, PNG, PDF · Max 10MB</span>
+                  <input type="file" accept="image/*,application/pdf" className="hidden" onChange={handleFileSelect} />
+                </label>
+              )}
             </div>
           </div>
 
