@@ -192,7 +192,7 @@ const Onboarding = () => {
                   className="w-full font-bold"
                   onClick={() => navigate(`/join/role/${role.title.toLowerCase()}`)}
                 >
-                  Register to apply
+                  Register
                 </Button>
               </motion.div>
             ))}
