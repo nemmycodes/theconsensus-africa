@@ -30,6 +30,7 @@ interface ElectionReport {
   election_type: string;
   election_date: string;
   state: string;
+  senatorial_zone: string | null;
   lga: string;
   ward: string;
   polling_unit: string;
