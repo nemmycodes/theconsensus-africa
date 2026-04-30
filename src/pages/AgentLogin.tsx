@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, KeyRound, Lock, HelpCircle, ShieldCheck, ArrowRight } from "lucide-react";
 import agentHero from "@/assets/agent-login-hero.jpg";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
 const AgentLogin = () => {
   const [email, setEmail] = useState("");

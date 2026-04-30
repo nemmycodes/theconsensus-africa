@@ -11,6 +11,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Heart, Users, Target, BookOpen, ArrowRight, LogIn, UserPlus, Eye, EyeOff } from "lucide-react";
 import KefCaresFormFields from "@/components/kef-cares/KefCaresFormFields";
 import { motion } from "framer-motion";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
 type View = "landing" | "login" | "register";
 
@@ -229,6 +230,12 @@ const KefCaresLogin = ({ onBack }: { onBack: () => void }) => {
                 {loading ? "Signing in..." : "Login"}
               </Button>
             </form>
+            <div className="flex items-center gap-4 my-5">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground tracking-widest uppercase">Or continue with</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+            <GoogleSignInButton label="Continue with Google" className="w-full" redirectTo={`${window.location.origin}/kef-cares/dashboard`} />
             <div className="mt-6 text-center">
               <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
             </div>
@@ -355,6 +362,25 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
                 {loading ? "Creating account..." : <>Create Account <ArrowRight className="w-4 h-4" /></>}
               </Button>
             </form>
+            <div className="mt-6 text-center">
+              <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+              <Button type="submit" disabled={loading} className="w-full h-12 bg-emerald-700 hover:bg-emerald-800 text-white font-bold gap-2">
+                {loading ? "Creating account..." : <>Create Account <ArrowRight className="w-4 h-4" /></>}
+              </Button>
+            </form>
+            <div className="flex items-center gap-4 my-5">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-xs text-muted-foreground tracking-widest uppercase">Or sign up with</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+            <GoogleSignInButton label="Continue with Google" className="w-full" redirectTo={`${window.location.origin}/kef-cares/dashboard`} />
             <div className="mt-6 text-center">
               <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
             </div>
