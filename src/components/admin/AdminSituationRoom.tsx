@@ -350,9 +350,31 @@ const AdminSituationRoom = () => {
 
                       <div className="flex items-center gap-3 mt-2 text-[11px] text-gray-500">
                         {r.ec8a_url && (
-                          <a href={r.ec8a_url} target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={async (e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              // ec8a_url stores the storage path inside the private "election-evidence" bucket.
+                              // If a full URL was ever saved, just open it. Otherwise sign it on demand.
+                              if (/^https?:\/\//i.test(r.ec8a_url!)) {
+                                window.open(r.ec8a_url!, "_blank", "noopener,noreferrer");
+                                return;
+                              }
+                              const { data, error } = await supabase
+                                .storage
+                                .from("election-evidence")
+                                .createSignedUrl(r.ec8a_url!, 3600);
+                              if (error || !data?.signedUrl) {
+                                alert("Could not open EC8-A: " + (error?.message || "file not found"));
+                                return;
+                              }
+                              window.open(data.signedUrl, "_blank", "noopener,noreferrer");
+                            }}
+                            className="text-emerald-700 hover:underline flex items-center gap-1"
+                          >
                             <FileText className="w-3 h-3" /> View EC8-A
-                          </a>
+                          </button>
                         )}
                         {r.latitude && r.longitude && (
                           <span className="flex items-center gap-1">
