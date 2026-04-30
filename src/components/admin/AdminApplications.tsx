@@ -71,6 +71,7 @@ const AdminApplications = () => {
   const [selectedVol, setSelectedVol] = useState<VolunteerApp | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
   const [idUrl, setIdUrl] = useState<string | null>(null);
+  const [portraitUrl, setPortraitUrl] = useState<string | null>(null);
 
   const fetchAll = async () => {
     const [agentsRes, volsRes] = await Promise.all([
