@@ -439,8 +439,8 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
               <div className="flex items-start justify-between mb-5">
                 <Brand />
                 <div className="text-right">
-                  <p className="text-[12px] font-bold text-emerald-400 tracking-wide">THE PLATEAU CONSENSUS</p>
-                  <p className="text-[10px] uppercase tracking-widest text-neutral-300">MEMBERSHIP CARD — BACK</p>
+                  <p className="text-[10px] uppercase tracking-widest text-neutral-300">MEMBERSHIP CARD</p>
+                  <p className="text-amber-400 font-bold text-sm mt-1">BACK</p>
                 </div>
               </div>
 
