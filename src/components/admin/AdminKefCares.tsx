@@ -188,6 +188,8 @@ const RegistrationsView = () => {
               <DetailRow label="WhatsApp" value={selected.whatsapp_active} />
               <DetailRow label="Email" value={selected.email} />
               <DetailRow label="Address" value={selected.residential_address} />
+              <DetailRow label="Marital Status" value={selected.marital_status} />
+              <DetailRow label="Social Status" value={selected.social_status} />
               <h4 className="font-semibold text-sm text-emerald-700 mt-3">Location</h4>
               <DetailRow label="LGA" value={selected.lga} />
               <DetailRow label="Ward" value={selected.ward} />
