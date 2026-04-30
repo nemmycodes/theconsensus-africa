@@ -9,7 +9,11 @@ import { CreditCard, Edit, User, Mail, Phone, Calendar, MapPin, Award, FileText,
 import MemberIdCard from "./MemberIdCard";
 import { toast } from "sonner";
 
-const LGAS = ["Pankshin", "Mangu", "Bokkos", "Kanam", "Kanke"];
+const LGAS = [
+  "Barkin Ladi", "Bassa", "Bokkos", "Jos East", "Jos North", "Jos South",
+  "Kanam", "Kanke", "Langtang North", "Langtang South", "Mangu", "Mikang",
+  "Pankshin", "Qua'an Pan", "Riyom", "Shendam", "Wase",
+];
 
 const MemberProfile = () => {
   const { user } = useAuth();
@@ -124,9 +128,10 @@ const MemberProfile = () => {
       </div>
 
       {/* Banner */}
-      <div className="relative h-32 bg-gradient-to-r from-emerald-700 to-emerald-500 rounded-xl overflow-hidden">
-        <div className="absolute bottom-0 left-6 translate-y-1/2">
-          <div className="relative group">
+      <div className="relative bg-gradient-to-r from-emerald-700 to-emerald-500 rounded-xl overflow-hidden p-5 sm:p-6 pb-16 sm:pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
+          {/* Avatar */}
+          <div className="relative group shrink-0">
             {avatarUrl ? (
               <img src={avatarUrl} alt={displayName} className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg" />
             ) : (
@@ -148,33 +153,39 @@ const MemberProfile = () => {
               </div>
             )}
           </div>
-        </div>
-        <div className="absolute bottom-3 left-28 text-white">
-          <h3 className="font-black text-lg">{displayName}</h3>
-          <p className="text-xs text-emerald-100">Member · {lga} LGA</p>
-        </div>
-        <div className="absolute bottom-3 right-4 flex gap-2">
-          <Button size="sm" variant="secondary" className="gap-1 bg-emerald-600 text-white hover:bg-emerald-800 border-0" onClick={() => setShowIdCard(true)}>
-            <CreditCard className="w-3.5 h-3.5" /> ID Card
-          </Button>
-          {!editing ? (
-            <Button size="sm" variant="secondary" className="gap-1 bg-white/20 text-white hover:bg-white/30 border-0" onClick={startEditing}>
-              <Edit className="w-3.5 h-3.5" /> Edit Profile
+
+          {/* Name + meta */}
+          <div className="text-white min-w-0 flex-1">
+            <h3 className="font-black text-lg sm:text-xl truncate">{displayName}</h3>
+            <p className="text-xs sm:text-sm text-emerald-100 mt-0.5">
+              Member · {lga !== "—" ? `${lga} LGA` : "Plateau State"}{ward !== "—" ? ` · ${ward} Ward` : ""}
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div className="absolute bottom-3 right-4 sm:static flex gap-2 sm:shrink-0">
+            <Button size="sm" variant="secondary" className="gap-1 bg-emerald-600 text-white hover:bg-emerald-800 border-0" onClick={() => setShowIdCard(true)}>
+              <CreditCard className="w-3.5 h-3.5" /> ID Card
             </Button>
-          ) : (
-            <div className="flex gap-1">
-              <Button size="sm" variant="secondary" className="gap-1 bg-amber-500 text-white hover:bg-amber-600 border-0" onClick={saveProfile}>
-                <Save className="w-3.5 h-3.5" /> Save
+            {!editing ? (
+              <Button size="sm" variant="secondary" className="gap-1 bg-white/20 text-white hover:bg-white/30 border-0" onClick={startEditing}>
+                <Edit className="w-3.5 h-3.5" /> Edit Profile
               </Button>
-              <Button size="sm" variant="secondary" className="gap-1 bg-white/20 text-white hover:bg-white/30 border-0" onClick={() => setEditing(false)}>
-                <X className="w-3.5 h-3.5" /> Cancel
-              </Button>
-            </div>
-          )}
+            ) : (
+              <div className="flex gap-1">
+                <Button size="sm" variant="secondary" className="gap-1 bg-amber-500 text-white hover:bg-amber-600 border-0" onClick={saveProfile}>
+                  <Save className="w-3.5 h-3.5" /> Save
+                </Button>
+                <Button size="sm" variant="secondary" className="gap-1 bg-white/20 text-white hover:bg-white/30 border-0" onClick={() => setEditing(false)}>
+                  <X className="w-3.5 h-3.5" /> Cancel
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-12">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Info */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-xl border border-gray-200 p-6">

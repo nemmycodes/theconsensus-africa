@@ -317,13 +317,8 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
 
   // ============== UI ==============
   const Brand = () => (
-    <div className="flex items-center gap-3">
-      <img src="/brand-logo.png" alt="" className="w-11 h-11 object-contain shrink-0" />
-      <div className="leading-none">
-        <p className="text-[15px] font-black text-emerald-400 tracking-tight">THE</p>
-        <p className="text-[15px] font-black text-emerald-400 -mt-1 tracking-tight">PLATEAU</p>
-        <p className="text-[15px] font-black text-emerald-400 -mt-1 tracking-tight">CONSENSUS</p>
-      </div>
+    <div className="flex items-center">
+      <img src="/brand-logo.png" alt="The Plateau Consensus" className="w-20 h-20 md:w-24 md:h-24 object-contain shrink-0" />
     </div>
   );
 
@@ -444,8 +439,8 @@ const MemberIdCard = ({ profile, open, onClose }: MemberIdCardProps) => {
               <div className="flex items-start justify-between mb-5">
                 <Brand />
                 <div className="text-right">
-                  <p className="text-[12px] font-bold text-emerald-400 tracking-wide">THE PLATEAU CONSENSUS</p>
-                  <p className="text-[10px] uppercase tracking-widest text-neutral-300">MEMBERSHIP CARD — BACK</p>
+                  <p className="text-[10px] uppercase tracking-widest text-neutral-300">MEMBERSHIP CARD</p>
+                  <p className="text-amber-400 font-bold text-sm mt-1">BACK</p>
                 </div>
               </div>
 
