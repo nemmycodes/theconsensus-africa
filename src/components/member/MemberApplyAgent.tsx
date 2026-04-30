@@ -85,12 +85,24 @@ const MemberApplyAgent = () => {
       toast({ title: "ID proof required", description: "Please upload a valid ID document.", variant: "destructive" });
       return;
     }
+    if (!portraitFile) {
+      toast({ title: "Portrait photo required", description: "Please upload a clear portrait photo of yourself.", variant: "destructive" });
+      return;
+    }
     setLoading(true);
 
     const path = `${user.id}/agent-${Date.now()}-${idFile.name}`;
     const { error: upErr } = await supabase.storage.from("agent-recruitment-ids").upload(path, idFile, { upsert: false });
     if (upErr) {
       toast({ title: "Upload failed", description: upErr.message, variant: "destructive" });
+      setLoading(false);
+      return;
+    }
+
+    const portraitPath = `${user.id}/portrait-${Date.now()}-${portraitFile.name}`;
+    const { error: pErr } = await supabase.storage.from("agent-recruitment-ids").upload(portraitPath, portraitFile, { upsert: false });
+    if (pErr) {
+      toast({ title: "Portrait upload failed", description: pErr.message, variant: "destructive" });
       setLoading(false);
       return;
     }
