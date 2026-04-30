@@ -315,6 +315,7 @@ const AdminAgents = () => {
             <thead>
               <tr className="border-b border-gray-200">
                 <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Agent</th>
+                <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Agent Code</th>
                 <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Email</th>
                 <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">LGA / Ward</th>
                 <th className="text-left p-4 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Joined</th>
@@ -334,6 +335,11 @@ const AdminAgents = () => {
                         {agent.phone && <p className="text-xs text-gray-400">{agent.phone}</p>}
                       </div>
                     </div>
+                  </td>
+                  <td className="p-4">
+                    <span className="inline-flex items-center px-2 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-mono font-bold tracking-wide">
+                      {agent.agent_code || "—"}
+                    </span>
                   </td>
                   <td className="p-4 text-sm text-gray-500">{agent.email || "—"}</td>
                   <td className="p-4 text-sm text-gray-500">
