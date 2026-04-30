@@ -79,6 +79,7 @@ export type Database = {
           phone: string
           place_of_birth: string | null
           polling_unit: string
+          portrait_photo_url: string | null
           position_aspired: string | null
           prior_office_held: string | null
           qualification_year: number | null
@@ -120,6 +121,7 @@ export type Database = {
           phone: string
           place_of_birth?: string | null
           polling_unit: string
+          portrait_photo_url?: string | null
           position_aspired?: string | null
           prior_office_held?: string | null
           qualification_year?: number | null
@@ -161,6 +163,7 @@ export type Database = {
           phone?: string
           place_of_birth?: string | null
           polling_unit?: string
+          portrait_photo_url?: string | null
           position_aspired?: string | null
           prior_office_held?: string | null
           qualification_year?: number | null
