@@ -41,7 +41,7 @@ const SituationLayout = ({ active, onChange, children }: Props) => {
   const navigate = useNavigate();
   const { user, signOut, isAdmin, isSuperAdmin } = useAuth();
   const isPrivileged = isAdmin || isSuperAdmin;
-  const restrictedKeys: SRTab[] = ["users", "settings", "collation", "reports"];
+  const restrictedKeys: SRTab[] = ["users", "settings"];
   const visibleNav = navItems.filter(
     (n) => !restrictedKeys.includes(n.key) || isPrivileged
   );
