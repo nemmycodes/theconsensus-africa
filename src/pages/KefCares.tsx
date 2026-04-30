@@ -362,19 +362,6 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
                 {loading ? "Creating account..." : <>Create Account <ArrowRight className="w-4 h-4" /></>}
               </Button>
             </form>
-            <div className="mt-6 text-center">
-              <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">← Back</button>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-      <Footer />
-    </div>
-  );
-              <Button type="submit" disabled={loading} className="w-full h-12 bg-emerald-700 hover:bg-emerald-800 text-white font-bold gap-2">
-                {loading ? "Creating account..." : <>Create Account <ArrowRight className="w-4 h-4" /></>}
-              </Button>
-            </form>
             <div className="flex items-center gap-4 my-5">
               <div className="flex-1 h-px bg-border" />
               <span className="text-xs text-muted-foreground tracking-widest uppercase">Or sign up with</span>
