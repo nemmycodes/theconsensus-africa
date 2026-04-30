@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import discussHero from "@/assets/discuss-hero.jpg";
+import podcastVideo from "@/assets/podcast-live.mp4.asset.json";
 
 interface ForumPostRow {
   id: string;
@@ -300,8 +301,19 @@ const Discuss = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-primary rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden"
+            className="bg-primary rounded-2xl p-6 md:p-8 mb-8 relative overflow-hidden isolate"
           >
+            {/* Background video */}
+            <video
+              src={podcastVideo.url}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover opacity-30 -z-10"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/85 to-primary/40 -z-10" />
+
             <div className="absolute top-4 right-4 flex items-center gap-2">
               <span className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive/60 opacity-75"></span>
