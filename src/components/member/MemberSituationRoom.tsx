@@ -68,6 +68,11 @@ const MemberSituationRoom = ({ onTabChange }: { onTabChange: (tab: string) => vo
           </div>
           <h2 className="text-2xl font-black text-gray-900 mb-4">{selectedUpdate.title}</h2>
           <p className="text-gray-700 whitespace-pre-wrap">{selectedUpdate.content}</p>
+          {selectedUpdate.attachment_url && (
+            <a href={selectedUpdate.attachment_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-4 px-3 py-2 bg-emerald-50 text-emerald-700 text-sm font-semibold rounded-lg hover:bg-emerald-100">
+              📎 View Attachment
+            </a>
+          )}
         </div>
       </div>
     );
