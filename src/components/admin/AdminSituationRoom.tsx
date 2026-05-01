@@ -22,6 +22,7 @@ interface SituationUpdate {
   status: string;
   created_at: string;
   author_id: string;
+  attachment_url?: string | null;
 }
 
 interface ElectionReport {
@@ -564,7 +565,12 @@ const AdminSituationRoom = () => {
                         </div>
                         <h4 className="text-sm font-bold text-gray-900 mb-1">{update.title}</h4>
                         <p className="text-sm text-gray-700 mb-1">{update.content}</p>
-                        <span className="text-xs text-gray-500">{format(new Date(update.created_at), "MMM d, yyyy")}</span>
+                        {update.attachment_url && (
+                          <a href={update.attachment_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 font-semibold mb-1">
+                            <FileText className="w-3 h-3" /> View attachment
+                          </a>
+                        )}
+                        <span className="text-xs text-gray-500 block">{format(new Date(update.created_at), "MMM d, yyyy")}</span>
                       </div>
                     </div>
                   </div>
