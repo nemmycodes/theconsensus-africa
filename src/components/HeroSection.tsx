@@ -272,7 +272,7 @@ const HeroSection = () => {
             animate="visible"
             className="hidden lg:flex justify-end"
           >
-            <div className="relative w-[460px] h-[560px] rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl bg-muted">
+            <div className="relative w-full max-w-[460px] aspect-[460/560] rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl bg-muted">
               <span className="pointer-events-none absolute -inset-2 rounded-2xl bg-gradient-to-tr from-primary/40 via-accent/20 to-primary/40 blur-2xl opacity-50 animate-gradient-shift" style={{ backgroundSize: "200% 200%" }} />
               <AnimatePresence mode="sync">
                 {(() => {
