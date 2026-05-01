@@ -13,6 +13,7 @@ interface Submission {
   status: string;
   content: string;
   created_at: string;
+  attachment_url?: string | null;
 }
 
 const AgentSubmissions = () => {
@@ -171,6 +172,11 @@ const AgentSubmissions = () => {
                     </td>
                     <td className="px-6 py-4">
                       <p className="font-semibold">{sub.title}</p>
+                      {sub.attachment_url && (
+                        <a href={sub.attachment_url} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-400 hover:text-emerald-300 inline-flex items-center gap-1 mt-1">
+                          <FileText className="w-3 h-3" /> Attachment
+                        </a>
+                      )}
                     </td>
                     <td className="px-6 py-4 text-gray-400">{sub.category}</td>
                     <td className="px-6 py-4">

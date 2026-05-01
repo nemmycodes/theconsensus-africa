@@ -1,12 +1,13 @@
+import { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const Footer = () => {
+const Footer = forwardRef<HTMLElement>((_, ref) => {
   return (
-    <footer className="bg-[hsl(220,20%,8%)] text-white border-t border-[hsl(220,15%,18%)]">
+    <footer ref={ref} className="bg-[hsl(220,20%,8%)] text-white border-t border-[hsl(220,15%,18%)]">
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -87,6 +88,7 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+Footer.displayName = "Footer";
 
 export default Footer;

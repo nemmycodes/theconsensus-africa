@@ -104,12 +104,24 @@ const SituationRoom = () => {
   const fetchUpdates = async () => {
     const { data, error } = await supabase
       .from("situation_updates")
-      .select("*, profiles!situation_updates_author_id_fkey(full_name)")
+      .select("*")
       .order("created_at", { ascending: false });
 
-    if (!error && data) {
-      setUpdates(data as unknown as SituationUpdate[]);
+    if (error || !data) return;
+
+    const authorIds = Array.from(new Set(data.map((u: any) => u.author_id).filter(Boolean)));
+    let profilesMap: Record<string, { full_name: string | null }> = {};
+    if (authorIds.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, full_name")
+        .in("user_id", authorIds);
+      profilesMap = (profs || []).reduce((acc: any, p: any) => {
+        acc[p.user_id] = { full_name: p.full_name };
+        return acc;
+      }, {});
     }
+    setUpdates(data.map((u: any) => ({ ...u, profiles: profilesMap[u.author_id] || null })) as SituationUpdate[]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
