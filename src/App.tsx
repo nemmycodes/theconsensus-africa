@@ -13,6 +13,7 @@ import Auth from "./pages/Auth";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Onboarding from "./pages/Onboarding";
+import RegisterPortal from "./pages/RegisterPortal";
 import RoleRegister from "./pages/RoleRegister";
 import Donate from "./pages/Donate";
 import ElectionForm from "./pages/ElectionForm";
@@ -75,7 +76,8 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/join" element={<Onboarding />} />
+            <Route path="/join" element={<RegisterPortal />} />
+            <Route path="/join/info" element={<Onboarding />} />
             <Route path="/join/role/:role" element={<RoleRegister />} />
             <Route path="/donate" element={<Donate />} />
             <Route path="/election-form" element={<ElectionForm />} />
