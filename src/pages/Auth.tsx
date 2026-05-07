@@ -123,6 +123,28 @@ const Auth = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="w-full max-w-md"
           >
+            {/* Toggle */}
+            <div className="inline-flex p-1 bg-secondary rounded-full mb-6 w-full">
+              <button
+                type="button"
+                onClick={() => setMode("login")}
+                className={`flex-1 h-10 rounded-full text-sm font-bold tracking-wide transition-all ${
+                  isLogin ? "bg-primary text-primary-foreground shadow" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Log In
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("signup")}
+                className={`flex-1 h-10 rounded-full text-sm font-bold tracking-wide transition-all ${
+                  !isLogin ? "bg-primary text-primary-foreground shadow" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Create Account
+              </button>
+            </div>
+
             <h2 className="text-3xl font-heading font-black mb-2">
               {isLogin ? "Welcome Back" : "Create Your Account"}
             </h2>
