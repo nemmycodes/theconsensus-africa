@@ -98,50 +98,50 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         )}
       </div>
 
-      {/* Field values — aligned to the labels printed on template */}
+      {/* Name overlay — top of right column, above MEMBER ID label */}
       <div
-        className="absolute text-black font-semibold"
-        style={{ left: "47%", top: "47%", fontSize: "clamp(9px, 1.6cqw, 16px)" }}
+        className="absolute text-emerald-900 font-black uppercase tracking-wide truncate"
+        style={{ left: "37%", top: "27%", maxWidth: "60%", fontSize: "clamp(11px, 2cqw, 20px)" }}
+      >
+        {displayName}
+      </div>
+
+      {/* Field values — placed to the right of each printed label, vertically aligned to baselines */}
+      <div
+        className="absolute text-black font-semibold whitespace-nowrap"
+        style={{ left: "52%", top: "41.5%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
       >
         {memberId}
       </div>
       <div
-        className="absolute text-black font-semibold"
-        style={{ left: "40%", top: "55.5%", fontSize: "clamp(9px, 1.6cqw, 16px)" }}
+        className="absolute text-black font-semibold whitespace-nowrap"
+        style={{ left: "44%", top: "51%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
       >
         Plateau State
       </div>
       <div
-        className="absolute text-black font-semibold"
-        style={{ left: "47%", top: "62.5%", fontSize: "clamp(9px, 1.5cqw, 16px)" }}
+        className="absolute text-black font-semibold whitespace-nowrap"
+        style={{ left: "52%", top: "60.5%", fontSize: "clamp(9px, 1.4cqw, 15px)" }}
       >
         {lga} / {ward}
       </div>
       <div
-        className="absolute font-bold"
-        style={{ left: "42%", top: "70%", fontSize: "clamp(9px, 1.6cqw, 16px)", color: "#0a8a3a" }}
+        className="absolute font-bold whitespace-nowrap"
+        style={{ left: "47%", top: "70%", fontSize: "clamp(9px, 1.5cqw, 15px)", color: "#0a8a3a" }}
       >
         ACTIVE
       </div>
       <div
-        className="absolute text-black font-semibold"
-        style={{ left: "47.5%", top: "77%", fontSize: "clamp(9px, 1.6cqw, 16px)" }}
+        className="absolute text-black font-semibold whitespace-nowrap"
+        style={{ left: "54%", top: "79%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
       >
         {issuedDate}
       </div>
       <div
-        className="absolute text-black font-semibold"
-        style={{ left: "44%", top: "84%", fontSize: "clamp(9px, 1.6cqw, 16px)" }}
+        className="absolute text-black font-semibold whitespace-nowrap"
+        style={{ left: "50%", top: "88%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
       >
         {validityDate}
-      </div>
-
-      {/* Name overlay (small, above MEMBER ID row) */}
-      <div
-        className="absolute text-emerald-800 font-black uppercase tracking-wide truncate"
-        style={{ left: "37%", top: "39%", maxWidth: "55%", fontSize: "clamp(11px, 1.9cqw, 19px)" }}
-      >
-        {displayName}
       </div>
     </div>
   );
@@ -197,22 +197,22 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       }
 
       ctx.fillStyle = "#0a3a1a";
-      ctx.font = "900 19px Arial";
-      ctx.fillText(displayName.toUpperCase(), TPL_W * 0.37, TPL_H * 0.42);
+      ctx.font = "900 20px Arial";
+      ctx.fillText(displayName.toUpperCase(), TPL_W * 0.37, TPL_H * 0.30);
 
       ctx.fillStyle = "#000";
       ctx.font = "bold 15px Arial";
       const rows: [number, number, string][] = [
-        [TPL_W * 0.47, TPL_H * 0.495, memberId],
-        [TPL_W * 0.4, TPL_H * 0.58, "Plateau State"],
-        [TPL_W * 0.47, TPL_H * 0.65, `${lga} / ${ward}`],
-        [TPL_W * 0.475, TPL_H * 0.795, issuedDate],
-        [TPL_W * 0.44, TPL_H * 0.865, validityDate],
+        [TPL_W * 0.52, TPL_H * 0.435, memberId],
+        [TPL_W * 0.44, TPL_H * 0.53, "Plateau State"],
+        [TPL_W * 0.52, TPL_H * 0.625, `${lga} / ${ward}`],
+        [TPL_W * 0.54, TPL_H * 0.81, issuedDate],
+        [TPL_W * 0.50, TPL_H * 0.90, validityDate],
       ];
       rows.forEach(([x, y, t]) => ctx.fillText(t, x, y));
       ctx.fillStyle = "#0a8a3a";
       ctx.font = "bold 15px Arial";
-      ctx.fillText("ACTIVE", TPL_W * 0.42, TPL_H * 0.725);
+      ctx.fillText("ACTIVE", TPL_W * 0.47, TPL_H * 0.72);
     }
 
     const link = document.createElement("a");
