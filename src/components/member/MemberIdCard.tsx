@@ -16,7 +16,7 @@ const BACK_TEMPLATE = "/id-card-back-template.jpg";
 
 // Reference template width used for relative coordinate math
 const TPL_W = 900;
-const TPL_H = 556;
+const TPL_H = 540;
 
 const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps) => {
   const { user } = useAuth();
@@ -98,51 +98,31 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         )}
       </div>
 
-      {/* Name overlay — top of right column, above MEMBER ID label */}
+      {/* Name overlay — kept above the printed labels so it never collides */}
       <div
-        className="absolute text-emerald-900 font-black uppercase tracking-wide truncate"
-        style={{ left: "37%", top: "27%", maxWidth: "60%", fontSize: "clamp(11px, 2cqw, 20px)" }}
+        className="absolute text-emerald-900 font-black uppercase truncate leading-none"
+        style={{ left: "37.2%", top: "39%", maxWidth: "43%", fontSize: "clamp(10px, 1.65cqw, 17px)" }}
       >
         {displayName}
       </div>
 
-      {/* Field values — placed to the right of each printed label, vertically aligned to baselines */}
-      <div
-        className="absolute text-black font-semibold whitespace-nowrap"
-        style={{ left: "52%", top: "41.5%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
-      >
-        {memberId}
-      </div>
-      <div
-        className="absolute text-black font-semibold whitespace-nowrap"
-        style={{ left: "44%", top: "51%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
-      >
-        Plateau State
-      </div>
-      <div
-        className="absolute text-black font-semibold whitespace-nowrap"
-        style={{ left: "52%", top: "60.5%", fontSize: "clamp(9px, 1.4cqw, 15px)" }}
-      >
-        {lga} / {ward}
-      </div>
-      <div
-        className="absolute font-bold whitespace-nowrap"
-        style={{ left: "47%", top: "70%", fontSize: "clamp(9px, 1.5cqw, 15px)", color: "#0a8a3a" }}
-      >
-        ACTIVE
-      </div>
-      <div
-        className="absolute text-black font-semibold whitespace-nowrap"
-        style={{ left: "54%", top: "79%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
-      >
-        {issuedDate}
-      </div>
-      <div
-        className="absolute text-black font-semibold whitespace-nowrap"
-        style={{ left: "50%", top: "88%", fontSize: "clamp(9px, 1.5cqw, 15px)" }}
-      >
-        {validityDate}
-      </div>
+      {/* Field values — locked to the printed label rows with enough left/right space */}
+      {[
+        { value: memberId, left: "51.5%", top: "49.7%", width: "29%" },
+        { value: "Plateau State", left: "47.2%", top: "56.5%", width: "33%" },
+        { value: `${lga} / ${ward}`, left: "52.4%", top: "62.6%", width: "32%" },
+        { value: "ACTIVE", left: "47.2%", top: "69.1%", width: "26%", active: true },
+        { value: issuedDate, left: "52.5%", top: "74.9%", width: "26%" },
+        { value: validityDate, left: "49%", top: "80.6%", width: "28%" },
+      ].map((row, index) => (
+        <div
+          key={index}
+          className={`absolute font-bold whitespace-nowrap overflow-hidden text-ellipsis leading-none ${row.active ? "text-green-700" : "text-black"}`}
+          style={{ left: row.left, top: row.top, width: row.width, fontSize: "clamp(8px, 1.35cqw, 14px)" }}
+        >
+          {row.value}
+        </div>
+      ))}
     </div>
   );
 
@@ -196,23 +176,30 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         }
       }
 
+      const fitText = (text: string, x: number, y: number, maxWidth: number, size: number, weight = "bold") => {
+        let nextSize = size;
+        ctx.font = `${weight} ${nextSize}px Arial`;
+        while (ctx.measureText(text).width > maxWidth && nextSize > 10) {
+          nextSize -= 1;
+          ctx.font = `${weight} ${nextSize}px Arial`;
+        }
+        ctx.fillText(text, x, y);
+      };
+
       ctx.fillStyle = "#0a3a1a";
-      ctx.font = "900 20px Arial";
-      ctx.fillText(displayName.toUpperCase(), TPL_W * 0.37, TPL_H * 0.30);
+      fitText(displayName.toUpperCase(), TPL_W * 0.372, TPL_H * 0.42, TPL_W * 0.43, 17, "900");
 
       ctx.fillStyle = "#000";
-      ctx.font = "bold 15px Arial";
-      const rows: [number, number, string][] = [
-        [TPL_W * 0.52, TPL_H * 0.435, memberId],
-        [TPL_W * 0.44, TPL_H * 0.53, "Plateau State"],
-        [TPL_W * 0.52, TPL_H * 0.625, `${lga} / ${ward}`],
-        [TPL_W * 0.54, TPL_H * 0.81, issuedDate],
-        [TPL_W * 0.50, TPL_H * 0.90, validityDate],
+      const rows: [number, number, number, string][] = [
+        [TPL_W * 0.515, TPL_H * 0.523, TPL_W * 0.29, memberId],
+        [TPL_W * 0.472, TPL_H * 0.591, TPL_W * 0.33, "Plateau State"],
+        [TPL_W * 0.524, TPL_H * 0.652, TPL_W * 0.32, `${lga} / ${ward}`],
+        [TPL_W * 0.525, TPL_H * 0.775, TPL_W * 0.26, issuedDate],
+        [TPL_W * 0.49, TPL_H * 0.832, TPL_W * 0.28, validityDate],
       ];
-      rows.forEach(([x, y, t]) => ctx.fillText(t, x, y));
+      rows.forEach(([x, y, maxWidth, t]) => fitText(t, x, y, maxWidth, 14));
       ctx.fillStyle = "#0a8a3a";
-      ctx.font = "bold 15px Arial";
-      ctx.fillText("ACTIVE", TPL_W * 0.47, TPL_H * 0.72);
+      fitText("ACTIVE", TPL_W * 0.472, TPL_H * 0.716, TPL_W * 0.26, 14);
     }
 
     const link = document.createElement("a");
