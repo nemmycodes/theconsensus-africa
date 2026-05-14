@@ -70,7 +70,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
   // All overlay positions are percentages relative to the template image.
   const CardFront = (
     <div
-      className="relative w-full overflow-hidden rounded-xl shadow-2xl"
+      className="relative w-full overflow-hidden rounded-xl shadow-2xl [container-type:inline-size]"
       style={{ aspectRatio: `${TPL_W} / ${TPL_H}` }}
     >
       <img src={FRONT_TEMPLATE} alt="" className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none" />
@@ -101,7 +101,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       {/* Name overlay — kept above the printed labels so it never collides */}
       <div
         className="absolute text-emerald-900 font-black uppercase truncate leading-none"
-        style={{ left: "37.2%", top: "39%", maxWidth: "43%", fontSize: "clamp(10px, 1.65cqw, 17px)" }}
+        style={{ left: "37.2%", top: "39%", maxWidth: "43%", fontSize: "clamp(10px, 1.8cqw, 18px)" }}
       >
         {displayName}
       </div>
@@ -118,7 +118,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         <div
           key={index}
           className={`absolute font-bold whitespace-nowrap overflow-hidden text-ellipsis leading-none ${row.active ? "text-green-700" : "text-black"}`}
-          style={{ left: row.left, top: row.top, width: row.width, fontSize: "clamp(8px, 1.35cqw, 14px)" }}
+          style={{ left: row.left, top: row.top, width: row.width, fontSize: "clamp(9px, 1.55cqw, 15px)" }}
         >
           {row.value}
         </div>
@@ -128,7 +128,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
 
   const CardBack = (
     <div
-      className="relative w-full overflow-hidden rounded-xl shadow-2xl"
+      className="relative w-full overflow-hidden rounded-xl shadow-2xl [container-type:inline-size]"
       style={{ aspectRatio: `${TPL_W} / ${TPL_H}` }}
     >
       <img src={BACK_TEMPLATE} alt="" className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none" />
