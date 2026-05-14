@@ -197,22 +197,22 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       }
 
       ctx.fillStyle = "#0a3a1a";
-      ctx.font = "900 19px Arial";
-      ctx.fillText(displayName.toUpperCase(), TPL_W * 0.37, TPL_H * 0.42);
+      ctx.font = "900 20px Arial";
+      ctx.fillText(displayName.toUpperCase(), TPL_W * 0.37, TPL_H * 0.30);
 
       ctx.fillStyle = "#000";
       ctx.font = "bold 15px Arial";
       const rows: [number, number, string][] = [
-        [TPL_W * 0.47, TPL_H * 0.495, memberId],
-        [TPL_W * 0.4, TPL_H * 0.58, "Plateau State"],
-        [TPL_W * 0.47, TPL_H * 0.65, `${lga} / ${ward}`],
-        [TPL_W * 0.475, TPL_H * 0.795, issuedDate],
-        [TPL_W * 0.44, TPL_H * 0.865, validityDate],
+        [TPL_W * 0.52, TPL_H * 0.435, memberId],
+        [TPL_W * 0.44, TPL_H * 0.53, "Plateau State"],
+        [TPL_W * 0.52, TPL_H * 0.625, `${lga} / ${ward}`],
+        [TPL_W * 0.54, TPL_H * 0.81, issuedDate],
+        [TPL_W * 0.50, TPL_H * 0.90, validityDate],
       ];
       rows.forEach(([x, y, t]) => ctx.fillText(t, x, y));
       ctx.fillStyle = "#0a8a3a";
       ctx.font = "bold 15px Arial";
-      ctx.fillText("ACTIVE", TPL_W * 0.42, TPL_H * 0.725);
+      ctx.fillText("ACTIVE", TPL_W * 0.47, TPL_H * 0.72);
     }
 
     const link = document.createElement("a");
