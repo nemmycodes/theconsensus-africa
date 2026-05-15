@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, Shield, ShieldCheck, Heart, ArrowRight } from "lucide-react";
+import { Users, Shield, ShieldCheck, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const portals = [
@@ -12,15 +12,6 @@ const portals = [
     route: "/auth",
     color: "bg-primary/10 text-primary border-primary/20",
     btnClass: "bg-primary hover:bg-primary/90 text-primary-foreground",
-  },
-  {
-    title: "KEF-Cares",
-    subtitle: "Community Registration",
-    description: "Register for KEF-CARES economic empowerment and community programmes.",
-    icon: Heart,
-    route: "/kef-cares",
-    color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-    btnClass: "bg-emerald-600 hover:bg-emerald-700 text-white",
   },
   {
     title: "Agent",
@@ -63,7 +54,7 @@ const LoginPortal = () => {
       </motion.div>
 
       {/* Portal Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-5xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-4xl">
         {portals.map((portal, i) => (
           <motion.div
             key={portal.title}
@@ -84,7 +75,7 @@ const LoginPortal = () => {
               {portal.description}
             </p>
             <Button className={`w-full gap-2 font-bold text-xs md:text-sm ${portal.btnClass}`}>
-              {portal.title === "KEF-Cares" ? "Register" : "Sign In"} <ArrowRight className="w-4 h-4" />
+              Sign In <ArrowRight className="w-4 h-4" />
             </Button>
           </motion.div>
         ))}
