@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, Shield, ArrowRight } from "lucide-react";
+import { Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const portals = [
@@ -12,15 +12,6 @@ const portals = [
     route: "/auth",
     color: "bg-primary/10 text-primary border-primary/20",
     btnClass: "bg-primary hover:bg-primary/90 text-primary-foreground",
-  },
-  {
-    title: "Agent",
-    subtitle: "Field Operations",
-    description: "Submit election collation data, report incidents, and manage your assigned polling units.",
-    icon: Shield,
-    route: "/agent/login",
-    color: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-    btnClass: "bg-amber-600 hover:bg-amber-700 text-white",
   },
 ];
 
@@ -45,7 +36,7 @@ const LoginPortal = () => {
       </motion.div>
 
       {/* Portal Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-3xl">
+      <div className="grid grid-cols-1 gap-4 md:gap-6 w-full max-w-md">
         {portals.map((portal, i) => (
           <motion.div
             key={portal.title}
