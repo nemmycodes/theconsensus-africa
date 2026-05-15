@@ -14,15 +14,6 @@ const portals = [
     btnClass: "bg-primary hover:bg-primary/90 text-primary-foreground",
   },
   {
-    title: "KEF-Cares",
-    subtitle: "Community Registration",
-    description: "Register for KEF-CARES economic empowerment and community programmes.",
-    icon: Heart,
-    route: "/kef-cares",
-    color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-    btnClass: "bg-emerald-600 hover:bg-emerald-700 text-white",
-  },
-  {
     title: "Agent",
     subtitle: "Field Operations",
     description: "Submit election collation data, report incidents, and manage your assigned polling units.",
