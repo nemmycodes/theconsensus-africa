@@ -45,7 +45,7 @@ const LoginPortal = () => {
       </motion.div>
 
       {/* Portal Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-3xl">
         {portals.map((portal, i) => (
           <motion.div
             key={portal.title}
