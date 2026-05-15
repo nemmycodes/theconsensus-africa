@@ -39,7 +39,7 @@ const RegisterPortal = () => {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-5xl">
+      <div className="grid grid-cols-1 gap-4 md:gap-6 w-full max-w-md">
         {portals.map((portal, i) => (
           <motion.div
             key={portal.title}
