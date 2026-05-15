@@ -75,7 +75,7 @@ const LoginPortal = () => {
               {portal.description}
             </p>
             <Button className={`w-full gap-2 font-bold text-xs md:text-sm ${portal.btnClass}`}>
-              {portal.title === "KEF-Cares" ? "Register" : "Sign In"} <ArrowRight className="w-4 h-4" />
+              Sign In <ArrowRight className="w-4 h-4" />
             </Button>
           </motion.div>
         ))}
