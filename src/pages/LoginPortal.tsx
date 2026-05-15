@@ -22,15 +22,6 @@ const portals = [
     color: "bg-amber-500/10 text-amber-400 border-amber-500/20",
     btnClass: "bg-amber-600 hover:bg-amber-700 text-white",
   },
-  {
-    title: "Admin",
-    subtitle: "Control Center",
-    description: "Full system administration — users, content, elections, and platform settings.",
-    icon: ShieldCheck,
-    route: "/admin/login",
-    color: "bg-red-500/10 text-red-400 border-red-500/20",
-    btnClass: "bg-red-600 hover:bg-red-700 text-white",
-  },
 ];
 
 const LoginPortal = () => {
