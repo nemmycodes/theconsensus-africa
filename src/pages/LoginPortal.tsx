@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, Shield, ShieldCheck, ArrowRight } from "lucide-react";
+import { Users, Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const portals = [
@@ -21,15 +21,6 @@ const portals = [
     route: "/agent/login",
     color: "bg-amber-500/10 text-amber-400 border-amber-500/20",
     btnClass: "bg-amber-600 hover:bg-amber-700 text-white",
-  },
-  {
-    title: "Admin",
-    subtitle: "Control Center",
-    description: "Full system administration — users, content, elections, and platform settings.",
-    icon: ShieldCheck,
-    route: "/admin/login",
-    color: "bg-red-500/10 text-red-400 border-red-500/20",
-    btnClass: "bg-red-600 hover:bg-red-700 text-white",
   },
 ];
 
@@ -54,7 +45,7 @@ const LoginPortal = () => {
       </motion.div>
 
       {/* Portal Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-3xl">
         {portals.map((portal, i) => (
           <motion.div
             key={portal.title}
