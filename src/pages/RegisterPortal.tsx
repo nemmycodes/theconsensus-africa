@@ -1,35 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Users, Shield, Heart, ArrowRight } from "lucide-react";
+import { Users, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const portals = [
   {
     title: "Member",
     subtitle: "Community Account",
-    description: "Create your member account to access the dashboard, events, forum, and situation room updates.",
+    description: "Create your member account to access the dashboard, events, forum, and situation room updates. Once registered, you can apply to become an Agent or join KEF-Cares from your dashboard.",
     icon: Users,
     route: "/auth?mode=signup",
     color: "bg-primary/10 text-primary border-primary/20",
     btnClass: "bg-primary hover:bg-primary/90 text-primary-foreground",
-  },
-  {
-    title: "Agent",
-    subtitle: "Field Operations",
-    description: "Apply to become a field agent — submit collation data, report incidents, and manage polling units.",
-    icon: Shield,
-    route: "/join/role/agent",
-    color: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-    btnClass: "bg-amber-600 hover:bg-amber-700 text-white",
-  },
-  {
-    title: "KEF-Cares",
-    subtitle: "Community Registration",
-    description: "Register for KEF-CARES economic empowerment and community programmes.",
-    icon: Heart,
-    route: "/kef-cares",
-    color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-    btnClass: "bg-emerald-600 hover:bg-emerald-700 text-white",
   },
 ];
 
@@ -57,7 +39,7 @@ const RegisterPortal = () => {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-5xl">
+      <div className="grid grid-cols-1 gap-4 md:gap-6 w-full max-w-md">
         {portals.map((portal, i) => (
           <motion.div
             key={portal.title}
