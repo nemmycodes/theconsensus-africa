@@ -198,7 +198,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       };
 
       ctx.fillStyle = "#0a3a1a";
-      fitText(displayName.toUpperCase(), TPL_W * 0.372, TPL_H * 0.42, TPL_W * 0.43, 17, "900");
+      fitText(displayName.toUpperCase(), TPL_W * 0.372, TPL_H * 0.42, TPL_W * 0.45, 22, "900");
 
       ctx.fillStyle = "#000";
       const rows: [number, number, number, string][] = [
@@ -208,9 +208,9 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         [TPL_W * 0.525, TPL_H * 0.775, TPL_W * 0.26, issuedDate],
         [TPL_W * 0.49, TPL_H * 0.832, TPL_W * 0.28, validityDate],
       ];
-      rows.forEach(([x, y, maxWidth, t]) => fitText(t, x, y, maxWidth, 14));
+      rows.forEach(([x, y, maxWidth, t]) => fitText(t, x, y, maxWidth, 18));
       ctx.fillStyle = "#0a8a3a";
-      fitText("ACTIVE", TPL_W * 0.472, TPL_H * 0.716, TPL_W * 0.26, 14);
+      fitText("ACTIVE", TPL_W * 0.472, TPL_H * 0.716, TPL_W * 0.26, 18);
     }
 
     const link = document.createElement("a");
