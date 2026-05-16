@@ -111,8 +111,8 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
 
       {/* Name overlay — kept above the printed labels so it never collides */}
       <div
-        className="absolute text-emerald-900 font-black uppercase truncate leading-none"
-        style={{ left: "37.2%", top: "39%", maxWidth: "43%", fontSize: "clamp(10px, 1.8cqw, 18px)" }}
+        className="absolute text-emerald-900 font-black uppercase truncate leading-none tracking-tight"
+        style={{ left: "37.2%", top: "38.5%", maxWidth: "45%", fontSize: "clamp(12px, 2.3cqw, 22px)", fontWeight: 900 }}
       >
         {displayName}
       </div>
