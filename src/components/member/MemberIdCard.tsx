@@ -17,6 +17,12 @@ const BACK_TEMPLATE = "/id-card-back-template.jpg";
 // Reference template width used for relative coordinate math
 const TPL_W = 900;
 const TPL_H = 540;
+const PASSPORT_FRAME = {
+  left: 83 / TPL_W,
+  top: 160 / TPL_H,
+  width: 188 / TPL_W,
+  height: 190 / TPL_H,
+};
 
 const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps) => {
   const { user } = useAuth();
@@ -78,7 +84,12 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       {/* Passport photo — sits inside the green-bordered square */}
       <div
         className="absolute"
-        style={{ left: "8%", top: "24.6%", width: "23.7%", height: "41%" }}
+        style={{
+          left: `${PASSPORT_FRAME.left * 100}%`,
+          top: `${PASSPORT_FRAME.top * 100}%`,
+          width: `${PASSPORT_FRAME.width * 100}%`,
+          height: `${PASSPORT_FRAME.height * 100}%`,
+        }}
       >
         {avatarUrl ? (
           <img
@@ -161,10 +172,10 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       if (avatarUrl) {
         try {
           const av = await loadImg(avatarUrl);
-          const x = TPL_W * 0.08;
-          const y = TPL_H * 0.246;
-          const w = TPL_W * 0.237;
-          const h = TPL_H * 0.41;
+          const x = TPL_W * PASSPORT_FRAME.left;
+          const y = TPL_H * PASSPORT_FRAME.top;
+          const w = TPL_W * PASSPORT_FRAME.width;
+          const h = TPL_H * PASSPORT_FRAME.height;
           ctx.save();
           ctx.beginPath();
           ctx.rect(x, y, w, h);
