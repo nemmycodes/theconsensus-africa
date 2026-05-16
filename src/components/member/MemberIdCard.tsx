@@ -129,7 +129,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         <div
           key={index}
           className={`absolute font-bold whitespace-nowrap overflow-hidden text-ellipsis leading-none ${row.active ? "text-green-700" : "text-black"}`}
-          style={{ left: row.left, top: row.top, width: row.width, fontSize: "clamp(9px, 1.55cqw, 15px)" }}
+          style={{ left: row.left, top: row.top, width: row.width, fontSize: "clamp(11px, 1.95cqw, 18px)" }}
         >
           {row.value}
         </div>
