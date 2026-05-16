@@ -111,8 +111,8 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
 
       {/* Name overlay — kept above the printed labels so it never collides */}
       <div
-        className="absolute text-emerald-900 font-black uppercase truncate leading-none"
-        style={{ left: "37.2%", top: "39%", maxWidth: "43%", fontSize: "clamp(10px, 1.8cqw, 18px)" }}
+        className="absolute text-emerald-900 font-black uppercase truncate leading-none tracking-tight"
+        style={{ left: "37.2%", top: "38.5%", maxWidth: "45%", fontSize: "clamp(12px, 2.3cqw, 22px)", fontWeight: 900 }}
       >
         {displayName}
       </div>
@@ -129,7 +129,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         <div
           key={index}
           className={`absolute font-bold whitespace-nowrap overflow-hidden text-ellipsis leading-none ${row.active ? "text-green-700" : "text-black"}`}
-          style={{ left: row.left, top: row.top, width: row.width, fontSize: "clamp(9px, 1.55cqw, 15px)" }}
+          style={{ left: row.left, top: row.top, width: row.width, fontSize: "clamp(11px, 1.95cqw, 18px)" }}
         >
           {row.value}
         </div>
@@ -198,7 +198,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       };
 
       ctx.fillStyle = "#0a3a1a";
-      fitText(displayName.toUpperCase(), TPL_W * 0.372, TPL_H * 0.42, TPL_W * 0.43, 17, "900");
+      fitText(displayName.toUpperCase(), TPL_W * 0.372, TPL_H * 0.42, TPL_W * 0.45, 22, "900");
 
       ctx.fillStyle = "#000";
       const rows: [number, number, number, string][] = [
@@ -208,9 +208,9 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
         [TPL_W * 0.525, TPL_H * 0.775, TPL_W * 0.26, issuedDate],
         [TPL_W * 0.49, TPL_H * 0.832, TPL_W * 0.28, validityDate],
       ];
-      rows.forEach(([x, y, maxWidth, t]) => fitText(t, x, y, maxWidth, 14));
+      rows.forEach(([x, y, maxWidth, t]) => fitText(t, x, y, maxWidth, 18));
       ctx.fillStyle = "#0a8a3a";
-      fitText("ACTIVE", TPL_W * 0.472, TPL_H * 0.716, TPL_W * 0.26, 14);
+      fitText("ACTIVE", TPL_W * 0.472, TPL_H * 0.716, TPL_W * 0.26, 18);
     }
 
     const link = document.createElement("a");
