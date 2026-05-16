@@ -78,7 +78,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       {/* Passport photo — sits inside the green-bordered square */}
       <div
         className="absolute"
-        style={{ left: "9.5%", top: "26%", width: "24.5%", height: "44%" }}
+        style={{ left: "8%", top: "24.6%", width: "23.7%", height: "41%" }}
       >
         {avatarUrl ? (
           <img
