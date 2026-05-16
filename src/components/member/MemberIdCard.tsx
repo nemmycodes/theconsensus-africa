@@ -161,10 +161,10 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       if (avatarUrl) {
         try {
           const av = await loadImg(avatarUrl);
-          const x = TPL_W * 0.095;
-          const y = TPL_H * 0.26;
-          const w = TPL_W * 0.245;
-          const h = TPL_H * 0.44;
+          const x = TPL_W * 0.08;
+          const y = TPL_H * 0.246;
+          const w = TPL_W * 0.237;
+          const h = TPL_H * 0.41;
           ctx.save();
           ctx.beginPath();
           ctx.rect(x, y, w, h);
