@@ -78,7 +78,7 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       {/* Passport photo — sits inside the green-bordered square */}
       <div
         className="absolute"
-        style={{ left: "9.5%", top: "26%", width: "24.5%", height: "44%" }}
+        style={{ left: "8%", top: "24.6%", width: "23.7%", height: "41%" }}
       >
         {avatarUrl ? (
           <img
@@ -161,10 +161,10 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
       if (avatarUrl) {
         try {
           const av = await loadImg(avatarUrl);
-          const x = TPL_W * 0.095;
-          const y = TPL_H * 0.26;
-          const w = TPL_W * 0.245;
-          const h = TPL_H * 0.44;
+          const x = TPL_W * 0.08;
+          const y = TPL_H * 0.246;
+          const w = TPL_W * 0.237;
+          const h = TPL_H * 0.41;
           ctx.save();
           ctx.beginPath();
           ctx.rect(x, y, w, h);
