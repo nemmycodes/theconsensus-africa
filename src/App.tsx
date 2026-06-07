@@ -35,9 +35,11 @@ import KefCares from "./pages/KefCares";
 import Manifesto from "./pages/Manifesto";
 import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
+import UnderConstruction from "./pages/UnderConstruction";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
+const SITE_UNDER_CONSTRUCTION = true;
 
 const CtrlQListener = () => {
   const navigate = useNavigate();
