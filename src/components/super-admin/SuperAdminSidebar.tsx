@@ -5,7 +5,7 @@ import {
   Crown, LayoutDashboard, Users, Shield, UserCog, BarChart3,
   Globe, Radio, Calendar, FileText, MessageSquare, Image,
   Bell, Settings, ChevronLeft, LogOut, Database, Activity,
-  PenTool, Mail,
+  PenTool, Mail, Download,
 } from "lucide-react";
 
 interface SuperAdminSidebarProps {
@@ -48,6 +48,7 @@ const menuGroups = [
   {
     label: "System",
     items: [
+      { id: "data-export", label: "Data Export", icon: Download },
       { id: "notifications", label: "Notifications", icon: Bell },
       { id: "settings", label: "System Settings", icon: Settings },
     ],

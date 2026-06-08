@@ -11,6 +11,7 @@ import SuperAdminAccountManagement from "@/components/super-admin/SuperAdminAcco
 import SuperAdminWebsiteCMS from "@/components/super-admin/SuperAdminWebsiteCMS";
 import SuperAdminSiteEditor from "@/components/super-admin/SuperAdminSiteEditor";
 import SuperAdminContactMessages from "@/components/super-admin/SuperAdminContactMessages";
+import SuperAdminDataExport from "@/components/super-admin/SuperAdminDataExport";
 import AdminSituationRoom from "@/components/admin/AdminSituationRoom";
 import AdminElectionCollation from "@/components/admin/AdminElectionCollation";
 import AdminEvents from "@/components/admin/AdminEvents";
@@ -71,6 +72,7 @@ const SuperAdminDashboard = () => {
       case "media": return <AdminMediaLibrary />;
       case "notifications": return <AdminNotifications />;
       case "kef-cares": return <AdminKefCares />;
+      case "data-export": return <SuperAdminDataExport />;
       case "settings": return <AdminSettings />;
       default: return <SuperAdminOverview />;
     }
