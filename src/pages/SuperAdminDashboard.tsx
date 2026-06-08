@@ -91,20 +91,29 @@ const SuperAdminDashboard = () => {
       )}
 
       {isMobile ? (
-        sidebarOpen && (
-          <>
-            <div className="fixed inset-0 bg-black/40 z-40" onClick={() => setSidebarOpen(false)} />
-            <div className="fixed left-0 top-0 bottom-0 z-50">
-              <SuperAdminSidebar activeTab={activeTab} onTabChange={handleTabChange} />
-            </div>
-          </>
-        )
+        <>
+          <div
+            className={`fixed inset-0 bg-black/60 z-40 transition-opacity duration-300 ${
+              sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+            onClick={() => setSidebarOpen(false)}
+          />
+          <div
+            className={`fixed left-0 top-0 bottom-0 z-50 transform transition-transform duration-300 ease-in-out ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <SuperAdminSidebar activeTab={activeTab} onTabChange={handleTabChange} />
+          </div>
+        </>
       ) : (
         <SuperAdminSidebar activeTab={activeTab} onTabChange={handleTabChange} />
       )}
 
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        {renderContent()}
+      <main className="flex-1 p-3 md:p-8 pt-16 md:pt-8 overflow-y-auto w-full max-w-full">
+        <div className="max-w-full overflow-x-hidden">
+          {renderContent()}
+        </div>
       </main>
     </div>
   );
