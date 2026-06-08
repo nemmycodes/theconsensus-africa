@@ -904,6 +904,72 @@ export type Database = {
         }
         Relationships: []
       }
+      manifesto_contributors: {
+        Row: {
+          about: string | null
+          age_range: string | null
+          areas_of_interest: string[]
+          contribution: string | null
+          created_at: string
+          current_location: string | null
+          declaration: boolean
+          email: string
+          engagement_areas: string[]
+          full_name: string
+          gender: string | null
+          id: string
+          lga: string | null
+          occupation: string | null
+          organisation: string | null
+          phone: string
+          qualification: string | null
+          ward: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          about?: string | null
+          age_range?: string | null
+          areas_of_interest?: string[]
+          contribution?: string | null
+          created_at?: string
+          current_location?: string | null
+          declaration?: boolean
+          email: string
+          engagement_areas?: string[]
+          full_name: string
+          gender?: string | null
+          id?: string
+          lga?: string | null
+          occupation?: string | null
+          organisation?: string | null
+          phone: string
+          qualification?: string | null
+          ward?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          about?: string | null
+          age_range?: string | null
+          areas_of_interest?: string[]
+          contribution?: string | null
+          created_at?: string
+          current_location?: string | null
+          declaration?: boolean
+          email?: string
+          engagement_areas?: string[]
+          full_name?: string
+          gender?: string | null
+          id?: string
+          lga?: string | null
+          occupation?: string | null
+          organisation?: string | null
+          phone?: string
+          qualification?: string | null
+          ward?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
       primaries_collation: {
         Row: {
           collation_form_url: string | null
