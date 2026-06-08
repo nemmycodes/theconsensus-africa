@@ -19,17 +19,17 @@ const SuperAdminHeader = ({ title, subtitle }: SuperAdminHeaderProps) => {
   }, []);
 
   return (
-    <div className="flex items-center justify-between mb-8 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl px-6 py-4">
-      <div>
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 md:mb-8 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl px-4 md:px-6 py-3 md:py-4">
+      <div className="pl-12 md:pl-0">
         <div className="flex items-center gap-2">
-          <Crown className="w-5 h-5 text-amber-500" />
-          <h1 className="text-xl font-black text-foreground uppercase tracking-tight">{title}</h1>
+          <Crown className="w-5 h-5 text-amber-500 shrink-0" />
+          <h1 className="text-base md:text-xl font-black text-foreground uppercase tracking-tight truncate">{title}</h1>
         </div>
-        <p className="text-muted-foreground text-sm mt-0.5">{subtitle}</p>
+        <p className="text-muted-foreground text-xs md:text-sm mt-0.5 line-clamp-2">{subtitle}</p>
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="relative hidden md:block">
+      <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+        <div className="relative hidden lg:block">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search anything..."
@@ -37,7 +37,7 @@ const SuperAdminHeader = ({ title, subtitle }: SuperAdminHeaderProps) => {
           />
         </div>
 
-        <span className="text-xs text-muted-foreground font-mono">
+        <span className="text-[10px] md:text-xs text-muted-foreground font-mono">
           {time.toISOString().slice(11, 19)} UTC
         </span>
 
