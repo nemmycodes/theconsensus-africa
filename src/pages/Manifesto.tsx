@@ -103,11 +103,14 @@ const Manifesto = () => {
             <p className="text-base md:text-lg text-muted-foreground italic">
               Building Consciousness. Building Communities. Building the Future.
             </p>
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap gap-3">
               <Button asChild size="lg" className="font-semibold">
                 <a href="/Plateau_Consensus_Manifesto.docx" download>
                   <Download className="w-4 h-4 mr-2" /> Download Manifesto (.docx)
                 </a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="font-semibold" onClick={() => navigate("/manifesto/contribute")}>
+                <button type="button"><ScrollText className="w-4 h-4 mr-2" /> Become a Contributor</button>
               </Button>
             </div>
           </motion.div>
