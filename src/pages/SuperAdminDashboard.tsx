@@ -72,6 +72,7 @@ const SuperAdminDashboard = () => {
       case "media": return <AdminMediaLibrary />;
       case "notifications": return <AdminNotifications />;
       case "kef-cares": return <AdminKefCares />;
+      case "data-export": return <SuperAdminDataExport />;
       case "settings": return <AdminSettings />;
       default: return <SuperAdminOverview />;
     }
