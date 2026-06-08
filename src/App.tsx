@@ -33,6 +33,7 @@ import SuperAdminLogin from "./pages/SuperAdminLogin";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import KefCares from "./pages/KefCares";
 import Manifesto from "./pages/Manifesto";
+import ManifestoContribute from "./pages/ManifestoContribute";
 import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
 import UnderConstruction from "./pages/UnderConstruction";
