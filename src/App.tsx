@@ -39,7 +39,7 @@ import UnderConstruction from "./pages/UnderConstruction";
 import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
-const SITE_UNDER_CONSTRUCTION = true;
+const SITE_UNDER_CONSTRUCTION = false;
 
 const CtrlQListener = () => {
   const navigate = useNavigate();
