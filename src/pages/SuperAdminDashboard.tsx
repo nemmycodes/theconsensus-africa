@@ -83,7 +83,8 @@ const SuperAdminDashboard = () => {
       {isMobile && (
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="fixed top-3 left-3 z-[60] w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center shadow-md"
+          className="fixed top-3 left-3 z-[60] w-10 h-10 bg-[#050a15] border border-amber-500/30 rounded-lg flex items-center justify-center shadow-lg text-amber-400"
+          aria-label="Toggle menu"
         >
           {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
