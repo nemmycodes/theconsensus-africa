@@ -48,6 +48,7 @@ const menuGroups = [
   {
     label: "System",
     items: [
+      { id: "data-export", label: "Data Export", icon: Download },
       { id: "notifications", label: "Notifications", icon: Bell },
       { id: "settings", label: "System Settings", icon: Settings },
     ],
