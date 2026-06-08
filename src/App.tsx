@@ -33,6 +33,7 @@ import SuperAdminLogin from "./pages/SuperAdminLogin";
 import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import KefCares from "./pages/KefCares";
 import Manifesto from "./pages/Manifesto";
+import ManifestoContribute from "./pages/ManifestoContribute";
 import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
 import UnderConstruction from "./pages/UnderConstruction";
@@ -76,6 +77,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/manifesto" element={<Manifesto />} />
+              <Route path="/manifesto/contribute" element={<ManifestoContribute />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<LoginPortal />} />
               <Route path="/auth" element={<Auth />} />
