@@ -37,7 +37,7 @@ const SuperAdminHeader = ({ title, subtitle }: SuperAdminHeaderProps) => {
           />
         </div>
 
-        <span className="text-xs text-muted-foreground font-mono">
+        <span className="text-[10px] md:text-xs text-muted-foreground font-mono">
           {time.toISOString().slice(11, 19)} UTC
         </span>
 
