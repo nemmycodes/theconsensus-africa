@@ -57,7 +57,7 @@ const ManifestoContribute = () => {
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
-      navigate("/login", { replace: true });
+      navigate("/auth?redirect=/manifesto/contribute", { replace: true });
     }
   }, [authLoading, user, navigate]);
 
