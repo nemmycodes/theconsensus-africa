@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,10 @@ import loginHero from "@/assets/login-hero.jpg";
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
 const Auth = () => {
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirect");
+  const initialMode = searchParams.get("mode") === "signup" ? "signup" : "login";
+  const [mode, setMode] = useState<"login" | "signup">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -23,15 +26,20 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Role-based redirect
+  // Role-based redirect (or honor explicit ?redirect= param)
   useEffect(() => {
     if (!authLoading && !rolesLoading && user) {
+      if (redirectTo) {
+        navigate(redirectTo, { replace: true });
+        return;
+      }
       if (isAdmin) navigate("/admin", { replace: true });
       else if (isAgent) navigate("/agent", { replace: true });
       else if (isKefUser) navigate("/kef-cares/dashboard", { replace: true });
       else navigate("/dashboard", { replace: true });
     }
-  }, [user, authLoading, rolesLoading, isAdmin, isAgent, isKefUser, navigate]);
+  }, [user, authLoading, rolesLoading, isAdmin, isAgent, isKefUser, navigate, redirectTo]);
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
