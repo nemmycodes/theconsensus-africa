@@ -109,8 +109,8 @@ const Manifesto = () => {
                   <Download className="w-4 h-4 mr-2" /> Download Manifesto (.docx)
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="font-semibold" onClick={() => navigate("/manifesto/contribute")}>
-                <button type="button"><ScrollText className="w-4 h-4 mr-2" /> Become a Contributor</button>
+              <Button size="lg" variant="outline" className="font-semibold" onClick={() => navigate("/auth?mode=signup&redirect=/manifesto/contribute")}>
+                <ScrollText className="w-4 h-4 mr-2" /> Become a Contributor
               </Button>
             </div>
           </motion.div>
