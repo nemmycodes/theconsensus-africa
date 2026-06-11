@@ -1425,6 +1425,13 @@ export type Database = {
     }
     Functions: {
       generate_agent_code: { Args: never; Returns: string }
+      get_situation_like_counts: {
+        Args: { _post_ids: string[] }
+        Returns: {
+          like_count: number
+          post_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
