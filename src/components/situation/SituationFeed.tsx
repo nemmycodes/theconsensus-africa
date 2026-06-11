@@ -80,19 +80,22 @@ const SituationFeed = () => {
     const authorIds = Array.from(new Set(postsData.map((p) => p.author_id)));
     const postIds = postsData.map((p) => p.id);
 
-    const [{ data: profilesData }, { data: likesData }, { data: commentsCountData }] = await Promise.all([
+    const [{ data: profilesData }, { data: likeCountsData }, { data: myLikesData }, { data: commentsCountData }] = await Promise.all([
       supabase.from("profiles").select("user_id, full_name, avatar_url").in("user_id", authorIds),
-      supabase.from("situation_post_likes").select("post_id, user_id").in("post_id", postIds),
+      supabase.rpc("get_situation_like_counts", { _post_ids: postIds }),
+      user
+        ? supabase.from("situation_post_likes").select("post_id").eq("user_id", user.id).in("post_id", postIds)
+        : Promise.resolve({ data: [] as { post_id: string }[] }),
       supabase.from("situation_post_comments").select("post_id").in("post_id", postIds),
     ]);
 
     const profileMap = new Map((profilesData || []).map((p) => [p.user_id, p]));
     const likeCounts: Record<string, number> = {};
-    const likedByMe: Record<string, boolean> = {};
-    (likesData || []).forEach((l) => {
-      likeCounts[l.post_id] = (likeCounts[l.post_id] || 0) + 1;
-      if (user && l.user_id === user.id) likedByMe[l.post_id] = true;
+    (likeCountsData || []).forEach((l: { post_id: string; like_count: number }) => {
+      likeCounts[l.post_id] = Number(l.like_count) || 0;
     });
+    const likedByMe: Record<string, boolean> = {};
+    (myLikesData || []).forEach((l) => { likedByMe[l.post_id] = true; });
     const commentCounts: Record<string, number> = {};
     (commentsCountData || []).forEach((c) => { commentCounts[c.post_id] = (commentCounts[c.post_id] || 0) + 1; });
 
