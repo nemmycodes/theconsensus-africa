@@ -50,8 +50,8 @@ const KefCaresFormFields = ({ form, setForm, toggleArrayItem }: KefCaresFormFiel
 
       {/* 2. Location */}
       <fieldset className="space-y-4">
-        <legend className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 border-b pb-2 mb-4 w-full">2. Location Information (Central Zone)</legend>
-        <p className="text-sm text-muted-foreground">State: <strong>Plateau State</strong> | Zone: <strong>Central Zone</strong></p>
+        <legend className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 border-b pb-2 mb-4 w-full">2. Location Information</legend>
+        <p className="text-sm text-muted-foreground">State: <strong>Plateau State</strong></p>
         <InecLocationPicker
           lgaName={form.lga}
           wardName={form.ward}

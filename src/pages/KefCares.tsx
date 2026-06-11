@@ -18,7 +18,7 @@ type View = "landing" | "login" | "register";
 const KEF_SEO = {
   title: "KEF-CARES – Join the Kefiano Community Initiative | The Plateau Consensus",
   description:
-    "KEF-CARES: Kefiano Community Advancement, Resilience & Economic Support Initiative. Join the Central Zone Pilot empowering Plateau State youth through skills, mentorship and economic opportunity.",
+    "KEF-CARES: Kefiano Community Advancement, Resilience & Economic Support Initiative. Empowering youth across all of Plateau State through skills, mentorship and economic opportunity.",
   url: "https://theconsensus.africa/kef-cares",
   image: "https://theconsensus.africa/assets/mentor-1-DTnKDAHX.jpeg",
 };
@@ -105,7 +105,7 @@ const KefCaresLanding = ({ onLogin, onRegister }: { onLogin: () => void; onRegis
               <p className="text-lg md:text-xl font-semibold text-emerald-200 mb-2">
                 Kefiano Community Advancement, Resilience & Economic Support Initiative
               </p>
-              <p className="text-emerald-300 text-sm md:text-base mb-10">Central Zone Pilot – Plateau State</p>
+              <p className="text-emerald-300 text-sm md:text-base mb-10">Plateau State – Statewide</p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto mb-12">
                 {[
@@ -141,13 +141,13 @@ const KefCaresLanding = ({ onLogin, onRegister }: { onLogin: () => void; onRegis
                 KEF-CARES is an economic empowerment initiative aligned with the philosophy of The Consensus Movement: that strong communities are built when citizens—especially youths, traders, farmers, artisans, professionals, entrepreneurs, and creatives—are economically organised and empowered.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed mt-3">
-                Through structured community registration across the Central Zone of Plateau State, KEF-CARES builds a data-driven understanding of economic activities, skills, and opportunities.
+                Through structured community registration across the entire Plateau State, KEF-CARES builds a data-driven understanding of economic activities, skills, and opportunities.
               </p>
             </div>
             <div className="bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 border border-emerald-200 dark:border-emerald-800">
               <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-300 mb-3">Why Register?</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Registration helps create a verified community database that identifies skills, occupations, and economic needs across the Central Zone. This allows KEF-CARES to develop practical support programmes in areas such as entrepreneurship, agriculture, trading support, professional networking, vocational development, and youth empowerment.
+                Registration helps create a verified community database that identifies skills, occupations, and economic needs across Plateau State. This allows KEF-CARES to develop practical support programmes in areas such as entrepreneurship, agriculture, trading support, professional networking, vocational development, and youth empowerment.
               </p>
             </div>
           </div>
@@ -443,7 +443,7 @@ const KefCaresRegistrationForm = ({ userId }: { userId?: string | null }) => {
             <p className="text-lg md:text-xl font-semibold text-emerald-200 mb-2">
               Kefiano Community Advancement, Resilience & Economic Support Initiative
             </p>
-            <p className="text-emerald-300 text-sm md:text-base">Central Zone Pilot – Plateau State</p>
+            <p className="text-emerald-300 text-sm md:text-base">Plateau State – Statewide</p>
           </div>
         </section>
 

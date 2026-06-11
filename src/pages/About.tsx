@@ -54,10 +54,10 @@ const strategyItems = [
   { icon: ShieldCheck, title: "Civic Education", description: "Structured learning on governance, rights, and civic participation for all members." },
 ];
 
-const centralZonePilot = {
+const statewideInitiative = {
   icon: Award,
-  title: "Central Zone Pilot Initiative",
-  description: "All youth community-based technology initiatives launching first in the Central Zone as a proof of concept.",
+  title: "Statewide Initiative",
+  description: "Youth community-based technology initiatives deployed across all of Plateau State.",
 };
 
 const values = [
@@ -71,7 +71,7 @@ const faqs = [
   { q: "What is The Consensus Movement?", a: "The Consensus is a non-partisan civic and economic empowerment movement organizing Gen Z and young Millennials in Plateau State into a structured community focused on economic freedom, political consciousness, and shared prosperity." },
   { q: "How can I join the movement?", a: "You can join by visiting our Join Us page and completing the registration process. Membership is open to Gen Z, young Millennials, students, entrepreneurs, professionals, creatives, and community builders." },
   { q: "Is The Consensus a political party?", a: "No. The Consensus is a civic movement that transcends traditional party lines. We focus on competence, integrity, and economic empowerment rather than partisan politics." },
-  { q: "What is the Central Zone Pilot?", a: "The Central Zone Pilot is our initial deployment area in Plateau State where we are building and testing our digital community infrastructure before expanding statewide." },
+  { q: "Where does The Consensus operate?", a: "The Consensus operates across the entire Plateau State, building digital community infrastructure for all three senatorial zones, all 17 LGAs, and every ward." },
 ];
 
 const About = () => {
@@ -228,11 +228,11 @@ const About = () => {
               </div>
               <div className="flex items-start gap-4 p-4 rounded-xl border transition-colors" style={{ background: 'hsl(145, 63%, 20%)', borderColor: 'hsl(145, 63%, 30%)' }}>
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'hsl(145, 63%, 42%)' }}>
-                  <centralZonePilot.icon className="w-5 h-5 text-primary-foreground" />
+                  <statewideInitiative.icon className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-primary-foreground">{centralZonePilot.title}</h4>
-                  <p className="text-xs mt-1" style={{ color: 'hsl(145, 30%, 70%)' }}>{centralZonePilot.description}</p>
+                  <h4 className="font-bold text-sm text-primary-foreground">{statewideInitiative.title}</h4>
+                  <p className="text-xs mt-1" style={{ color: 'hsl(145, 30%, 70%)' }}>{statewideInitiative.description}</p>
                 </div>
               </div>
             </motion.div>

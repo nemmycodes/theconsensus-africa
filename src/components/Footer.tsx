@@ -21,7 +21,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
             <Link to="/"><img src="/brand-logo.png" alt="The Plateau Consensus" className="h-12 w-auto" /></Link>
             <p className="text-sm text-primary-foreground/80 leading-relaxed">
               The Consensus Movement<br />
-              Central Zone Pilot – Plateau State<br />
+              Plateau State, Nigeria<br />
               Economic Freedom. Political Consciousness. Shared Prosperity.
             </p>
             <div className="flex items-center gap-3 pt-2">
