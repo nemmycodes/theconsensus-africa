@@ -15,7 +15,7 @@ ABOUT THE ORGANIZATION:
 
 KEY FEATURES:
 - Situation Room: Real-time monitoring platform for political developments, electoral activities, and community issues. Members and agents submit verified reports.
-- KEF-CARES Foundation: An initiative focused on economic empowerment, skills training, entrepreneurship support, agriculture, and community development in the Central Zone and beyond.
+- KEF-CARES Foundation: An initiative focused on economic empowerment, skills training, entrepreneurship support, agriculture, and community development across the entire Plateau State.
 - Election Collation: Agents on the ground report election results using EC8-A forms for transparent monitoring.
 - Discussion/Podcast: Community forum and podcast platform for civic dialogue.
 

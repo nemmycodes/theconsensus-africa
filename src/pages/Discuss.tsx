@@ -51,7 +51,7 @@ const livePodcast = {
   host: "KEF Media Team",
   status: "LIVE NOW",
   listeners: 234,
-  description: "Join our live discussion on creating economic opportunities for young people across the central zone.",
+  description: "Join our live discussion on creating economic opportunities for young people across Plateau State.",
 };
 
 const pastPodcasts = [

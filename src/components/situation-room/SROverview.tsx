@@ -232,9 +232,9 @@ const SROverview = () => {
         <Card className="p-5">
           <h4 className="text-sm font-bold mb-4">Agent Distribution</h4>
           {[
-            { zone: "Central Zone", active: 128, total: 142 },
-            { zone: "Northern Zone", active: 87, total: 98 },
-            { zone: "Southern Zone", active: 134, total: 144 },
+            { zone: "Plateau Central", active: 128, total: 142 },
+            { zone: "Plateau North", active: 87, total: 98 },
+            { zone: "Plateau South", active: 134, total: 144 },
           ].map((z) => (
             <div key={z.zone} className="flex justify-between py-2 text-sm">
               <span>{z.zone}</span>

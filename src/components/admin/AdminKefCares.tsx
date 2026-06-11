@@ -45,7 +45,7 @@ const AdminKefCares = () => {
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Users className="w-6 h-6 text-emerald-600" /> KEF-CARES Management
         </h1>
-        <p className="text-sm text-muted-foreground mt-1">Central Zone Pilot — manage registrations and programme updates.</p>
+        <p className="text-sm text-muted-foreground mt-1">Plateau State — manage registrations and programme updates.</p>
       </div>
       <Tabs defaultValue="registrations" className="w-full">
         <TabsList className="mb-4">

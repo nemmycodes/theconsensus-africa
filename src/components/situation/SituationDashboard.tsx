@@ -328,9 +328,9 @@ const SituationDashboard = () => {
             </div>
             <div className="space-y-4">
               {[
-                { zone: "Central Zone", active: 128, total: 142 },
-                { zone: "Northern Zone", active: 87, total: 98 },
-                { zone: "Southern Zone", active: 134, total: 144 },
+                { zone: "Plateau Central", active: 128, total: 142 },
+                { zone: "Plateau North", active: 87, total: 98 },
+                { zone: "Plateau South", active: 134, total: 144 },
               ].map((item) => (
                 <div key={item.zone} className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{item.zone}</span>
