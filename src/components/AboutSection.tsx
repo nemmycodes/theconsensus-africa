@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Users, UserCheck, CalendarCheck, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import aboutMarket from "@/assets/about-market.jpg";
 import aboutYouthCard from "@/assets/about-youth-card.jpg";
 
@@ -21,11 +23,11 @@ const staggerContainer = {
   },
 };
 
-const stats = [
-  { icon: Users, stat: "1.4M+", label: "Active Members" },
-  { icon: UserCheck, stat: "1K+", label: "Certified Agents" },
-  { icon: CalendarCheck, stat: "120+", label: "Planned Events" },
-];
+const formatStat = (n: number) => {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M+`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, "")}K+`;
+  return n.toLocaleString();
+};
 
 const checkpoints = [
   "Transparent Leadership Protocols",
@@ -34,6 +36,28 @@ const checkpoints = [
 ];
 
 const AboutSection = () => {
+  const [counts, setCounts] = useState({ members: 0, agents: 0, events: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const { data, error } = await supabase.rpc("get_public_stats");
+      if (!error && data && data.length > 0) {
+        setCounts({
+          members: Number(data[0].total_members) || 0,
+          agents: Number(data[0].total_agents) || 0,
+          events: Number(data[0].total_events) || 0,
+        });
+      }
+    };
+    fetchStats();
+  }, []);
+
+  const stats = [
+    { icon: Users, stat: formatStat(counts.members), label: "Active Members" },
+    { icon: UserCheck, stat: formatStat(counts.agents), label: "Certified Agents" },
+    { icon: CalendarCheck, stat: formatStat(counts.events), label: "Planned Events" },
+  ];
+
   return (
     <section className="py-24 bg-card relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />

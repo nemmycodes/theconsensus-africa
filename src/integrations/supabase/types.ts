@@ -1425,6 +1425,14 @@ export type Database = {
     }
     Functions: {
       generate_agent_code: { Args: never; Returns: string }
+      get_public_stats: {
+        Args: never
+        Returns: {
+          total_agents: number
+          total_events: number
+          total_members: number
+        }[]
+      }
       get_situation_like_counts: {
         Args: { _post_ids: string[] }
         Returns: {
