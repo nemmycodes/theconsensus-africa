@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import MemberSidebar from "@/components/member/MemberSidebar";
 import MemberHeader from "@/components/member/MemberHeader";
 import MemberOverview from "@/components/member/MemberOverview";
@@ -16,11 +17,13 @@ import MemberNotifications from "@/components/member/MemberNotifications";
 import MemberApplyAgent from "@/components/member/MemberApplyAgent";
 import MemberApplyAspirant from "@/components/member/MemberApplyAspirant";
 import MemberApplyVolunteer from "@/components/member/MemberApplyVolunteer";
-import { useEffect } from "react";
+import MemberPvcSurvey from "@/components/member/MemberPvcSurvey";
 
 const MemberDashboard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [surveyChecked, setSurveyChecked] = useState(false);
+  const [surveyDone, setSurveyDone] = useState(false);
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
@@ -31,7 +34,19 @@ const MemberDashboard = () => {
     }
   }, [user, loading, navigate]);
 
-  if (loading) {
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data } = await supabase
+        .from("pvc_surveys").select("id").eq("user_id", user.id).maybeSingle();
+      const done = !!data;
+      setSurveyDone(done);
+      setSurveyChecked(true);
+      if (!done) setActiveTab("pvc-survey");
+    })();
+  }, [user]);
+
+  if (loading || (user && !surveyChecked)) {
     return (
       <div className="min-h-screen bg-[#f5f5f0] flex items-center justify-center">
         <div className="text-center">
@@ -45,13 +60,19 @@ const MemberDashboard = () => {
   if (!user) return null;
 
   const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
+    // Gate: if survey not done, force them to stay on survey
+    if (!surveyDone && tab !== "pvc-survey") {
+      setActiveTab("pvc-survey");
+    } else {
+      setActiveTab(tab);
+    }
     if (isMobile) setSidebarOpen(false);
   };
 
   const renderContent = () => {
     switch (activeTab) {
       case "dashboard": return <MemberOverview onTabChange={handleTabChange} />;
+      case "pvc-survey": return <MemberPvcSurvey onCompleted={() => { setSurveyDone(true); setActiveTab("dashboard"); }} />;
       case "report": return <MemberSubmitReport />;
       case "events": return <MemberEvents />;
       case "forum": return <MemberForum />;
@@ -67,7 +88,6 @@ const MemberDashboard = () => {
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] flex relative">
-      {/* Mobile hamburger */}
       {isMobile && (
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -77,7 +97,6 @@ const MemberDashboard = () => {
         </button>
       )}
 
-      {/* Sidebar */}
       {isMobile ? (
         sidebarOpen && (
           <>

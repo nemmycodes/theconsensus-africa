@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard, FileText, Calendar,
   MessageSquare, Bell, User, Settings, ChevronLeft, LogOut,
-  Award, ShieldCheck, HeartHandshake,
+  Award, ShieldCheck, HeartHandshake, ClipboardList,
 } from "lucide-react";
 
 interface MemberSidebarProps {
@@ -14,6 +14,7 @@ interface MemberSidebarProps {
 
 const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "pvc-survey", label: "PVC Survey", icon: ClipboardList },
   { id: "report", label: "Submit Report", icon: FileText },
   { id: "events", label: "Events", icon: Calendar },
   { id: "forum", label: "Community Forum", icon: MessageSquare },
