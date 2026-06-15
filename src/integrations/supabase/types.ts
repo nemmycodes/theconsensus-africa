@@ -1137,6 +1137,156 @@ export type Database = {
         }
         Relationships: []
       }
+      pvc_surveys: {
+        Row: {
+          advice_inec: string | null
+          advice_leaders: string | null
+          age_range: string | null
+          attempted_pvc_update: string | null
+          candidate_qualities: string[] | null
+          candidate_qualities_other: string | null
+          created_at: string
+          education: string | null
+          election_concerns: string[] | null
+          election_concerns_other: string | null
+          electoral_confidence: string | null
+          encourage_participation: string[] | null
+          encourage_participation_other: string | null
+          gender: string | null
+          government_priority: string | null
+          has_pvc: string | null
+          id: string
+          inec_rating: string | null
+          lga: string | null
+          likely_next_election: string | null
+          nigeria_challenges: string[] | null
+          nigeria_challenges_other: string | null
+          nigeria_condition: string | null
+          no_pvc_reason_other: string | null
+          no_pvc_reasons: string[] | null
+          not_vote_reason: string | null
+          not_vote_reason_other: string | null
+          occupation: string | null
+          occupation_other: string | null
+          optimism: string | null
+          other_comments: string | null
+          preferred_governor: string | null
+          preferred_national_assembly: string | null
+          preferred_party: string | null
+          preferred_party_other: string | null
+          preferred_president: string | null
+          pvc_challenges: string[] | null
+          pvc_challenges_other: string | null
+          pvc_status: string | null
+          reforms: string[] | null
+          reforms_other: string | null
+          state_of_residence: string | null
+          updated_at: string
+          user_id: string
+          vote_influence: string | null
+          voted_last_election: string | null
+          willing_to_register: string | null
+        }
+        Insert: {
+          advice_inec?: string | null
+          advice_leaders?: string | null
+          age_range?: string | null
+          attempted_pvc_update?: string | null
+          candidate_qualities?: string[] | null
+          candidate_qualities_other?: string | null
+          created_at?: string
+          education?: string | null
+          election_concerns?: string[] | null
+          election_concerns_other?: string | null
+          electoral_confidence?: string | null
+          encourage_participation?: string[] | null
+          encourage_participation_other?: string | null
+          gender?: string | null
+          government_priority?: string | null
+          has_pvc?: string | null
+          id?: string
+          inec_rating?: string | null
+          lga?: string | null
+          likely_next_election?: string | null
+          nigeria_challenges?: string[] | null
+          nigeria_challenges_other?: string | null
+          nigeria_condition?: string | null
+          no_pvc_reason_other?: string | null
+          no_pvc_reasons?: string[] | null
+          not_vote_reason?: string | null
+          not_vote_reason_other?: string | null
+          occupation?: string | null
+          occupation_other?: string | null
+          optimism?: string | null
+          other_comments?: string | null
+          preferred_governor?: string | null
+          preferred_national_assembly?: string | null
+          preferred_party?: string | null
+          preferred_party_other?: string | null
+          preferred_president?: string | null
+          pvc_challenges?: string[] | null
+          pvc_challenges_other?: string | null
+          pvc_status?: string | null
+          reforms?: string[] | null
+          reforms_other?: string | null
+          state_of_residence?: string | null
+          updated_at?: string
+          user_id: string
+          vote_influence?: string | null
+          voted_last_election?: string | null
+          willing_to_register?: string | null
+        }
+        Update: {
+          advice_inec?: string | null
+          advice_leaders?: string | null
+          age_range?: string | null
+          attempted_pvc_update?: string | null
+          candidate_qualities?: string[] | null
+          candidate_qualities_other?: string | null
+          created_at?: string
+          education?: string | null
+          election_concerns?: string[] | null
+          election_concerns_other?: string | null
+          electoral_confidence?: string | null
+          encourage_participation?: string[] | null
+          encourage_participation_other?: string | null
+          gender?: string | null
+          government_priority?: string | null
+          has_pvc?: string | null
+          id?: string
+          inec_rating?: string | null
+          lga?: string | null
+          likely_next_election?: string | null
+          nigeria_challenges?: string[] | null
+          nigeria_challenges_other?: string | null
+          nigeria_condition?: string | null
+          no_pvc_reason_other?: string | null
+          no_pvc_reasons?: string[] | null
+          not_vote_reason?: string | null
+          not_vote_reason_other?: string | null
+          occupation?: string | null
+          occupation_other?: string | null
+          optimism?: string | null
+          other_comments?: string | null
+          preferred_governor?: string | null
+          preferred_national_assembly?: string | null
+          preferred_party?: string | null
+          preferred_party_other?: string | null
+          preferred_president?: string | null
+          pvc_challenges?: string[] | null
+          pvc_challenges_other?: string | null
+          pvc_status?: string | null
+          reforms?: string[] | null
+          reforms_other?: string | null
+          state_of_residence?: string | null
+          updated_at?: string
+          user_id?: string
+          vote_influence?: string | null
+          voted_last_election?: string | null
+          willing_to_register?: string | null
+        }
+        Relationships: []
+      }
       role_permissions: {
         Row: {
           allowed: boolean
