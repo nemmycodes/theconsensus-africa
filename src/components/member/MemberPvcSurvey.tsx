@@ -64,7 +64,8 @@ const MemberPvcSurvey = ({ onCompleted, embedded }: Props) => {
   const [submitted, setSubmitted] = useState(false);
   const [f, setF] = useState<State>({
     no_pvc_reasons: [], pvc_challenges: [], encourage_participation: [],
-    election_concerns: [], reforms: [], candidate_qualities: [], nigeria_challenges: [],
+    election_concerns: [], reforms: [], candidate_qualities: [],
+    nigeria_challenges: [], plateau_challenges: [],
   });
 
   const set = (k: string, v: any) => setF((p) => ({ ...p, [k]: v }));
