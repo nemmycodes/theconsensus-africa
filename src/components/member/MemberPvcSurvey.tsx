@@ -304,11 +304,7 @@ const MemberPvcSurvey = ({ onCompleted, embedded }: Props) => {
           <input value={f.preferred_governor||""} onChange={(e)=>set("preferred_governor", e.target.value)}
             className="w-full md:w-96 border border-gray-300 rounded-md px-3 py-2 text-sm" placeholder="Candidate name" />
         </Field>
-        <Field q="25. If a National Assembly Election were held today, who would be your preferred candidate?">
-          <input value={f.preferred_national_assembly||""} onChange={(e)=>set("preferred_national_assembly", e.target.value)}
-            className="w-full md:w-96 border border-gray-300 rounded-md px-3 py-2 text-sm" placeholder="Candidate name" />
-        </Field>
-        <Field q="26. What are the top three qualities you look for in a candidate? (Select up to 3)">
+        <Field q="25. What are the top three qualities you look for in a candidate? (Select up to 3)">
           {["Integrity","Competence","Experience","Accountability","Youthfulness","Accessibility","Vision","Other"].map(v => (
             <Check key={v} values={f.candidate_qualities} value={v}
               onToggle={(x:string) => {
@@ -323,6 +319,93 @@ const MemberPvcSurvey = ({ onCompleted, embedded }: Props) => {
           )}
         </Field>
       </Section>
+
+      <Section title="Section F: National Issues and Public Sentiment">
+        <Field q="26. How would you describe the current condition of Nigeria?">
+          {["Very good","Good","Fair","Poor","Very poor"].map(v => (
+            <Radio key={v} name="nigeria_condition" value={v} current={f.nigeria_condition} onChange={(x:string)=>set("nigeria_condition",x)} label={v} />
+          ))}
+        </Field>
+        <Field q="27. What are the three biggest challenges facing Nigeria today? (Select up to 3)">
+          {["Economy/Inflation","Unemployment","Insecurity","Corruption","Poor Infrastructure","Education","Healthcare","Power Supply","Agriculture","Other"].map(v => (
+            <Check key={v} values={f.nigeria_challenges} value={v}
+              onToggle={(x:string)=>{
+                const arr = f.nigeria_challenges || [];
+                if (!arr.includes(x) && arr.length >= 3) { toast.warning("Pick at most 3."); return; }
+                toggle("nigeria_challenges", x);
+              }} label={v} />
+          ))}
+          {f.nigeria_challenges?.includes("Other") && (
+            <input value={f.nigeria_challenges_other||""} onChange={(e)=>set("nigeria_challenges_other", e.target.value)}
+              className="mt-2 w-full md:w-72 border border-gray-300 rounded-md px-3 py-2 text-sm" placeholder="Specify" />
+          )}
+        </Field>
+        <Field q="28. How optimistic are you about Nigeria's future?">
+          {["Very optimistic","Optimistic","Neutral","Pessimistic","Very pessimistic"].map(v => (
+            <Radio key={v} name="optimism" value={v} current={f.optimism} onChange={(x:string)=>set("optimism",x)} label={v} />
+          ))}
+        </Field>
+        <Field q="29. What should be the federal government's top priority in the next four years?">
+          <textarea value={f.government_priority||""} onChange={(e)=>set("government_priority", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+        <Field q="30. What advice would you give to political leaders in Nigeria?">
+          <textarea value={f.advice_leaders||""} onChange={(e)=>set("advice_leaders", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+        <Field q="31. What advice would you give to INEC to improve future elections?">
+          <textarea value={f.advice_inec||""} onChange={(e)=>set("advice_inec", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+        <Field q="32. Any other comment or recommendation about Nigeria's democracy and electoral process?">
+          <textarea value={f.other_comments||""} onChange={(e)=>set("other_comments", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+      </Section>
+
+      <Section title="Section G: Plateau State Issues and Public Sentiment">
+        <Field q="33. How would you describe the current condition of Plateau State?">
+          {["Very good","Good","Fair","Poor","Very poor"].map(v => (
+            <Radio key={v} name="plateau_condition" value={v} current={f.plateau_condition} onChange={(x:string)=>set("plateau_condition",x)} label={v} />
+          ))}
+        </Field>
+        <Field q="34. What are the three biggest challenges facing Plateau State today? (Select up to 3)">
+          {["Economy/Cost of living","Unemployment","Insecurity","Corruption","Poor Infrastructure","Education","Healthcare","Power Supply","Agriculture","Communal Conflicts","Other"].map(v => (
+            <Check key={v} values={f.plateau_challenges} value={v}
+              onToggle={(x:string)=>{
+                const arr = f.plateau_challenges || [];
+                if (!arr.includes(x) && arr.length >= 3) { toast.warning("Pick at most 3."); return; }
+                toggle("plateau_challenges", x);
+              }} label={v} />
+          ))}
+          {f.plateau_challenges?.includes("Other") && (
+            <input value={f.plateau_challenges_other||""} onChange={(e)=>set("plateau_challenges_other", e.target.value)}
+              className="mt-2 w-full md:w-72 border border-gray-300 rounded-md px-3 py-2 text-sm" placeholder="Specify" />
+          )}
+        </Field>
+        <Field q="35. How optimistic are you about Plateau State's future?">
+          {["Very optimistic","Optimistic","Neutral","Pessimistic","Very pessimistic"].map(v => (
+            <Radio key={v} name="plateau_optimism" value={v} current={f.plateau_optimism} onChange={(x:string)=>set("plateau_optimism",x)} label={v} />
+          ))}
+        </Field>
+        <Field q="36. What should be the Plateau State government's top priority in the next four years?">
+          <textarea value={f.plateau_government_priority||""} onChange={(e)=>set("plateau_government_priority", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+        <Field q="37. What advice would you give to political leaders in Plateau State?">
+          <textarea value={f.plateau_advice_leaders||""} onChange={(e)=>set("plateau_advice_leaders", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+        <Field q="38. What advice would you give to INEC Plateau to improve future elections in the state?">
+          <textarea value={f.plateau_advice_inec||""} onChange={(e)=>set("plateau_advice_inec", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+        <Field q="39. Any other comment or recommendation about Plateau State's democracy and electoral process?">
+          <textarea value={f.plateau_other_comments||""} onChange={(e)=>set("plateau_other_comments", e.target.value)}
+            rows={3} className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm" />
+        </Field>
+      </Section>
+
 
       <Section title="Section F: National Issues and Public Sentiment">
         <Field q="27. How would you describe the current condition of Nigeria?">
