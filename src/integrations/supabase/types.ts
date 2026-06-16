@@ -1170,6 +1170,14 @@ export type Database = {
           occupation_other: string | null
           optimism: string | null
           other_comments: string | null
+          plateau_advice_inec: string | null
+          plateau_advice_leaders: string | null
+          plateau_challenges: string[] | null
+          plateau_challenges_other: string | null
+          plateau_condition: string | null
+          plateau_government_priority: string | null
+          plateau_optimism: string | null
+          plateau_other_comments: string | null
           preferred_governor: string | null
           preferred_national_assembly: string | null
           preferred_party: string | null
@@ -1219,6 +1227,14 @@ export type Database = {
           occupation_other?: string | null
           optimism?: string | null
           other_comments?: string | null
+          plateau_advice_inec?: string | null
+          plateau_advice_leaders?: string | null
+          plateau_challenges?: string[] | null
+          plateau_challenges_other?: string | null
+          plateau_condition?: string | null
+          plateau_government_priority?: string | null
+          plateau_optimism?: string | null
+          plateau_other_comments?: string | null
           preferred_governor?: string | null
           preferred_national_assembly?: string | null
           preferred_party?: string | null
@@ -1268,6 +1284,14 @@ export type Database = {
           occupation_other?: string | null
           optimism?: string | null
           other_comments?: string | null
+          plateau_advice_inec?: string | null
+          plateau_advice_leaders?: string | null
+          plateau_challenges?: string[] | null
+          plateau_challenges_other?: string | null
+          plateau_condition?: string | null
+          plateau_government_priority?: string | null
+          plateau_optimism?: string | null
+          plateau_other_comments?: string | null
           preferred_governor?: string | null
           preferred_national_assembly?: string | null
           preferred_party?: string | null
