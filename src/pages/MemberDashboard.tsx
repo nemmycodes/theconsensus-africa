@@ -39,10 +39,8 @@ const MemberDashboard = () => {
     (async () => {
       const { data } = await supabase
         .from("pvc_surveys").select("id").eq("user_id", user.id).maybeSingle();
-      const done = !!data;
-      setSurveyDone(done);
+      setSurveyDone(!!data);
       setSurveyChecked(true);
-      if (!done) setActiveTab("pvc-survey");
     })();
   }, [user]);
 
@@ -60,12 +58,7 @@ const MemberDashboard = () => {
   if (!user) return null;
 
   const handleTabChange = (tab: string) => {
-    // Gate: if survey not done, force them to stay on survey
-    if (!surveyDone && tab !== "pvc-survey") {
-      setActiveTab("pvc-survey");
-    } else {
-      setActiveTab(tab);
-    }
+    setActiveTab(tab);
     if (isMobile) setSidebarOpen(false);
   };
 
