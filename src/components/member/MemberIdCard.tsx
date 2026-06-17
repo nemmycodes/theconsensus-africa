@@ -53,23 +53,41 @@ const MemberIdCard = ({ profile: profileProp, open, onClose }: MemberIdCardProps
     if (!file || !user) return;
     if (file.size > 5 * 1024 * 1024) {
       toast.error("Image must be under 5MB");
+      e.target.value = "";
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file");
+      e.target.value = "";
       return;
     }
     setUploading(true);
-    const ext = file.name.split(".").pop();
+    const ext = file.type.split("/")[1]?.replace("jpeg", "jpg") || "jpg";
     const path = `${user.id}/avatar.${ext}`;
-    const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true });
+    const { error } = await supabase.storage.from("avatars").upload(path, file, {
+      upsert: true,
+      contentType: file.type,
+      cacheControl: "3600",
+    });
     if (error) {
-      toast.error("Upload failed");
+      toast.error(error.message || "Upload failed");
       setUploading(false);
+      e.target.value = "";
       return;
     }
     const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(path);
     const url = `${publicUrl}?t=${Date.now()}`;
-    await supabase.from("profiles").update({ avatar_url: url }).eq("user_id", user.id);
+    const { error: profileError } = await supabase.from("profiles").update({ avatar_url: url }).eq("user_id", user.id);
+    if (profileError) {
+      toast.error(profileError.message || "Photo uploaded, but profile update failed");
+      setUploading(false);
+      e.target.value = "";
+      return;
+    }
     setProfile((p: any) => ({ ...(p || {}), avatar_url: url }));
     toast.success("Passport photo updated");
     setUploading(false);
+    e.target.value = "";
   };
 
   // ===== Card UI (HTML overlay on top of the template image) =====
