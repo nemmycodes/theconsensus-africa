@@ -53,15 +53,6 @@ const ManifestoContribute = () => {
   const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      navigate("/auth?redirect=/manifesto/contribute", { replace: true });
-    }
-  }, [authLoading, user, navigate]);
-
-  if (authLoading || !user) return null;
   const [form, setForm] = useState({
     full_name: "",
     phone: "",
@@ -81,6 +72,15 @@ const ManifestoContribute = () => {
     engagement_areas: [] as string[],
     declaration: false,
   });
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      navigate("/auth?redirect=/manifesto/contribute", { replace: true });
+    }
+  }, [authLoading, user, navigate]);
+
+  if (authLoading || !user) return null;
 
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
   const toggle = (key: "areas_of_interest" | "engagement_areas", val: string) =>
