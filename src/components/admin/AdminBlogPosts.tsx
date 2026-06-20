@@ -72,7 +72,11 @@ const AdminBlogPosts = () => {
     const extension = file.name.split(".").pop() || "jpg";
     const path = `blog/${authData.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
 
-    const { error } = await supabase.storage.from("cms-uploads").upload(path, file, { upsert: true });
+    const { error } = await supabase.storage.from("cms-uploads").upload(path, file, {
+      upsert: true,
+      contentType: file.type || "image/jpeg",
+      cacheControl: "3600",
+    });
     if (error) {
       toast({ title: "Upload failed", description: error.message, variant: "destructive" });
     } else {
