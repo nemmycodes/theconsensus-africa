@@ -26,6 +26,9 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a href="https://www.facebook.com/share/18r2wQdeCj/" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-primary-foreground/20 flex items-center justify-center text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <Facebook size={16} />
+              </a>
+              <a href="#" className="w-8 h-8 rounded-full bg-primary-foreground/20 flex items-center justify-center text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                 <Twitter size={16} />
               </a>
               <a href="#" className="w-8 h-8 rounded-full bg-primary-foreground/20 flex items-center justify-center text-primary-foreground/80 hover:text-primary-foreground transition-colors">
