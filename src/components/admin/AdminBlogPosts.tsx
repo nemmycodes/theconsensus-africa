@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import AdminHeader from "./AdminHeader";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,7 @@ const AdminBlogPosts = () => {
   const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "General", featured_image_url: "", published: true });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const fetchPosts = async () => {
@@ -71,7 +72,11 @@ const AdminBlogPosts = () => {
     const extension = file.name.split(".").pop() || "jpg";
     const path = `blog/${authData.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
 
-    const { error } = await supabase.storage.from("cms-uploads").upload(path, file, { upsert: true });
+    const { error } = await supabase.storage.from("cms-uploads").upload(path, file, {
+      upsert: true,
+      contentType: file.type || "image/jpeg",
+      cacheControl: "3600",
+    });
     if (error) {
       toast({ title: "Upload failed", description: error.message, variant: "destructive" });
     } else {
@@ -252,7 +257,10 @@ const AdminBlogPosts = () => {
               <Label className="text-gray-700">Featured Image</Label>
               <div className="flex gap-3 mt-1">
                 <Input value={form.featured_image_url} onChange={(e) => setForm({ ...form, featured_image_url: e.target.value })} placeholder="Image URL or upload" className="flex-1 bg-white border-gray-200 text-gray-900" />
-                <label className="cursor-pointer"><input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} /><Button type="button" variant="outline" size="sm" className="gap-1 h-10 border-gray-200" asChild><span>{uploading ? "Uploading..." : <><Upload className="w-3 h-3" /> Upload</>}</span></Button></label>
+                <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                <Button type="button" variant="outline" size="sm" className="gap-1 h-10 border-gray-200" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
+                  {uploading ? "Uploading..." : <><Upload className="w-3 h-3" /> Upload</>}
+                </Button>
               </div>
               {form.featured_image_url && <img src={form.featured_image_url} alt="Preview" className="mt-3 h-32 rounded-lg object-cover" />}
             </div>
