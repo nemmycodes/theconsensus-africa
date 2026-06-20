@@ -257,7 +257,10 @@ const AdminBlogPosts = () => {
               <Label className="text-gray-700">Featured Image</Label>
               <div className="flex gap-3 mt-1">
                 <Input value={form.featured_image_url} onChange={(e) => setForm({ ...form, featured_image_url: e.target.value })} placeholder="Image URL or upload" className="flex-1 bg-white border-gray-200 text-gray-900" />
-                <label className="cursor-pointer"><input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} /><Button type="button" variant="outline" size="sm" className="gap-1 h-10 border-gray-200" asChild><span>{uploading ? "Uploading..." : <><Upload className="w-3 h-3" /> Upload</>}</span></Button></label>
+                <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                <Button type="button" variant="outline" size="sm" className="gap-1 h-10 border-gray-200" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
+                  {uploading ? "Uploading..." : <><Upload className="w-3 h-3" /> Upload</>}
+                </Button>
               </div>
               {form.featured_image_url && <img src={form.featured_image_url} alt="Preview" className="mt-3 h-32 rounded-lg object-cover" />}
             </div>
