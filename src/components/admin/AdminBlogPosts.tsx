@@ -35,6 +35,7 @@ const AdminBlogPosts = () => {
   const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "General", featured_image_url: "", published: true });
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   const fetchPosts = async () => {
