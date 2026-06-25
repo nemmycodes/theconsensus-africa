@@ -73,7 +73,6 @@ const AdminBlogPosts = () => {
     const path = `blog/${authData.user.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
 
     const { error } = await supabase.storage.from("cms-uploads").upload(path, file, {
-      upsert: true,
       contentType: file.type || "image/jpeg",
       cacheControl: "3600",
     });
