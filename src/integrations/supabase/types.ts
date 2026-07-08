@@ -179,6 +179,99 @@ export type Database = {
         }
         Relationships: []
       }
+      analytics_events: {
+        Row: {
+          browser: string | null
+          city: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          device_type: string | null
+          event_type: string
+          id: string
+          ip_address: string | null
+          isp: string | null
+          language: string | null
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          os: string | null
+          path: string | null
+          referrer: string | null
+          region: string | null
+          screen_size: string | null
+          timezone: string | null
+          user_agent: string | null
+          user_id: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+          visitor_id: string
+        }
+        Insert: {
+          browser?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          isp?: string | null
+          language?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          os?: string | null
+          path?: string | null
+          referrer?: string | null
+          region?: string | null
+          screen_size?: string | null
+          timezone?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id: string
+        }
+        Update: {
+          browser?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          isp?: string | null
+          language?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          os?: string | null
+          path?: string | null
+          referrer?: string | null
+          region?: string | null
+          screen_size?: string | null
+          timezone?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+          visitor_id?: string
+        }
+        Relationships: []
+      }
       api_keys: {
         Row: {
           created_at: string
@@ -482,6 +575,72 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      failed_signups: {
+        Row: {
+          attempted_full_name: string | null
+          browser: string | null
+          city: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          device_type: string | null
+          email: string | null
+          error_code: string | null
+          error_message: string | null
+          id: string
+          ip_address: string | null
+          latitude: number | null
+          longitude: number | null
+          metadata: Json | null
+          os: string | null
+          region: string | null
+          user_agent: string | null
+          visitor_id: string | null
+        }
+        Insert: {
+          attempted_full_name?: string | null
+          browser?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          email?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          os?: string | null
+          region?: string | null
+          user_agent?: string | null
+          visitor_id?: string | null
+        }
+        Update: {
+          attempted_full_name?: string | null
+          browser?: string | null
+          city?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device_type?: string | null
+          email?: string | null
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          ip_address?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          metadata?: Json | null
+          os?: string | null
+          region?: string | null
+          user_agent?: string | null
+          visitor_id?: string | null
         }
         Relationships: []
       }
@@ -1509,6 +1668,72 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      visitor_sessions: {
+        Row: {
+          created_at: string
+          first_referrer: string | null
+          first_seen_at: string
+          first_utm_campaign: string | null
+          first_utm_source: string | null
+          id: string
+          last_browser: string | null
+          last_city: string | null
+          last_country: string | null
+          last_device_type: string | null
+          last_ip: string | null
+          last_latitude: number | null
+          last_longitude: number | null
+          last_os: string | null
+          last_seen_at: string
+          updated_at: string
+          user_id: string | null
+          visit_count: number
+          visitor_id: string
+        }
+        Insert: {
+          created_at?: string
+          first_referrer?: string | null
+          first_seen_at?: string
+          first_utm_campaign?: string | null
+          first_utm_source?: string | null
+          id?: string
+          last_browser?: string | null
+          last_city?: string | null
+          last_country?: string | null
+          last_device_type?: string | null
+          last_ip?: string | null
+          last_latitude?: number | null
+          last_longitude?: number | null
+          last_os?: string | null
+          last_seen_at?: string
+          updated_at?: string
+          user_id?: string | null
+          visit_count?: number
+          visitor_id: string
+        }
+        Update: {
+          created_at?: string
+          first_referrer?: string | null
+          first_seen_at?: string
+          first_utm_campaign?: string | null
+          first_utm_source?: string | null
+          id?: string
+          last_browser?: string | null
+          last_city?: string | null
+          last_country?: string | null
+          last_device_type?: string | null
+          last_ip?: string | null
+          last_latitude?: number | null
+          last_longitude?: number | null
+          last_os?: string | null
+          last_seen_at?: string
+          updated_at?: string
+          user_id?: string | null
+          visit_count?: number
+          visitor_id?: string
         }
         Relationships: []
       }

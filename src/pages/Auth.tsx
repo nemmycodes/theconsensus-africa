@@ -74,6 +74,19 @@ const Auth = () => {
     });
     if (error) {
       toast({ title: "Signup failed", description: error.message, variant: "destructive" });
+      // Log failed signup for super admin analytics (fire and forget)
+      try {
+        const { getOrCreateVisitorId, getClientContext } = await import("@/hooks/useAnalyticsTracker");
+        supabase.functions.invoke("log-failed-signup", {
+          body: {
+            email, full_name: fullName,
+            error_code: (error as any).code || null,
+            error_message: error.message,
+            visitor_id: getOrCreateVisitorId(),
+            ...getClientContext(),
+          },
+        }).catch(() => {});
+      } catch (_e) { /* noop */ }
       setLoading(false);
       return;
     }
