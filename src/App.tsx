@@ -38,6 +38,7 @@ import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
 import UnderConstruction from "./pages/UnderConstruction";
 import ScrollToTop from "./components/ScrollToTop";
+import { AnalyticsTracker } from "./hooks/useAnalyticsTracker";
 
 const queryClient = new QueryClient();
 const SITE_UNDER_CONSTRUCTION = false;
@@ -69,6 +70,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <AnalyticsTracker />
           <CtrlQListener />
           {SITE_UNDER_CONSTRUCTION ? (
             <UnderConstruction />
