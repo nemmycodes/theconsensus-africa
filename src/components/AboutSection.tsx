@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Users, UserCheck, CalendarCheck, CheckCircle } from "lucide-react";
+import { Users, CalendarCheck, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
