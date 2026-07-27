@@ -42,6 +42,61 @@ const topicPills = [
 
 const filterTabs = ["All News", "Press Release", "National Updates", "Community"];
 
+const ShareBar = ({ post }: { post: BlogPost }) => {
+  const { toast } = useToast();
+  const url = typeof window !== "undefined"
+    ? `${window.location.origin}/blog?post=${post.id}`
+    : `https://theconsensus.africa/blog?post=${post.id}`;
+  const text = post.title;
+  const encUrl = encodeURIComponent(url);
+  const encText = encodeURIComponent(text);
+
+  const links = [
+    { name: "Facebook", icon: Facebook, href: `https://www.facebook.com/sharer/sharer.php?u=${encUrl}` },
+    { name: "X / Twitter", icon: Twitter, href: `https://twitter.com/intent/tweet?url=${encUrl}&text=${encText}` },
+    { name: "LinkedIn", icon: Linkedin, href: `https://www.linkedin.com/sharing/share-offsite/?url=${encUrl}` },
+    { name: "WhatsApp", icon: Send, href: `https://api.whatsapp.com/send?text=${encText}%20${encUrl}` },
+    { name: "Email", icon: Mail, href: `mailto:?subject=${encText}&body=${encUrl}` },
+  ];
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({ title: "Link copied", description: "Share it anywhere you like." });
+    } catch {
+      toast({ title: "Copy failed", variant: "destructive" });
+    }
+  };
+
+  return (
+    <div className="mt-10 pt-6 border-t border-border">
+      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Share this post</p>
+      <div className="flex flex-wrap items-center gap-2">
+        {links.map((l) => (
+          <a
+            key={l.name}
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Share on ${l.name}`}
+            className="inline-flex items-center gap-2 h-9 px-3 rounded-md border border-border bg-secondary text-sm hover:bg-primary hover:text-primary-foreground transition-colors"
+          >
+            <l.icon className="h-4 w-4" />
+            <span className="hidden sm:inline">{l.name}</span>
+          </a>
+        ))}
+        <button
+          onClick={copy}
+          className="inline-flex items-center gap-2 h-9 px-3 rounded-md border border-border bg-secondary text-sm hover:bg-primary hover:text-primary-foreground transition-colors"
+        >
+          <Link2 className="h-4 w-4" />
+          <span className="hidden sm:inline">Copy link</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Blog = () => {
   const { user, isAgent } = useAuth();
   const { toast } = useToast();
