@@ -54,7 +54,6 @@ const AboutSection = () => {
 
   const stats = [
     { icon: Users, stat: formatStat(counts.members), label: "Active Members" },
-    { icon: UserCheck, stat: formatStat(counts.agents), label: "Certified Agents" },
     { icon: CalendarCheck, stat: formatStat(counts.events), label: "Planned Events" },
   ];
 
