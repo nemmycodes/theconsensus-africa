@@ -165,6 +165,7 @@ const Blog = () => {
               <div className="prose prose-invert max-w-none text-foreground/90 whitespace-pre-wrap leading-relaxed">
                 {selectedPost.content}
               </div>
+              <ShareBar post={selectedPost} />
             </motion.article>
           </div>
         </div>
