@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import {
   Plus, Clock, ArrowRight, X, BookOpen,
   TrendingUp, MapPin, Award, GraduationCap, Star,
-  ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight, Facebook, Twitter, Linkedin, Send, Link2, Mail,
 } from "lucide-react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
