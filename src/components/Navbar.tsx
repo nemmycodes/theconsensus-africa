@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Crown } from "lucide-react";
 
-const navLinks = [
+const navLinks: { label: string; href: string; external?: boolean; disabled?: boolean }[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Discuss", href: "/discuss" },
