@@ -132,7 +132,14 @@ const Navbar = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.04 }}
               >
-                {link.external ? (
+                {link.disabled ? (
+                  <span
+                    aria-disabled="true"
+                    className="block py-2 text-sm text-white/30 cursor-not-allowed select-none"
+                  >
+                    {link.label}
+                  </span>
+                ) : link.external ? (
                   <a
                     href={link.href}
                     target="_blank"
