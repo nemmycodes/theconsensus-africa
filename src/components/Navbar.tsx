@@ -47,7 +47,16 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-5">
           {navLinks.map((link) =>
-            link.external ? (
+            link.disabled ? (
+              <span
+                key={link.label}
+                aria-disabled="true"
+                title="Coming soon"
+                className="text-sm text-white/30 cursor-not-allowed select-none"
+              >
+                {link.label}
+              </span>
+            ) : link.external ? (
               <a
                 key={link.label}
                 href={link.href}
