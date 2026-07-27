@@ -46,7 +46,7 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
             <ul className="space-y-2">
               <li><Link to="/about" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">Our Vision</Link></li>
               <li><Link to="/about" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">About us</Link></li>
-              <li><Link to="/situation-room" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">Situation Room</Link></li>
+              <li><span className="text-sm text-primary-foreground/40 cursor-not-allowed select-none" title="Coming soon">Situation Room</span></li>
               <li><Link to="/discuss" className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">Discuss</Link></li>
             </ul>
           </div>
