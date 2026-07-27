@@ -68,7 +68,7 @@ const AboutSection = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="grid md:grid-cols-3 gap-6 mb-24"
+          className="grid md:grid-cols-2 gap-6 mb-24 max-w-3xl mx-auto"
         >
           {stats.map((item) => (
             <motion.div
