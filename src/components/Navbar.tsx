@@ -6,11 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Crown } from "lucide-react";
 
-const navLinks = [
+const navLinks: { label: string; href: string; external?: boolean; disabled?: boolean }[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Discuss", href: "/discuss" },
-  { label: "Situation Room", href: "/situation-room" },
+  { label: "Situation Room", href: "/situation-room", disabled: true },
   { label: "Events", href: "/events" },
   { label: "Blog", href: "/blog" },
   { label: "KEF-Cares", href: "/kef-cares" },
@@ -47,7 +47,16 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-5">
           {navLinks.map((link) =>
-            link.external ? (
+            link.disabled ? (
+              <span
+                key={link.label}
+                aria-disabled="true"
+                title="Coming soon"
+                className="text-sm text-white/30 cursor-not-allowed select-none"
+              >
+                {link.label}
+              </span>
+            ) : link.external ? (
               <a
                 key={link.label}
                 href={link.href}
@@ -123,7 +132,14 @@ const Navbar = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.04 }}
               >
-                {link.external ? (
+                {link.disabled ? (
+                  <span
+                    aria-disabled="true"
+                    className="block py-2 text-sm text-white/30 cursor-not-allowed select-none"
+                  >
+                    {link.label}
+                  </span>
+                ) : link.external ? (
                   <a
                     href={link.href}
                     target="_blank"

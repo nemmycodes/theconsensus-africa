@@ -230,8 +230,9 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="hidden sm:inline-flex w-full sm:w-auto tap-target hover-lift border-primary/40 text-foreground hover:bg-primary/10"
-                onClick={() => navigate("/situation-room")}
+                disabled
+                title="Coming soon"
+                className="hidden sm:inline-flex w-full sm:w-auto tap-target border-primary/40 text-foreground/50 cursor-not-allowed opacity-60"
               >
                 Situation Room
               </Button>
