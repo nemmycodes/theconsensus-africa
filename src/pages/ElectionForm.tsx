@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { enqueue } from "@/lib/offlineQueue";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -125,17 +127,9 @@ const ElectionForm = () => {
     }
     setLoading(true);
 
-    // 1. Upload EC8-A if present
-    let ec8aUrl: string | null = null;
-    if (ec8aFile) {
-      const path = `${user.id}/ec8a-${Date.now()}-${ec8aFile.name}`;
-      const { error: uploadErr } = await supabase.storage
-        .from("election-evidence")
-        .upload(path, ec8aFile, { upsert: false });
-      if (!uploadErr) ec8aUrl = path;
-    }
+    const ec8aPath = ec8aFile ? `${user.id}/ec8a-${Date.now()}-${ec8aFile.name}` : null;
 
-    // 2. Save full report into situation_updates feed (legacy)
+    // Build payloads (shared by online submit and offline queue)
     const reportContent = JSON.stringify({
       electionDate,
       liveLocation,
@@ -145,18 +139,17 @@ const ElectionForm = () => {
       totalPartyVotes,
       observations,
       signature: { name: signatureName, date: signatureDate },
-      ec8aUrl,
+      ec8aUrl: ec8aPath,
     });
 
-    const { error } = await supabase.from("situation_updates").insert({
+    const situationUpdate = {
       title: `Election Report: ${centerName || pollingUnit || "Unnamed Center"}`,
       content: reportContent,
       category: "Political",
       status: "Active",
       author_id: user.id,
-    });
+    };
 
-    // 3. Insert one election_reports row per party so the admin verification queue picks them up
     const electionTypeMap: Record<string, string> = {
       "Presidential": "presidential",
       "Gubernatorial": "gubernatorial",
@@ -183,27 +176,73 @@ const ElectionForm = () => {
         votes_recorded: votes,
         total_votes_cast: totalVotesCast,
         registered_voters: registeredVoters,
-        ec8a_url: ec8aUrl,
+        ec8a_url: ec8aPath,
         latitude: liveLocation?.lat ?? null,
         longitude: liveLocation?.lng ?? null,
         notes: observations || null,
         status: "pending" as const,
       }));
 
+    // Offline: store on device and sync automatically once back online
+    if (!navigator.onLine) {
+      await enqueue({
+        kind: "election_report",
+        label: situationUpdate.title,
+        userId: user.id,
+        situationUpdate,
+        reportRows,
+        file: ec8aFile && ec8aPath ? { bucket: "election-evidence", path: ec8aPath, blob: ec8aFile } : undefined,
+      });
+      toast({
+        title: "Saved offline",
+        description: "No internet detected. Your report is stored on this device and will submit automatically once you're back online.",
+      });
+      setLoading(false);
+      navigate("/agent");
+      return;
+    }
+
+    // 1. Upload EC8-A if present
+    let ec8aUrl: string | null = null;
+    if (ec8aFile && ec8aPath) {
+      const { error: uploadErr } = await supabase.storage
+        .from("election-evidence")
+        .upload(ec8aPath, ec8aFile, { upsert: false });
+      if (!uploadErr) ec8aUrl = ec8aPath;
+    }
+
+    const { error } = await supabase.from("situation_updates").insert(situationUpdate);
+
     let reportsErr: any = null;
     if (reportRows.length > 0) {
-      const { error: rErr } = await supabase.from("election_reports").insert(reportRows);
+      const { error: rErr } = await supabase
+        .from("election_reports")
+        .insert(reportRows.map((r) => ({ ...r, ec8a_url: ec8aUrl })));
       reportsErr = rErr;
     }
 
     if (error || reportsErr) {
-      toast({ title: "Error submitting report", description: (error || reportsErr)?.message, variant: "destructive" });
+      // Network-style failure: keep the data safe on device instead of losing it
+      await enqueue({
+        kind: "election_report",
+        label: situationUpdate.title,
+        userId: user.id,
+        situationUpdate,
+        reportRows,
+        file: ec8aFile && ec8aPath && !ec8aUrl ? { bucket: "election-evidence", path: ec8aPath, blob: ec8aFile } : undefined,
+      });
+      toast({
+        title: "Submission saved for retry",
+        description: (error || reportsErr)?.message || "We'll retry automatically when the connection is stable.",
+      });
+      navigate("/agent");
     } else {
       toast({ title: "Report submitted successfully!", description: "Awaiting admin verification." });
       navigate("/agent");
     }
     setLoading(false);
   };
+
 
   const handleSaveDraft = () => {
     toast({ title: "Draft saved", description: "Your report has been saved locally." });
