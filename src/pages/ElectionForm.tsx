@@ -183,25 +183,6 @@ const ElectionForm = () => {
         status: "pending" as const,
       }));
 
-    // Offline: store on device and sync automatically once back online
-    if (!navigator.onLine) {
-      await enqueue({
-        kind: "election_report",
-        label: situationUpdate.title,
-        userId: user.id,
-        situationUpdate,
-        reportRows,
-        file: ec8aFile && ec8aPath ? { bucket: "election-evidence", path: ec8aPath, blob: ec8aFile } : undefined,
-      });
-      toast({
-        title: "Saved offline",
-        description: "No internet detected. Your report is stored on this device and will submit automatically once you're back online.",
-      });
-      setLoading(false);
-      navigate("/agent");
-      return;
-    }
-
     // 1. Upload EC8-A if present
     let ec8aUrl: string | null = null;
     if (ec8aFile && ec8aPath) {
