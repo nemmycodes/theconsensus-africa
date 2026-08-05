@@ -203,20 +203,11 @@ const ElectionForm = () => {
     }
 
     if (error || reportsErr) {
-      // Network-style failure: keep the data safe on device instead of losing it
-      await enqueue({
-        kind: "election_report",
-        label: situationUpdate.title,
-        userId: user.id,
-        situationUpdate,
-        reportRows,
-        file: ec8aFile && ec8aPath && !ec8aUrl ? { bucket: "election-evidence", path: ec8aPath, blob: ec8aFile } : undefined,
-      });
       toast({
-        title: "Submission saved for retry",
-        description: (error || reportsErr)?.message || "We'll retry automatically when the connection is stable.",
+        title: "Submission failed",
+        description: (error || reportsErr)?.message || "Please check your connection and try again.",
+        variant: "destructive",
       });
-      navigate("/agent");
     } else {
       toast({ title: "Report submitted successfully!", description: "Awaiting admin verification." });
       navigate("/agent");
