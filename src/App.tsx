@@ -38,7 +38,6 @@ import KefCaresDashboard from "./pages/KefCaresDashboard";
 import NotFound from "./pages/NotFound";
 import UnderConstruction from "./pages/UnderConstruction";
 import ScrollToTop from "./components/ScrollToTop";
-import OfflineBanner from "./components/OfflineBanner";
 import { AnalyticsTracker } from "./hooks/useAnalyticsTracker";
 
 
@@ -73,7 +72,6 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <AnalyticsTracker />
-          <OfflineBanner />
           <CtrlQListener />
 
           {SITE_UNDER_CONSTRUCTION ? (
