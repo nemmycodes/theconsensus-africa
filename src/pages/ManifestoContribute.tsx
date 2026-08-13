@@ -48,11 +48,15 @@ const ENGAGEMENT = [
 const QUALIFICATIONS = ["Secondary", "Diploma/NCE", "HND/Bachelor's", "Master's", "PhD", "Other"];
 const AGE_RANGES = ["18–25", "26–35", "36–45", "46–55", "56+"];
 
+const ACCEPTED_DOCS = ".pdf,.doc,.docx,.xls,.xlsx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+const MAX_DOC_MB = 10;
+
 const ManifestoContribute = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     full_name: "",
     phone: "",
@@ -73,21 +77,23 @@ const ManifestoContribute = () => {
     declaration: false,
   });
 
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      navigate("/auth?redirect=/manifesto/contribute", { replace: true });
-    }
-  }, [authLoading, user, navigate]);
-
-  if (authLoading || !user) return null;
-
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
   const toggle = (key: "areas_of_interest" | "engagement_areas", val: string) =>
     setForm((f) => ({
       ...f,
       [key]: f[key].includes(val) ? f[key].filter((x) => x !== val) : [...f[key], val],
     }));
+
+  const addFiles = (list: FileList | null) => {
+    if (!list) return;
+    const picked = Array.from(list);
+    const tooBig = picked.filter((f) => f.size > MAX_DOC_MB * 1024 * 1024);
+    if (tooBig.length) {
+      toast.error(`Each file must be under ${MAX_DOC_MB}MB.`);
+    }
+    setFiles((prev) => [...prev, ...picked.filter((f) => f.size <= MAX_DOC_MB * 1024 * 1024)]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +102,23 @@ const ManifestoContribute = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from("manifesto_contributors").insert(form);
+
+    const document_urls: string[] = [];
+    for (const file of files) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${crypto.randomUUID()}/${safeName}`;
+      const { error: upErr } = await supabase.storage
+        .from("manifesto-docs")
+        .upload(path, file, { contentType: file.type || "application/octet-stream" });
+      if (upErr) {
+        setLoading(false);
+        toast.error(`Could not upload ${file.name}: ${upErr.message}`);
+        return;
+      }
+      document_urls.push(path);
+    }
+
+    const { error } = await supabase.from("manifesto_contributors").insert({ ...form, document_urls });
     setLoading(false);
     if (error) {
       toast.error(error.message);
@@ -105,6 +127,7 @@ const ManifestoContribute = () => {
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
 
   if (submitted) {
     return (
