@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Send, CheckCircle2, ScrollText } from "lucide-react";
+import { ArrowLeft, Send, CheckCircle2, ScrollText, Upload, FileText, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
