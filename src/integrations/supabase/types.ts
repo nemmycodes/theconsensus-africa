@@ -1072,6 +1072,7 @@ export type Database = {
           created_at: string
           current_location: string | null
           declaration: boolean
+          document_urls: string[]
           email: string
           engagement_areas: string[]
           full_name: string
@@ -1093,6 +1094,7 @@ export type Database = {
           created_at?: string
           current_location?: string | null
           declaration?: boolean
+          document_urls?: string[]
           email: string
           engagement_areas?: string[]
           full_name: string
@@ -1114,6 +1116,7 @@ export type Database = {
           created_at?: string
           current_location?: string | null
           declaration?: boolean
+          document_urls?: string[]
           email?: string
           engagement_areas?: string[]
           full_name?: string
