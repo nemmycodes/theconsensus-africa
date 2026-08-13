@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Send, CheckCircle2, ScrollText } from "lucide-react";
+import { ArrowLeft, Send, CheckCircle2, ScrollText, Upload, FileText, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -48,11 +48,15 @@ const ENGAGEMENT = [
 const QUALIFICATIONS = ["Secondary", "Diploma/NCE", "HND/Bachelor's", "Master's", "PhD", "Other"];
 const AGE_RANGES = ["18–25", "26–35", "36–45", "46–55", "56+"];
 
+const ACCEPTED_DOCS = ".pdf,.doc,.docx,.xls,.xlsx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+const MAX_DOC_MB = 10;
+
 const ManifestoContribute = () => {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState({
     full_name: "",
     phone: "",
@@ -73,21 +77,23 @@ const ManifestoContribute = () => {
     declaration: false,
   });
 
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      navigate("/auth?redirect=/manifesto/contribute", { replace: true });
-    }
-  }, [authLoading, user, navigate]);
-
-  if (authLoading || !user) return null;
-
   const set = (k: string, v: any) => setForm((f) => ({ ...f, [k]: v }));
   const toggle = (key: "areas_of_interest" | "engagement_areas", val: string) =>
     setForm((f) => ({
       ...f,
       [key]: f[key].includes(val) ? f[key].filter((x) => x !== val) : [...f[key], val],
     }));
+
+  const addFiles = (list: FileList | null) => {
+    if (!list) return;
+    const picked = Array.from(list);
+    const tooBig = picked.filter((f) => f.size > MAX_DOC_MB * 1024 * 1024);
+    if (tooBig.length) {
+      toast.error(`Each file must be under ${MAX_DOC_MB}MB.`);
+    }
+    setFiles((prev) => [...prev, ...picked.filter((f) => f.size <= MAX_DOC_MB * 1024 * 1024)]);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +102,23 @@ const ManifestoContribute = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from("manifesto_contributors").insert(form);
+
+    const document_urls: string[] = [];
+    for (const file of files) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${crypto.randomUUID()}/${safeName}`;
+      const { error: upErr } = await supabase.storage
+        .from("manifesto-docs")
+        .upload(path, file, { contentType: file.type || "application/octet-stream" });
+      if (upErr) {
+        setLoading(false);
+        toast.error(`Could not upload ${file.name}: ${upErr.message}`);
+        return;
+      }
+      document_urls.push(path);
+    }
+
+    const { error } = await supabase.from("manifesto_contributors").insert({ ...form, document_urls });
     setLoading(false);
     if (error) {
       toast.error(error.message);
@@ -105,6 +127,7 @@ const ManifestoContribute = () => {
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
 
   if (submitted) {
     return (
@@ -242,6 +265,51 @@ const ManifestoContribute = () => {
               ))}
             </div>
           </div>
+
+          {/* Documents */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-black border-l-4 border-primary pl-4">Supporting Documents</h2>
+            <p className="text-sm text-muted-foreground">
+              Attach your CV, policy paper, proposal or data — PDF, Word (.doc/.docx) or Excel (.xls/.xlsx). Max {MAX_DOC_MB}MB per file.
+            </p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept={ACCEPTED_DOCS}
+              className="hidden"
+              onChange={(e) => addFiles(e.target.files)}
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full flex flex-col items-center justify-center gap-2 p-8 rounded-xl border-2 border-dashed border-border hover:border-primary/50 hover:bg-accent/40 transition-colors"
+            >
+              <Upload className="w-6 h-6 text-primary" />
+              <span className="text-sm font-semibold">Click to upload documents</span>
+              <span className="text-xs text-muted-foreground">PDF, DOC, DOCX, XLS, XLSX</span>
+            </button>
+            {files.length > 0 && (
+              <ul className="space-y-2">
+                {files.map((f, idx) => (
+                  <li key={`${f.name}-${idx}`} className="flex items-center gap-3 p-3 rounded-md border bg-card">
+                    <FileText className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-sm truncate flex-1">{f.name}</span>
+                    <span className="text-xs text-muted-foreground">{(f.size / 1024 / 1024).toFixed(2)} MB</span>
+                    <button
+                      type="button"
+                      aria-label={`Remove ${f.name}`}
+                      onClick={() => setFiles((prev) => prev.filter((_, i) => i !== idx))}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
 
           {/* Declaration */}
           <div className="space-y-4 p-6 rounded-xl border bg-primary/5">
