@@ -266,6 +266,51 @@ const ManifestoContribute = () => {
             </div>
           </div>
 
+          {/* Documents */}
+          <div className="space-y-4">
+            <h2 className="text-xl font-black border-l-4 border-primary pl-4">Supporting Documents</h2>
+            <p className="text-sm text-muted-foreground">
+              Attach your CV, policy paper, proposal or data — PDF, Word (.doc/.docx) or Excel (.xls/.xlsx). Max {MAX_DOC_MB}MB per file.
+            </p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept={ACCEPTED_DOCS}
+              className="hidden"
+              onChange={(e) => addFiles(e.target.files)}
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full flex flex-col items-center justify-center gap-2 p-8 rounded-xl border-2 border-dashed border-border hover:border-primary/50 hover:bg-accent/40 transition-colors"
+            >
+              <Upload className="w-6 h-6 text-primary" />
+              <span className="text-sm font-semibold">Click to upload documents</span>
+              <span className="text-xs text-muted-foreground">PDF, DOC, DOCX, XLS, XLSX</span>
+            </button>
+            {files.length > 0 && (
+              <ul className="space-y-2">
+                {files.map((f, idx) => (
+                  <li key={`${f.name}-${idx}`} className="flex items-center gap-3 p-3 rounded-md border bg-card">
+                    <FileText className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-sm truncate flex-1">{f.name}</span>
+                    <span className="text-xs text-muted-foreground">{(f.size / 1024 / 1024).toFixed(2)} MB</span>
+                    <button
+                      type="button"
+                      aria-label={`Remove ${f.name}`}
+                      onClick={() => setFiles((prev) => prev.filter((_, i) => i !== idx))}
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+
           {/* Declaration */}
           <div className="space-y-4 p-6 rounded-xl border bg-primary/5">
             <h2 className="text-lg font-black">Declaration</h2>
