@@ -161,7 +161,7 @@ const AboutSection = () => {
 
             <motion.div variants={fadeInUp}>
               <Button asChild size="lg" className="font-semibold mt-2">
-                <Link to="/manifesto">Read Our Manifesto</Link>
+                <Link to="/manifesto/contribute">Contribute to the Consensus Brain Trust Manifesto (CBT)</Link>
               </Button>
             </motion.div>
           </motion.div>
