@@ -24,7 +24,7 @@ const SECTIONS: ExportSection[] = [
       { table: "manifesto_contributors" as TableName, label: "Manifesto Contributors", description: "Contributor form submissions" },
       { table: "kef_cares_registrations" as TableName, label: "KEF-CARES Registrations", description: "All KEF-CARES applications" },
       { table: "agent_recruitment_applications" as TableName, label: "Agent Recruitment Applications", description: "Agent applications submitted" },
-      { table: "pvc_surveys" as TableName, label: "PVC Survey Results", description: "Submitted PVC and electoral participation survey responses" },
+      { table: "pvc_surveys" as TableName, label: "Election Survey Results", description: "Submitted election survey responses" },
       { table: "volunteer_registrations" as TableName, label: "Volunteer Registrations", description: "Volunteer signups" },
       { table: "contact_messages" as TableName, label: "Contact Messages", description: "General & media contact form messages" },
     ],

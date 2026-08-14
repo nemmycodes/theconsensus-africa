@@ -113,7 +113,7 @@ const MemberPvcSurvey = ({ onCompleted, embedded }: Props) => {
         <CheckCircle2 className="w-14 h-14 text-emerald-600 mx-auto mb-3" />
         <h2 className="text-xl font-bold text-gray-900 mb-1">Survey Completed</h2>
         <p className="text-sm text-gray-600">
-          Thank you for participating in the PVC & Electoral Participation Survey.
+          Thank you for participating in the Election Survey.
           Your responses will help improve voter engagement and democratic governance in Nigeria.
         </p>
       </div>
@@ -125,7 +125,7 @@ const MemberPvcSurvey = ({ onCompleted, embedded }: Props) => {
       <div className="bg-emerald-600 text-white rounded-xl p-5 md:p-6 mb-5 flex items-start gap-4">
         <ClipboardList className="w-8 h-8 shrink-0" />
         <div>
-          <h1 className="text-xl md:text-2xl font-bold">PVC & Electoral Participation Survey</h1>
+          <h1 className="text-xl md:text-2xl font-bold">Election Survey</h1>
           <p className="text-sm text-emerald-50 mt-1">
             As a new member, please complete this short research survey. Your input shapes our advocacy on voter participation, electoral reform, and democratic governance.
           </p>
