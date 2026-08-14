@@ -178,14 +178,12 @@ const KefCaresLogin = ({ onBack }: { onBack: () => void }) => {
 
     const userId = data.user.id;
 
-    // Ensure kef_user role exists (idempotent — RLS allows self-assigning kef_user)
-    const { error: roleErr } = await supabase
-      .from("user_roles")
-      .insert({ user_id: userId, role: "kef_user" });
-    // Ignore duplicate-key errors (role already granted)
-    if (roleErr && !roleErr.message.toLowerCase().includes("duplicate")) {
+    // Ensure kef_user role exists (idempotent — handled server-side with service role)
+    const { error: roleErr } = await supabase.functions.invoke("assign-kef-role");
+    if (roleErr) {
       console.warn("kef_user role assign warning:", roleErr.message);
     }
+
 
     // Link any registration on this email to this user_id (in case it was submitted before account creation)
     await supabase
@@ -298,12 +296,10 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
     }
 
     if (activeUserId) {
-      // Self-assign kef_user role (allowed by RLS for the authenticated user)
-      const { error: roleErr } = await supabase
-        .from("user_roles")
-        .insert({ user_id: activeUserId, role: "kef_user" });
+      // Assign kef_user role server-side (service role bypasses RLS)
+      const { error: roleErr } = await supabase.functions.invoke("assign-kef-role");
       setLoading(false);
-      if (roleErr && !roleErr.message.toLowerCase().includes("duplicate")) {
+      if (roleErr) {
         toast({
           title: "Account created, but role assignment failed",
           description: roleErr.message + " — please contact support.",
@@ -311,6 +307,7 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
         });
         return;
       }
+
       setUserId(activeUserId);
       toast({ title: "Account ready!", description: "Now complete your KEF-CARES registration form." });
       setStep("form");
