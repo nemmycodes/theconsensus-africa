@@ -296,12 +296,10 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
     }
 
     if (activeUserId) {
-      // Self-assign kef_user role (allowed by RLS for the authenticated user)
-      const { error: roleErr } = await supabase
-        .from("user_roles")
-        .insert({ user_id: activeUserId, role: "kef_user" });
+      // Assign kef_user role server-side (service role bypasses RLS)
+      const { error: roleErr } = await supabase.functions.invoke("assign-kef-role");
       setLoading(false);
-      if (roleErr && !roleErr.message.toLowerCase().includes("duplicate")) {
+      if (roleErr) {
         toast({
           title: "Account created, but role assignment failed",
           description: roleErr.message + " — please contact support.",
@@ -309,6 +307,7 @@ const KefCaresSignup = ({ onBack }: { onBack: () => void }) => {
         });
         return;
       }
+
       setUserId(activeUserId);
       toast({ title: "Account ready!", description: "Now complete your KEF-CARES registration form." });
       setStep("form");
