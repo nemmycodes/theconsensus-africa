@@ -14,7 +14,7 @@ interface MemberSidebarProps {
 
 const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "pvc-survey", label: "PVC Survey", icon: ClipboardList },
+  { id: "pvc-survey", label: "Election Survey", icon: ClipboardList },
   { id: "report", label: "Submit Report", icon: FileText },
   { id: "events", label: "Events", icon: Calendar },
   { id: "forum", label: "Community Forum", icon: MessageSquare },
