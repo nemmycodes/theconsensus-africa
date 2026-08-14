@@ -43,16 +43,15 @@ const KefCaresDashboard = () => {
     }
   }, [user, authLoading]);
 
-  // Self-assign kef_user role if missing (allowed by RLS for the user themself)
+  // Ensure kef_user role via edge function (service role bypasses RLS)
   const ensureKefRole = async () => {
     if (!user) return;
-    const { error } = await supabase
-      .from("user_roles")
-      .insert({ user_id: user.id, role: "kef_user" });
-    if (error && !error.message.toLowerCase().includes("duplicate")) {
+    const { error } = await supabase.functions.invoke("assign-kef-role");
+    if (error) {
       console.warn("kef_user role assign:", error.message);
     }
   };
+
 
   const fetchRegistration = async () => {
     if (!user) return;
