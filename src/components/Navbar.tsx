@@ -11,7 +11,7 @@ const navLinks: { label: string; href: string; external?: boolean; disabled?: bo
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Discuss", href: "/discuss" },
-  { label: "Situation Room", href: "/situation-room", disabled: true },
+  { label: "Situation Room", href: "/situation-room" },
   { label: "Events", href: "/events" },
   { label: "Blog", href: "/blog" },
   { label: "KEF-Cares", href: "/kef-cares" },

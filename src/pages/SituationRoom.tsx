@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import situationHero from "@/assets/situation-hero.jpg";
 import SituationDashboard from "@/components/situation/SituationDashboard";
 import SituationFeed from "@/components/situation/SituationFeed";
+import SituationLiveStats from "@/components/situation/SituationLiveStats";
+import SituationLiveUpdates from "@/components/situation/SituationLiveUpdates";
 
 const statusIcons: Record<string, React.ReactNode> = {
   Active: <AlertTriangle className="h-4 w-4" />,
@@ -189,12 +191,42 @@ const SituationRoom = () => {
             >
               Enter Room
             </Button>
-            <Button size="lg" variant="outline" className="font-bold">
-              Learn More
+            <Button
+              size="lg"
+              variant="outline"
+              className="font-bold"
+              onClick={() => document.getElementById("live-board")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              View Live Board
             </Button>
           </div>
         </motion.div>
       </section>
+
+      {/* Live Board */}
+      <section id="live-board" className="py-16 px-4 lg:px-8 border-b border-border scroll-mt-24">
+        <div className="container mx-auto">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+            <div>
+              <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-primary uppercase">
+                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" /> Live Board
+              </span>
+              <h2 className="text-3xl md:text-4xl font-heading font-black mt-2">Real-Time Situation Overview</h2>
+            </div>
+            <Button variant="outline" className="font-bold" onClick={() => navigate("/situation-room/feed")}>
+              Open Live Feed
+            </Button>
+          </div>
+
+          <SituationLiveStats />
+
+          <div className="mt-12">
+            <h3 className="font-heading font-black text-2xl mb-4">Latest Situation Updates</h3>
+            <SituationLiveUpdates />
+          </div>
+        </div>
+      </section>
+
 
       {/* Quote Section */}
       <section className="py-16 border-b border-border">
