@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import situationHero from "@/assets/situation-hero.jpg";
 import SituationDashboard from "@/components/situation/SituationDashboard";
 import SituationFeed from "@/components/situation/SituationFeed";
+import SituationLiveStats from "@/components/situation/SituationLiveStats";
+import SituationLiveUpdates from "@/components/situation/SituationLiveUpdates";
 
 const statusIcons: Record<string, React.ReactNode> = {
   Active: <AlertTriangle className="h-4 w-4" />,
