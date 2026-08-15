@@ -25,6 +25,28 @@ const statusMeta: Record<string, { icon: typeof Info; className: string }> = {
 
 const CATEGORIES = ["All", "General", "Security", "Infrastructure", "Political", "Social", "Economic"];
 
+/** Some updates store structured JSON payloads — render a readable summary instead of raw JSON. */
+const readable = (content: string) => {
+  const trimmed = (content || "").trim();
+  if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) return trimmed;
+  try {
+    const data = JSON.parse(trimmed);
+    const parts: string[] = [];
+    const push = (label: string, value: unknown) => {
+      if (value && typeof value !== "object") parts.push(`${label}: ${value}`);
+    };
+    push("Election", data.electionType || data.type);
+    push("Date", data.electionDate || data.date);
+    push("Centre", data.center?.centerName || data.venue);
+    push("LGA", data.center?.lga || data.lga);
+    push("Party", data.party);
+    push("Position", data.position);
+    return parts.length ? parts.join(" • ") : "Structured field report submitted from the ground.";
+  } catch {
+    return "Structured field report submitted from the ground.";
+  }
+};
+
 const SituationLiveUpdates = () => {
   const [updates, setUpdates] = useState<SituationUpdate[]>([]);
   const [loading, setLoading] = useState(true);
