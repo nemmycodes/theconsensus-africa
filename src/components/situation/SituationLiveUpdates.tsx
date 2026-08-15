@@ -130,7 +130,7 @@ const SituationLiveUpdates = () => {
                         </span>
                       </div>
                       <h3 className="font-heading font-bold text-base mb-1">{u.title}</h3>
-                      <p className={`text-sm text-muted-foreground ${isOpen ? "" : "line-clamp-2"}`}>{u.content}</p>
+                      <p className={`text-sm text-muted-foreground ${isOpen ? "" : "line-clamp-2"}`}>{readable(u.content)}</p>
                       <p className="text-[11px] uppercase tracking-wider text-primary mt-3">{u.category}</p>
                     </CardContent>
                   </Card>
