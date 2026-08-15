@@ -1524,6 +1524,36 @@ export type Database = {
         }
         Relationships: []
       }
+      situation_chat_messages: {
+        Row: {
+          attachment_url: string | null
+          author_id: string
+          channel: string
+          content: string
+          created_at: string
+          id: string
+          is_broadcast: boolean
+        }
+        Insert: {
+          attachment_url?: string | null
+          author_id: string
+          channel?: string
+          content: string
+          created_at?: string
+          id?: string
+          is_broadcast?: boolean
+        }
+        Update: {
+          attachment_url?: string | null
+          author_id?: string
+          channel?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_broadcast?: boolean
+        }
+        Relationships: []
+      }
       situation_post_comments: {
         Row: {
           author_id: string
