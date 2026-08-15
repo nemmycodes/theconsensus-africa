@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Crown } from "lucide-react";
+import NewsTicker from "@/components/NewsTicker";
 
 const navLinks: { label: string; href: string; external?: boolean; disabled?: boolean }[] = [
   { label: "Home", href: "/" },
