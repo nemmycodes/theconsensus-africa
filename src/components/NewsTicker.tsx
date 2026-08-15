@@ -82,7 +82,7 @@ const NewsTicker = () => {
   const duration = Math.max(24, items.length * 12);
 
   return (
-    <div className="relative w-full overflow-hidden border-b border-primary/20 bg-primary/10 backdrop-blur-sm">
+    <div className="relative w-full overflow-hidden border-b border-primary/25 bg-[hsl(220,20%,11%)]">
       <div className="flex items-stretch">
         <div className="z-10 flex shrink-0 items-center gap-1.5 bg-primary px-3 py-1.5 text-[11px] font-black uppercase tracking-widest text-primary-foreground">
           <Megaphone className="h-3.5 w-3.5" aria-hidden="true" />
@@ -96,7 +96,7 @@ const NewsTicker = () => {
           >
             {strip.map((item, i) => {
               const content = (
-                <span className="flex items-center gap-2 text-xs text-foreground/90">
+                <span className="flex items-center gap-2 text-xs text-white/85">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
                   <span className="font-bold uppercase tracking-wide text-primary">{item.label}</span>
                   <span>{item.text}</span>
