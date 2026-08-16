@@ -198,6 +198,25 @@ const RoleRegister = () => {
       return;
     }
 
+    // Ensure we have an active session before any authenticated upload/insert.
+    // Without a session the requests run as anonymous and are rejected by RLS.
+    let session = data.session;
+    if (!session) {
+      const { data: signInData } = await supabase.auth.signInWithPassword({
+        email: accountEmail,
+        password,
+      });
+      session = signInData?.session ?? null;
+    }
+    if (!session) {
+      toast({
+        title: "Confirm your email",
+        description: "Your account was created. Please confirm your email, sign in, and complete this application from your dashboard.",
+      });
+      setLoading(false);
+      return;
+    }
+
     const userId = data.user.id;
     const contactEmail = emailContact || accountEmail;
 
