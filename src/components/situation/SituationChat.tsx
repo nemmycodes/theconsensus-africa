@@ -147,7 +147,9 @@ const SituationChat = ({ channel, title, description, allowBroadcast = true }: P
           </div>
         ) : messages.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No messages here yet. Start the conversation — the room is live.
+            {user
+              ? "No messages here yet. Start the conversation — the room is live."
+              : "Conversations in this room are visible to members only. Sign in to read and join the discussion."}
           </p>
         ) : (
           <AnimatePresence initial={false}>

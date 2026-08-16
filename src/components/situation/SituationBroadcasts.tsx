@@ -69,7 +69,9 @@ const SituationBroadcasts = ({ compact = false }: { compact?: boolean }) => {
   if (items.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No broadcasts yet. Any member can flip the broadcast switch in the chat to pin a message here for everyone.
+        {user
+          ? "No broadcasts yet. Any member can flip the broadcast switch in the chat to pin a message here for everyone."
+          : "Broadcasts are visible to members only. Sign in to see messages pinned to the whole room."}
       </p>
     );
   }
