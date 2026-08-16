@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { Megaphone, Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { useAuth } from "@/hooks/useAuth";
 
 interface BroadcastItem {
   id: string;
@@ -16,6 +17,7 @@ interface BroadcastItem {
 
 /** Shows every public broadcast message dropped by any account holder in the room. */
 const SituationBroadcasts = ({ compact = false }: { compact?: boolean }) => {
+  const { user } = useAuth();
   const [items, setItems] = useState<BroadcastItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -69,7 +71,9 @@ const SituationBroadcasts = ({ compact = false }: { compact?: boolean }) => {
   if (items.length === 0) {
     return (
       <p className="text-sm text-muted-foreground">
-        No broadcasts yet. Any member can flip the broadcast switch in the chat to pin a message here for everyone.
+        {user
+          ? "No broadcasts yet. Any member can flip the broadcast switch in the chat to pin a message here for everyone."
+          : "Broadcasts are visible to members only. Sign in to see messages pinned to the whole room."}
       </p>
     );
   }
