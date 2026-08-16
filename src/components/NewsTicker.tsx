@@ -10,8 +10,12 @@ interface TickerItem {
   href?: string;
 }
 
-const NewsTicker = () => {
+const NewsTicker = ({ onHasItems }: { onHasItems?: (hasItems: boolean) => void }) => {
   const [items, setItems] = useState<TickerItem[]>([]);
+
+  useEffect(() => {
+    onHasItems?.(items.length > 0);
+  }, [items.length, onHasItems]);
 
   useEffect(() => {
     let active = true;
