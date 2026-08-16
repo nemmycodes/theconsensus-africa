@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,6 +22,8 @@ const navLinks: { label: string; href: string; external?: boolean; disabled?: bo
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [tickerVisible, setTickerVisible] = useState(false);
+  const handleTicker = useCallback((hasItems: boolean) => setTickerVisible(hasItems), []);
   const { user, signOut, isSuperAdmin, isAdmin, isAgent, isKefUser } = useAuth();
   const navigate = useNavigate();
 
@@ -31,13 +33,14 @@ const Navbar = () => {
   };
 
   return (
+    <>
     <motion.nav
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="fixed top-0 left-0 right-0 z-50 bg-[hsl(220,20%,8%)]/95 backdrop-blur-md border-b border-[hsl(220,15%,18%)] shadow-lg"
     >
-      <NewsTicker />
+      <NewsTicker onHasItems={handleTicker} />
       <div className="container mx-auto flex items-center justify-between h-16 md:h-20 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-2 group" aria-label="The Plateau Consensus — Home">
           <img
@@ -188,6 +191,9 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </motion.nav>
+    {/* Reserves the extra height the ticker adds to the fixed header so page content isn't clipped */}
+    {tickerVisible && <div aria-hidden="true" className="h-[29px]" />}
+    </>
   );
 };
 
