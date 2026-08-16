@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import {
   LayoutDashboard, Users, Shield, Radio, BarChart3, Calendar,
   FileText, MessageSquare, Image, Bell, Settings, ChevronLeft, LogOut,
-  ClipboardCheck,
+  ClipboardCheck, BookOpen,
 } from "lucide-react";
 
 interface AdminSidebarProps {
@@ -22,6 +22,7 @@ const menuItems = [
   { id: "events", label: "Events & Activities", icon: Calendar },
   { id: "blog", label: "Blog & Articles", icon: FileText },
   { id: "forum", label: "Community Forum", icon: MessageSquare },
+  { id: "manifesto", label: "Manifesto Contributions", icon: BookOpen },
   { id: "media", label: "Media Library", icon: Image },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "kef-cares", label: "KEF-CARES", icon: Users },

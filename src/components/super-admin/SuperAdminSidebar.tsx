@@ -5,7 +5,7 @@ import {
   Crown, LayoutDashboard, Users, Shield, UserCog, BarChart3,
   Globe, Radio, Calendar, FileText, MessageSquare, Image,
   Bell, Settings, ChevronLeft, LogOut, Database, Activity,
-  PenTool, Mail, Download,
+  PenTool, Mail, Download, BookOpen,
 } from "lucide-react";
 
 interface SuperAdminSidebarProps {
@@ -41,6 +41,7 @@ const menuGroups = [
       { id: "events", label: "Events", icon: Calendar },
       { id: "blog", label: "Blog Posts", icon: FileText },
       { id: "forum", label: "Forum", icon: MessageSquare },
+      { id: "manifesto", label: "Manifesto Contributions", icon: BookOpen },
       { id: "media", label: "Media Library", icon: Image },
       { id: "kef-cares", label: "KEF-CARES", icon: Users },
     ],
