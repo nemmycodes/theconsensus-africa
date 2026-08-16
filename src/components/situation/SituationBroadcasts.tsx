@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { Megaphone, Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { useAuth } from "@/hooks/useAuth";
 
 interface BroadcastItem {
   id: string;
@@ -16,6 +17,7 @@ interface BroadcastItem {
 
 /** Shows every public broadcast message dropped by any account holder in the room. */
 const SituationBroadcasts = ({ compact = false }: { compact?: boolean }) => {
+  const { user } = useAuth();
   const [items, setItems] = useState<BroadcastItem[]>([]);
   const [loading, setLoading] = useState(true);
 
