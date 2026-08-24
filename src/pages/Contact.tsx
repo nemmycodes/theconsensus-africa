@@ -92,7 +92,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <span className="text-xs text-primary font-bold uppercase tracking-wider">Email</span>
-                      <p className="font-medium mt-1">info@consensusparty.org.ng</p>
+                      <p className="font-medium mt-1">info@theconsensus.africa, support@theconsensus.africa</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -101,7 +101,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <span className="text-xs text-primary font-bold uppercase tracking-wider">Phone</span>
-                      <p className="font-medium mt-1">+234 703 770 508</p>
+                      <p className="font-medium mt-1">+234 703 770 5088,+234 706 049 3638, +234 803 794 7795, </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -110,7 +110,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <span className="text-xs text-primary font-bold uppercase tracking-wider">Headquarters</span>
-                      <p className="font-medium mt-1">Abuja, FCT, Nigeria</p>
+                      <p className="font-medium mt-1">Kefiano creative Hub,secretariat junction JOS, Nigeria</p>
                     </div>
                   </div>
                 </div>
