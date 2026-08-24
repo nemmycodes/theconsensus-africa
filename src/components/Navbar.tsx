@@ -15,7 +15,7 @@ const navLinks: { label: string; href: string; external?: boolean; disabled?: bo
   { label: "Events", href: "/events" },
   { label: "Blog", href: "/blog" },
   { label: "KEF-Cares", href: "/kef-cares" },
-  { label: "INEC", href: "https://www.cvr.inecnigeria.org", external: true },
+  { label: "INEC", href: "https://cvr.inecnigeria.org", external: true },
 
   { label: "Contact Us", href: "/contact" },
 ];
