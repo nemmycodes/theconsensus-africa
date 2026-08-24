@@ -58,7 +58,7 @@ const MemberApplyVolunteer = () => {
   const [motivation, setMotivation] = useState("");
   const [candidates, setCandidates] = useState("");
 
-  // 5. Register Support Group
+  // 5. Experience
   const [previousExperience, setPreviousExperience] = useState("");
   const [relevantSkills, setRelevantSkills] = useState("");
 
