@@ -65,7 +65,8 @@ const Contact = () => {
               GET IN <span className="text-primary">TOUCH</span>
             </h1>
             <p className="text-muted-foreground mt-6 max-w-xl mx-auto">
-              Our movement thrives on your voice. Whether you are a member of the press, a potential volunteer, or a concerned citizen, we are ready to listen.
+              Our movement thrives on your voice. Whether you are a member of the press, a potential volunteer, or a
+              concerned citizen, we are ready to listen.
             </p>
           </motion.div>
         </div>
@@ -100,7 +101,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <span className="text-xs text-primary font-bold uppercase tracking-wider">Phone</span>
-                      <p className="font-medium mt-1">+234 703 770 5088</p>
+                      <p className="font-medium mt-1">+234 703 770 50</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
@@ -116,18 +117,44 @@ const Contact = () => {
               </div>
 
               <div className="border-t border-border pt-6">
-                <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">Follow the Movement</span>
+                <span className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                  Follow the Movement
+                </span>
                 <div className="flex items-center gap-3 mt-4">
-                  <a href="https://twitter.com/consensusmvt" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                  <a
+                    href="https://twitter.com/consensusmvt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Twitter"
+                    className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors"
+                  >
                     <Twitter size={16} />
                   </a>
-                  <a href="https://facebook.com/consensusmvt" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                  <a
+                    href="https://facebook.com/consensusmvt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                    className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors"
+                  >
                     <Facebook size={16} />
                   </a>
-                  <a href="https://instagram.com/consensusmvt" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                  <a
+                    href="https://instagram.com/consensusmvt"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors"
+                  >
                     <Instagram size={16} />
                   </a>
-                  <a href="https://whatsapp.com/channel/" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Channel" className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors">
+                  <a
+                    href="https://whatsapp.com/channel/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="WhatsApp Channel"
+                    className="w-9 h-9 rounded border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors"
+                  >
                     <MessageCircle size={16} />
                   </a>
                 </div>
@@ -214,8 +241,12 @@ const Contact = () => {
               <div>
                 <h3 className="font-bold text-lg">Media Inquiries</h3>
                 <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-                  For official press statements, interview requests, and media credentials, please include your organization name and deadline in the message field above, or email our press office directly at{" "}
-                  <a href="mailto:media@consensusparty.org.ng" className="text-primary hover:underline">media@consensusparty.org.ng</a>.
+                  For official press statements, interview requests, and media credentials, please include your
+                  organization name and deadline in the message field above, or email our press office directly at{" "}
+                  <a href="mailto:media@consensusparty.org.ng" className="text-primary hover:underline">
+                    media@consensusparty.org.ng
+                  </a>
+                  .
                 </p>
               </div>
             </div>
