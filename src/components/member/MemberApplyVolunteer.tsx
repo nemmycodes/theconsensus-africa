@@ -41,6 +41,7 @@ const MemberApplyVolunteer = () => {
   // 1. Personal
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const [suport group, setsupportgroup] = useState("");
   const [email, setEmail] = useState("");
   const [lga, setLga] = useState("");
   const [ward, setWard] = useState("");
