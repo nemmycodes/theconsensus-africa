@@ -1,0 +1,1 @@
+ALTER TABLE public.volunteer_registrations ADD COLUMN IF NOT EXISTS support_group_name TEXT;
