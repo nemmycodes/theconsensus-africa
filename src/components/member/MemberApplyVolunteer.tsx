@@ -45,6 +45,9 @@ const MemberApplyVolunteer = () => {
   const [lga, setLga] = useState("");
   const [ward, setWard] = useState("");
 
+  // 1b. Support Group
+  const [supportGroupName, setSupportGroupName] = useState("");
+
   // 2. Availability
   const [availability, setAvailability] = useState<string[]>([]);
   const [availabilityOther, setAvailabilityOther] = useState("");
