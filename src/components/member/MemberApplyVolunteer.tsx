@@ -122,6 +122,7 @@ const MemberApplyVolunteer = () => {
       email,
       lga,
       ward: ward || null,
+      support_group_name: supportGroupName || null,
       availability_areas: finalAvailability,
       availability_other: availabilityOther || null,
       availability_hours_per_week: hours ? parseInt(hours, 10) : null,
