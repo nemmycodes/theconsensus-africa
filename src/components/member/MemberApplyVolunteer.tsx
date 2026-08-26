@@ -230,6 +230,24 @@ const MemberApplyVolunteer = () => {
         </div>
       </Card>
 
+      {/* 1b. Support Group */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold flex items-center gap-2">
+          <Users className="w-4 h-4" /> Support Group
+        </h3>
+        <div>
+          <Label>Name of Support Group</Label>
+          <Input
+            value={supportGroupName}
+            onChange={(e) => setSupportGroupName(e.target.value)}
+            placeholder="e.g. Plateau Youth Vanguard, Jos Women for Consensus…"
+          />
+          <p className="text-xs text-muted-foreground mt-1">
+            If you belong to (or are starting) a support group for the movement, write its name here.
+          </p>
+        </div>
+      </Card>
+
       {/* 2. Availability */}
       <Card className="p-6 space-y-4">
         <h3 className="font-bold">2. Availability</h3>
