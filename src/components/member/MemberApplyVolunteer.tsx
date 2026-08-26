@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { HeartHandshake, ShieldCheck, CheckCircle2, Clock, XCircle } from "lucide-react";
+import { HeartHandshake, ShieldCheck, CheckCircle2, Clock, XCircle, Users } from "lucide-react";
 import InecLocationPicker from "@/components/shared/InecLocationPicker";
 
 const AVAILABILITY_AREAS = [
@@ -44,6 +44,9 @@ const MemberApplyVolunteer = () => {
   const [email, setEmail] = useState("");
   const [lga, setLga] = useState("");
   const [ward, setWard] = useState("");
+
+  // 1b. Support Group
+  const [supportGroupName, setSupportGroupName] = useState("");
 
   // 2. Availability
   const [availability, setAvailability] = useState<string[]>([]);
@@ -119,6 +122,7 @@ const MemberApplyVolunteer = () => {
       email,
       lga,
       ward: ward || null,
+      support_group_name: supportGroupName || null,
       availability_areas: finalAvailability,
       availability_other: availabilityOther || null,
       availability_hours_per_week: hours ? parseInt(hours, 10) : null,
@@ -223,6 +227,24 @@ const MemberApplyVolunteer = () => {
               setWard(w);
             }}
           />
+        </div>
+      </Card>
+
+      {/* 1b. Support Group */}
+      <Card className="p-6 space-y-4">
+        <h3 className="font-bold flex items-center gap-2">
+          <Users className="w-4 h-4" /> Support Group
+        </h3>
+        <div>
+          <Label>Name of Support Group</Label>
+          <Input
+            value={supportGroupName}
+            onChange={(e) => setSupportGroupName(e.target.value)}
+            placeholder="e.g. Plateau Youth Vanguard, Jos Women for Consensus…"
+          />
+          <p className="text-xs text-muted-foreground mt-1">
+            If you belong to (or are starting) a support group for the movement, write its name here.
+          </p>
         </div>
       </Card>
 
