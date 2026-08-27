@@ -47,6 +47,8 @@ const MemberApplyVolunteer = () => {
 
   // 1b. Support Group
   const [supportGroupName, setSupportGroupName] = useState("");
+  const [supportGroupObjectives, setSupportGroupObjectives] = useState("");
+  const [supportGroupActiveMembers, setSupportGroupActiveMembers] = useState("");
 
   // 2. Availability
   const [availability, setAvailability] = useState<string[]>([]);
@@ -123,6 +125,8 @@ const MemberApplyVolunteer = () => {
       lga,
       ward: ward || null,
       support_group_name: supportGroupName || null,
+      support_group_objectives: supportGroupObjectives || null,
+      support_group_active_members: supportGroupActiveMembers ? parseInt(supportGroupActiveMembers, 10) : null,
       availability_areas: finalAvailability,
       availability_other: availabilityOther || null,
       availability_hours_per_week: hours ? parseInt(hours, 10) : null,
@@ -245,6 +249,25 @@ const MemberApplyVolunteer = () => {
           <p className="text-xs text-muted-foreground mt-1">
             If you belong to (or are starting) a support group for the movement, write its name here.
           </p>
+        </div>
+        <div>
+          <Label>Objectives of the Group</Label>
+          <Textarea
+            rows={3}
+            value={supportGroupObjectives}
+            onChange={(e) => setSupportGroupObjectives(e.target.value)}
+            placeholder="What does your support group aim to achieve for the movement?"
+          />
+        </div>
+        <div className="max-w-xs">
+          <Label>Number of Active Members</Label>
+          <Input
+            type="number"
+            min={0}
+            value={supportGroupActiveMembers}
+            onChange={(e) => setSupportGroupActiveMembers(e.target.value)}
+            placeholder="e.g. 25"
+          />
         </div>
       </Card>
 

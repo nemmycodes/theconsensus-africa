@@ -54,6 +54,9 @@ interface VolunteerApp {
   candidates_supporting: string | null;
   previous_experience: string | null;
   relevant_skills: string | null;
+  support_group_name: string | null;
+  support_group_objectives: string | null;
+  support_group_active_members: number | null;
   declaration_signature: string | null;
   status: string;
   review_notes: string | null;
@@ -384,6 +387,15 @@ const AdminApplications = () => {
                   <div><strong>Hours / week:</strong> {selectedVol.availability_hours_per_week ?? "—"}</div>
                   <div><strong>Submitted:</strong> {new Date(selectedVol.created_at).toLocaleDateString()}</div>
                 </div>
+
+                {(selectedVol.support_group_name || selectedVol.support_group_objectives || selectedVol.support_group_active_members) && (
+                  <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-lg space-y-2">
+                    <p className="text-xs uppercase tracking-wide text-emerald-700 font-bold flex items-center gap-1"><Users className="w-3 h-3"/> Support Group</p>
+                    {selectedVol.support_group_name && <div><strong>Group name:</strong> {selectedVol.support_group_name}</div>}
+                    {selectedVol.support_group_objectives && <div><strong>Objectives:</strong> <p className="mt-1 whitespace-pre-wrap">{selectedVol.support_group_objectives}</p></div>}
+                    {selectedVol.support_group_active_members !== null && <div><strong>Active members:</strong> {selectedVol.support_group_active_members}</div>}
+                  </div>
+                )}
 
                 <div>
                   <strong>Availability areas:</strong>
