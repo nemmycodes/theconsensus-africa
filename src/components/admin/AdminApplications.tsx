@@ -54,6 +54,9 @@ interface VolunteerApp {
   candidates_supporting: string | null;
   previous_experience: string | null;
   relevant_skills: string | null;
+  support_group_name: string | null;
+  support_group_objectives: string | null;
+  support_group_active_members: number | null;
   declaration_signature: string | null;
   status: string;
   review_notes: string | null;
