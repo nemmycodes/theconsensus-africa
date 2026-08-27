@@ -78,7 +78,7 @@ const SupportGroup = () => {
             <h1 className="text-3xl md:text-4xl font-black">Register a Support Group</h1>
           </div>
           <p className="text-muted-foreground">
-            Are you running a support group for the Plateau Consensus Movement? Register it here — no account needed.
+            Does your group support chief kefas Ropshik Wungak (Kefiano) for governor of Plateau staste in 2027?
           </p>
         </header>
 
