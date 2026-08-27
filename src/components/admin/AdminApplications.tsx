@@ -388,6 +388,15 @@ const AdminApplications = () => {
                   <div><strong>Submitted:</strong> {new Date(selectedVol.created_at).toLocaleDateString()}</div>
                 </div>
 
+                {(selectedVol.support_group_name || selectedVol.support_group_objectives || selectedVol.support_group_active_members) && (
+                  <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-lg space-y-2">
+                    <p className="text-xs uppercase tracking-wide text-emerald-700 font-bold flex items-center gap-1"><Users className="w-3 h-3"/> Support Group</p>
+                    {selectedVol.support_group_name && <div><strong>Group name:</strong> {selectedVol.support_group_name}</div>}
+                    {selectedVol.support_group_objectives && <div><strong>Objectives:</strong> <p className="mt-1 whitespace-pre-wrap">{selectedVol.support_group_objectives}</p></div>}
+                    {selectedVol.support_group_active_members !== null && <div><strong>Active members:</strong> {selectedVol.support_group_active_members}</div>}
+                  </div>
+                )}
+
                 <div>
                   <strong>Availability areas:</strong>
                   <div className="flex flex-wrap gap-1 mt-1">
