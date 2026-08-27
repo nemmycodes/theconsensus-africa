@@ -250,6 +250,25 @@ const MemberApplyVolunteer = () => {
             If you belong to (or are starting) a support group for the movement, write its name here.
           </p>
         </div>
+        <div>
+          <Label>Objectives of the Group</Label>
+          <Textarea
+            rows={3}
+            value={supportGroupObjectives}
+            onChange={(e) => setSupportGroupObjectives(e.target.value)}
+            placeholder="What does your support group aim to achieve for the movement?"
+          />
+        </div>
+        <div className="max-w-xs">
+          <Label>Number of Active Members</Label>
+          <Input
+            type="number"
+            min={0}
+            value={supportGroupActiveMembers}
+            onChange={(e) => setSupportGroupActiveMembers(e.target.value)}
+            placeholder="e.g. 25"
+          />
+        </div>
       </Card>
 
       {/* 2. Availability */}
