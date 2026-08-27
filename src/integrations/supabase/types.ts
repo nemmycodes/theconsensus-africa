@@ -1793,7 +1793,9 @@ export type Database = {
           skills: string[]
           skills_other: string | null
           status: string
+          support_group_active_members: number | null
           support_group_name: string | null
+          support_group_objectives: string | null
           updated_at: string
           user_id: string | null
           ward: string | null
@@ -1820,7 +1822,9 @@ export type Database = {
           skills?: string[]
           skills_other?: string | null
           status?: string
+          support_group_active_members?: number | null
           support_group_name?: string | null
+          support_group_objectives?: string | null
           updated_at?: string
           user_id?: string | null
           ward?: string | null
@@ -1847,7 +1851,9 @@ export type Database = {
           skills?: string[]
           skills_other?: string | null
           status?: string
+          support_group_active_members?: number | null
           support_group_name?: string | null
+          support_group_objectives?: string | null
           updated_at?: string
           user_id?: string | null
           ward?: string | null
