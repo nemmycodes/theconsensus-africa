@@ -18,6 +18,7 @@ import AdminSettings from "@/components/admin/AdminSettings";
 import AdminKefCares from "@/components/admin/AdminKefCares";
 import AdminApplications from "@/components/admin/AdminApplications";
 import AdminManifestoContributions from "@/components/admin/AdminManifestoContributions";
+import AdminSupportGroups from "@/components/admin/AdminSupportGroups";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -62,6 +63,7 @@ const AdminDashboard = () => {
       case "blog": return <AdminBlogPosts />;
       case "forum": return <AdminCommunityForum />;
       case "manifesto": return <AdminManifestoContributions />;
+      case "support-groups": return <AdminSupportGroups />;
       case "media": return <AdminMediaLibrary />;
       case "notifications": return <AdminNotifications />;
       case "kef-cares": return <AdminKefCares />;
