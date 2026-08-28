@@ -78,7 +78,7 @@ const SupportGroup = () => {
             <h1 className="text-3xl md:text-4xl font-black">Register a Support Group</h1>
           </div>
           <p className="text-muted-foreground">
-            Does your group support chief kefas Ropshik Wungak (Kefiano) for governor of Plateau staste in 2027?
+            Does your group support chief kefas Ropshik Wungak (Kefiano) for governor of Plateau state in 2027?
           </p>
         </header>
 
@@ -133,7 +133,7 @@ const SupportGroup = () => {
                 <Input
                   value={groupName}
                   onChange={(e) => setGroupName(e.target.value)}
-                  placeholder="e.g. Plateau Youth Vanguard, Jos Women for Consensus…"
+                  placeholder="e.g. Plateau Youth Vanguard for kefiano, Jos Women for kefiano…"
                 />
               </div>
               <div>
