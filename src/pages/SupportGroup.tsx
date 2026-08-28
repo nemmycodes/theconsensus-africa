@@ -78,7 +78,8 @@ const SupportGroup = () => {
             <h1 className="text-3xl md:text-4xl font-black">Register a Support Group</h1>
           </div>
           <p className="text-muted-foreground">
-            Does your group support chief kefas Ropshik Wungak (Kefiano) for governor of Plateau state in 2027?
+            Does your group support chief kefas Ropshik Wungak (Kefiano) for governor of Plateau state in 2027? if yes,
+            kindly fill in the form below for your group to be officially recognised by this movement.
           </p>
         </header>
 
