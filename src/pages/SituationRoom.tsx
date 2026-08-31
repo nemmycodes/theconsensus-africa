@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Flag, Share2, BarChart3, Shield, MessagesSquare, Megaphone, Users } from "lucide-react";
+import { Flag, Share2, BarChart3, Shield, MessagesSquare, Megaphone, Users, LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import situationHero from "@/assets/situation-hero.jpg";
