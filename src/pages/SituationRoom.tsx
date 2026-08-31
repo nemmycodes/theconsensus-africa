@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Flag, Share2, BarChart3, Shield, MessagesSquare, Megaphone, Users } from "lucide-react";
+import { Flag, Share2, BarChart3, Shield, MessagesSquare, Megaphone, Users, LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import situationHero from "@/assets/situation-hero.jpg";
@@ -95,10 +95,18 @@ const SituationRoom = () => {
             <Button size="lg" className="font-bold gap-2" onClick={scrollToHub}>
               <MessagesSquare className="h-4 w-4" /> Enter the Conversation
             </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="font-bold gap-2"
+              onClick={() => navigate(user ? "/situation-room/feed" : "/situation-room/login")}
+            >
+              <LogIn className="h-4 w-4" /> Enter Room
+            </Button>
             {!user && (
               <Button
                 size="lg"
-                variant="outline"
+                variant="ghost"
                 className="font-bold"
                 onClick={() => navigate("/auth?redirect=/situation-room")}
               >
@@ -106,6 +114,7 @@ const SituationRoom = () => {
               </Button>
             )}
           </div>
+
         </motion.div>
       </section>
 
